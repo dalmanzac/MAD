@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>ELIMINAR ENFERMEDAD</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>ELIMINAR ENFERMEDAD</h1>
+				</center>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" size="232" header="ADMINISTRADOR"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="USUARIOS">
+						<p:menuitem value="Agregar" url="UsuarioNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="UsuarioModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="UsuarioDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="UsuarioShowForm.xhtml" />
+
+
+					</p:submenu>
+					<p:submenu label="ENFERMEDADES">
+						<p:menuitem value="Agregar" url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="EnfermedadShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="TRATAMIENTOS">
+						<p:menuitem value="Agregar" url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="TratamientoShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="DIETAS">
+						<p:menuitem value="Agregar" url="DietaNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="DietaModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="DietaDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="DietaShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+
+				<h:form id="formTabla">
+					<p:panel styleClass="session" header="Eliminar Enfermedad">
+						<p:dataTable id="enfermedad" var="_enfermedad"
+							value="#{enfermedadMB.enfermedadesList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column filterBy="#{_enfermedad.id}"
+								headerText="ID Enfermedad" filterMatchMode="contains">
+								<h:outputText value="#{_enfermedad.id}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Descripción" />
+								</f:facet>
+								<h:outputText value="#{_enfermedad.descripcion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estado" />
+								</f:facet>
+								<h:outputText value="#{_enfermedad.estado}" />
+							</p:column>
+							<p:column filterBy="#{_enfermedad.nombre}" headerText="Nombre"
+								filterMatchMode="contains">
+								<h:outputText value="#{_enfermedad.nombre}" />
+							</p:column>
+
+							<p:column headerText="Eliminar">
+
+								<p:commandButton icon="ui-icon-close"
+									action="#{enfermedadMB.deleteEnfermedad(_enfermedad)}">
+									<p:confirm header="AVISO!"
+										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="explode">
+									<p:commandButton value="Si" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								</p:confirmDialog>
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

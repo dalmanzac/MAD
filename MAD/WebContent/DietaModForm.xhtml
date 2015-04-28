@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>MODIFICAR DIETA</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>MODIFICAR DIETA</h1>
+				</center>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" size="232" header="ADMINISTRADOR"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="USUARIOS">
+						<p:menuitem value="Agregar" url="UsuarioNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="UsuarioModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="UsuarioDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="UsuarioShowForm.xhtml" />
+
+
+					</p:submenu>
+					<p:submenu label="ENFERMEDADES">
+						<p:menuitem value="Agregar"
+							url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="EnfermedadShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="TRATAMIENTOS">
+						<p:menuitem value="Agregar"
+							url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="TratamientoShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="DIETAS">
+						<p:menuitem value="Agregar" url="DietaNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="DietaModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="DietaDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="DietaShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				
+				<h:form id="formTabla">
+		<p:panel styleClass="session" header="Modificar Dietas">
+			<p:dataTable id="dieta" var="_dieta"
+				value="#{dietaMB.dietasList}" style="width: 100%"
+				emptyMessage="No hay registros disponibles" paginator="true"
+				rows="10" paginatorPosition="top"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<p:column filterBy="#{_dieta.id}" headerText="ID Dieta"
+								filterMatchMode="contains">
+								<h:outputText value="#{_dieta.id}" />
+							</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Descripción" />
+					</f:facet>
+					<h:outputText value="#{_dieta.descripcion}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Estado" />
+					</f:facet>
+					<h:outputText value="#{_dieta.estado}" />
+				</p:column>
+				<p:column filterBy="#{_dieta.nombre}" headerText="Nombre"
+								filterMatchMode="contains">
+								<h:outputText value="#{_dieta.nombre}" />
+							</p:column>
+				
+				<p:column headerText="Modificar">
+
+
+								<p:commandButton id="movieBtn" icon="ui-icon-document"
+									type="button" />
+								<p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade"
+									dynamic="true" style="width:700px">
+									<h:form>
+		<p:panel styleClass="session" header="Modificar Dieta">
+			<h:panelGrid columns="2">
+										
+<h:outputLabel value="ID de la Dieta" />
+				<p:inputText id="user2">
+				</p:inputText>
+								
+				<h:outputLabel value="Nombre:" />
+				<p:inputText id="name2">
+				</p:inputText>
+							
+				<h:outputLabel value="Descripción:" />
+
+
+				<p:inputTextarea rows="5" cols="30" counter="display" maxlength="80"
+					counterTemplate="{0} characters remaining." autoResize="false" />
+				<h:outputText id="display" />
+				<p:spacer width="10" height="10" />
+				<p:commandButton value="Modificar" id="ajax3" update="growl"
+					actionListener="#{buttonView.buttonAction}"
+					styleClass="ui-priority-primary" />
+
+
+
+				<p:growl id="growl" life="2000" />
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+								</p:overlayPanel>
+
+
+
+
+
+
+
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

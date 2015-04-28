@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>NUEVA ENFERMEDAD</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>AGREGAR ENFERMEDAD</h1>
+				</center>
+			</p:layoutUnit>
+
+
+
+			<p:layoutUnit position="west" size="232" header="ADMINISTRADOR"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="USUARIOS">
+						<p:menuitem value="Agregar" url="UsuarioNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="UsuarioModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="UsuarioDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="UsuarioShowForm.xhtml" />
+
+
+					</p:submenu>
+					<p:submenu label="ENFERMEDADES">
+						<p:menuitem value="Agregar"
+							url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="EnfermedadShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="TRATAMIENTOS">
+						<p:menuitem value="Agregar"
+							url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="TratamientoShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="DIETAS">
+						<p:menuitem value="Agregar" url="DietaNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="DietaModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="DietaDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="DietaShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form>
+		<p:panel styleClass="session" header="Nueva Enfermedad">
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Nombre de la Enfermedad:" />
+				<p:inputText id="user" required="true"
+					requiredMessage="Campo Requerido" value="#{enfermedadMB.nombre}">
+				</p:inputText>
+				<p:message for="user" />
+				<p:spacer width="10" height="10" />
+				<h:outputLabel value="Descripción:" />
+
+
+				<p:inputTextarea rows="5" cols="30" counter="display" maxlength="80"
+					counterTemplate="{0} characters remaining." autoResize="false"
+					value="#{enfermedadMB.descripcion}" />
+				<h:outputText id="display" />
+				<p:spacer width="10" height="10" />
+
+				<p:growl id="growl" life="2000" />
+
+				<p:commandButton value="Crear Enfermedad" id="ajax" update="growl"
+					actionListener="#{enfermedadMB.addEnfermedad()}"
+					styleClass="ui-priority-primary" />
+					<p:commandButton id="reset" value="Borrar"
+				action="#{enfermedadMB.reset}" ajax="false" />
+
+
+
+			</h:panelGrid>
+		</p:panel>
+
+	</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

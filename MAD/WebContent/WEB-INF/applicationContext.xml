@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<!-- Beans Declaration -->
+	<bean id="Usuario" class="com.unbosque.info.entidad.Usuario" />
+	<bean id="Tratamiento" class="com.unbosque.info.entidad.Tratamiento" />
+	<bean id="Enfermedad" class="com.unbosque.info.entidad.Enfermedad" />
+	<bean id="Dieta" class="com.unbosque.info.entidad.Dieta" />
+	<bean id="Paciente" class="com.unbosque.info.entidad.Paciente" />
+
+	<!-- User Service Declaration -->
+	<bean id="UsuarioService" class="com.unbosque.info.service.UsuarioService">
+		<property name="UsuarioDAO" ref="UsuarioDAO" />
+	</bean>
+	<bean id="TratamientoService" class="com.unbosque.info.service.TratamientoService">
+		<property name="TratamientoDAO" ref="TratamientoDAO" />
+	</bean>
+	<bean id="EnfermedadService" class="com.unbosque.info.service.EnfermedadService">
+		<property name="EnfermedadDAO" ref="EnfermedadDAO" />
+	</bean>
+	<bean id="DietaService" class="com.unbosque.info.service.DietaService">
+		<property name="DietaDAO" ref="DietaDAO" />
+	</bean>
+	<bean id="PacienteService" class="com.unbosque.info.service.PacienteService">
+		<property name="PacienteDAO" ref="PacienteDAO" />
+	</bean>
+
+
+	<!-- User DAO Declaration -->
+	<bean id="UsuarioDAO" class="com.unbosque.info.dao.UsuarioDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="TratamientoDAO" class="com.unbosque.info.dao.TratamientoDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="EnfermedadDAO" class="com.unbosque.info.dao.EnfermedadDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="DietaDAO" class="com.unbosque.info.dao.DietaDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="PacienteDAO" class="com.unbosque.info.dao.PacienteDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+
+	<!-- Data Source Declaration -->
+	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:postgresql://localhost:5432/ProyectoInfo3" />
+		<property name="user" value="postgres" />
+		<property name="password" value="info3" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="minPoolSize" value="5" />
+	</bean>
+
+	<!-- Session Factory Declaration -->
+	<bean id="SessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.unbosque.info.entidad.Usuario</value>
+				<value>com.unbosque.info.entidad.Tratamiento</value>
+				<value>com.unbosque.info.entidad.Enfermedad</value>
+				<value>com.unbosque.info.entidad.Dieta</value>
+				<value>com.unbosque.info.entidad.Paciente</value>
+
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- Transaction Manager is defined -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+</beans>

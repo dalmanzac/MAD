@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>MODIFICAR PACIENTE</title>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:panel styleClass="session" header="Modificar Paciente">
+			<h:panelGrid columns="3">
+			
+			<h:outputLabel value="ID del Paciente:" />
+				<p:inputText id="user">
+				</p:inputText>
+
+				<p:commandButton value="Buscar" id="ajax" update="growl"
+					actionListener="#{buttonView.buttonAction}"
+					styleClass="ui-priority-primary" />
+
+				<h:outputLabel value="Identificación del Paciente:" />
+				<p:inputText id="user2">
+				</p:inputText>
+
+				<p:commandButton value="Buscar" id="ajax2" update="growl"
+					actionListener="#{buttonView.buttonAction}"
+					styleClass="ui-priority-primary" />
+
+				<p:spacer width="10" height="10" />
+				<p:spacer width="10" height="10" />
+				<p:spacer width="10" height="10" />
+				<p:spacer width="10" height="10" />
+				<p:spacer width="10" height="10" />
+				<p:spacer width="10" height="10" />
+			
+				<h:outputLabel value="ID: " />
+				<p:inputText id="id" required="true"
+					requiredMessage="Campo Requerido">
+				</p:inputText>
+				<p:message for="id" />
+				<h:outputLabel value="Identificación: " />
+				<p:inputText id="login" required="true"
+					requiredMessage="Campo Requerido">
+				</p:inputText>
+				<p:message for="login" />
+				
+				<h:outputLabel value="Nombre y Apellido: " />
+				<p:inputText id="Apellidos-Nombres" required="true"
+					requiredMessage="Campo Requerido">
+				</p:inputText>
+				<p:message for="Apellidos-Nombres" />
+
+				<h:outputLabel value="Telefono: " />
+				<p:inputText id="telefono" required="true"
+					requiredMessage="Campo Requerido">
+				</p:inputText>
+				<p:message for="Correo" />
+				<h:outputLabel value="Correo: " />
+				<p:inputText id="Correo" required="true"
+					requiredMessage="Campo Requerido">
+				</p:inputText>
+				<p:spacer width="10" height="10" />
+				
+				<h:outputLabel value="Inscrito al Servicio de Nutrición:  " />
+				 <p:selectBooleanButton id="value2" value="#{selectBooleanView.value2}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:100px">
+            <p:ajax update="msgs" listener="#{selectBooleanView.addMessage}" />
+        </p:selectBooleanButton>
+			</h:panelGrid>
+
+			<p:commandButton value="Modificar Paciente" id="ajax3" update="growl"
+				actionListener="#{buttonView.buttonAction}"
+				styleClass="ui-priority-primary" />
+
+
+
+			<p:growl id="growl" life="2000" />
+			<p:growl id="msgs" />
+		</p:panel>
+
+	</h:form>
+</h:body>
+</html>

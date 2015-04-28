@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>NUEVO USUARIO</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>AGREGAR USUARIO</h1>
+				</center>
+			</p:layoutUnit>
+
+
+
+			<p:layoutUnit position="west" size="232" header="ADMINISTRADOR"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="USUARIOS">
+						<p:menuitem value="Agregar" url="UsuarioNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="UsuarioModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="UsuarioDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="UsuarioShowForm.xhtml" />
+
+
+					</p:submenu>
+					<p:submenu label="ENFERMEDADES">
+						<p:menuitem value="Agregar"
+							url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="EnfermedadShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="TRATAMIENTOS">
+						<p:menuitem value="Agregar"
+							url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="TratamientoShowForm.xhtml" />
+
+
+					</p:submenu>
+
+					<p:submenu label="DIETAS">
+						<p:menuitem value="Agregar" url="DietaNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="DietaModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="DietaDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="DietaShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form>
+					<p:panel styleClass="session" header="Nuevo Usuario">
+						<h:panelGrid columns="3">
+							<h:outputLabel value="Nombre de Usuario: " />
+							<p:inputText id="login" required="true"
+								requiredMessage="Campo Requerido" value="#{usuarioMB.login}">
+							</p:inputText>
+							<p:message for="login" />
+							<h:outputLabel value="Contraseña" />
+							<p:password id="password" required="true"
+								requiredMessage="Campo Requerido" value="#{usuarioMB.password}" />
+							<p:message for="password" />
+							<h:outputLabel value="Nombre y Apellido: " />
+							<p:inputText id="Apellidos-Nombres" required="true"
+								requiredMessage="Campo Requerido"
+								value="#{usuarioMB.apellidosNombres}">
+							</p:inputText>
+							<p:message for="Apellidos-Nombres" />
+
+							<h:outputLabel value="Tipo de Usuario: " />
+							<h:panelGrid columns="2" style="margin-bottom:10px"
+								cellpadding="12">
+								<p:outputLabel for="console" />
+								<p:selectOneRadio id="console" value="#{usuarioMB.tipoUsuario}">
+									<f:selectItem itemLabel="Usuario" itemValue="U" />
+									<f:selectItem itemLabel="Administrador" itemValue="A" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+							<p:message for="Correo" />
+							<h:outputLabel value="Correo: " />
+							<p:inputText id="Correo" required="true"
+								requiredMessage="Campo Requerido" value="#{usuarioMB.correo}">
+							</p:inputText>
+							<p:spacer width="10" height="10" />
+						</h:panelGrid>
+
+						<p:commandButton value="Crear Usuario" id="addUsuario"
+							update="growl" actionListener="#{usuarioMB.addUsuario()}"
+							ajax="false" styleClass="ui-priority-primary" />
+						<p:commandButton id="reset" value="Borrar"
+							action="#{usuarioMB.reset}" ajax="false" />
+
+
+
+						<p:growl id="growl" life="2000" />
+					</p:panel>
+
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

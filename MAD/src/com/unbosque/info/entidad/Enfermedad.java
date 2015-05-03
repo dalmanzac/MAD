@@ -4,14 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 /**
  * The persistent class for the enfermedad database table.
  * 
  */
 @Entity
 @Table(name = "enfermedad")
-@NamedQuery(name="Enfermedad.findAll", query="SELECT e FROM Enfermedad e")
+@NamedQuery(name = "Enfermedad.findAll", query = "SELECT e FROM Enfermedad e")
 public class Enfermedad implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,13 +18,13 @@ public class Enfermedad implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Integer id;
-	
+
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
 	@Column(name = "estado", nullable = false)
 	private String estado;
-	
+
 	@Column(name = "nombre", nullable = false)
 	private String nombre;
 
@@ -64,6 +63,11 @@ public class Enfermedad implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Enfermedad [id=" + id + ", descripcion=" + descripcion
+				+ ", estado=" + estado + ", nombre=" + nombre + "]";
+	}
 
 }

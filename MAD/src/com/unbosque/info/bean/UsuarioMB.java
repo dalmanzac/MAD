@@ -41,6 +41,7 @@ public class UsuarioMB implements Serializable {
 	private String login;
 	private String password;
 	private String tipoUsuario;
+	private Usuario usuario;
 
 	public void addUsuario() {
 		try {
@@ -84,6 +85,7 @@ public class UsuarioMB implements Serializable {
 
 	// Aqui colocamos el de borrado
 	public String deleteUsuario(Usuario usuario) {
+		System.out.println(usuario.getApellidosNombres());
 		try {
 
 			usuario.setEstado("I");
@@ -96,22 +98,50 @@ public class UsuarioMB implements Serializable {
 
 	}
 
-	public String modUsuario(Usuario usuario){
-			
-		try {
-				
-		usuario.setCorreo(getCorreo());
-		usuario.setEstado("A");
-		usuario.setApellidosNombres(getApellidosNombres());
-		usuario.setLogin(getLogin());
-		usuario.setPassword(getPassword());
-		usuario.setTipoUsuario(getTipoUsuario());
+	public void modUsuario() {
+		
+		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
-		getUsuarioService().updateUsuario(usuario);
+		try {
+			if(apellidosNombres.equals("")){
+				usuario.setApellidosNombres(usuario.getApellidosNombres());
+			} else {
+				usuario.setApellidosNombres(apellidosNombres);
+			}
+			
+			if(login.equals("")){
+			usuario.setLogin(usuario.getLogin());
+			} else {
+				usuario.setLogin(login);
+			}
+			
+			if(correo.equals("")){
+				usuario.setCorreo(usuario.getCorreo());
+				} else {
+					usuario.setCorreo(correo);
+				}
+			
+			if(password.equals("")){
+				usuario.setPassword(usuario.getPassword());
+				} else {
+					usuario.setPassword(password);
+				}
+			
+			if(tipoUsuario.equals("")){
+				usuario.setTipoUsuario(usuario.getTipoUsuario());
+				} else {
+					usuario.setTipoUsuario(tipoUsuario);
+				}
+			
+				usuario.setEstado("A");
+			
+				reset();
+			getUsuarioService().updateUsuario(usuario);
+			
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
-		return null;
+		
 	}
 
 	public void loginId() {
@@ -144,8 +174,16 @@ public class UsuarioMB implements Serializable {
 		this.setTipoUsuario("");
 
 	}
-
+	
 	public List<Usuario> getUsuariosList() {
+		usuarioList = new ArrayList<Usuario>();
+
+		usuarioList.addAll(getUsuarioService().getUsuarios());
+
+		return usuarioList;
+	}
+	
+	public List<Usuario> getUsuarios() {
 		usuarioList = new ArrayList<Usuario>();
 
 		usuarioList.addAll(getUsuarioService().getUsuarios());
@@ -223,6 +261,15 @@ public class UsuarioMB implements Serializable {
 
 	public String getLogin() {
 		return login;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		System.out.println(usuario.toString());
+		this.usuario = usuario;
 	}
 
 	public void setLogin(String login) {

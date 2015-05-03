@@ -71,141 +71,73 @@
 				<ui:insert name="pf"></ui:insert>
 				<h:form id="formTabla">
 					<p:panel styleClass="session" header="Modificar Usuario">
-						<p:dataTable id="usuario" var="_usuario"
+						<p:dataTable id="usuario" var="usuariom"
 							value="#{usuarioMB.usuariosList}" style="width: 100%"
 							emptyMessage="No hay registros disponibles" paginator="true"
 							rows="10" paginatorPosition="top"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15">
 
-							<p:column filterBy="#{_usuario.id}" headerText="ID Usuario"
+							<p:column filterBy="#{usuariom.id}" headerText="ID Usuario"
 								filterMatchMode="contains">
-								<h:outputText value="#{_usuario.id}" />
+								<h:outputText value="#{usuariom.id}" />
 							</p:column>
-							<p:column filterBy="#{_usuario.login}"
-								headerText="Nombre Usuario" filterMatchMode="contains">
-								<h:outputText value="#{_usuario.login}" />
+							<p:column filterBy="#{usuariom.login}" headerText="Nombre Usuario"
+								filterMatchMode="contains">
+								<h:outputText value="#{usuariom.login}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Password" />
 								</f:facet>
-								<h:outputText value="#{_usuario.password}" />
+								<h:outputText value="#{usuariom.password}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Nombre y Apellido" />
 								</f:facet>
-								<h:outputText value="#{_usuario.apellidosNombres}" />
+								<h:outputText value="#{usuariom.apellidosNombres}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Fecha Creación" />
 								</f:facet>
-								<h:outputText value="#{_usuario.fechaCreacion}" />
+								<h:outputText value="#{usuariom.fechaCreacion}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Estado" />
 								</f:facet>
-								<h:outputText value="#{_usuario.estado}" />
+								<h:outputText value="#{usuariom.estado}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Correo" />
 								</f:facet>
-								<h:outputText value="#{_usuario.correo}" />
+								<h:outputText value="#{usuariom.correo}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Fecha Clave" />
 								</f:facet>
-								<h:outputText value="#{_usuario.fechaClave}" />
+								<h:outputText value="#{usuariom.fechaClave}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Tipo de Usuario" />
 								</f:facet>
-								<h:outputText value="#{_usuario.tipoUsuario}" />
+								<h:outputText value="#{usuariom.tipoUsuario}" />
 							</p:column>
 							<p:column headerText="Modificar">
 
 
-								<p:commandButton id="movieBtn" icon="ui-icon-document"
-									type="button" />
-								<p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade"
-									dynamic="true" style="width:1000px">
-									<h:form>
-										<p:panel styleClass="session" header="Modificar Usuario">
-											<h:panelGrid columns="2">
+								<p:commandButton onclick="PF('dlg2').show();"
+									actionListener="#{usuarioMB.setUsuario(usuariom)}"
+									icon="ui-icon-document" update="usuario">
 
-
-												<h:outputLabel value="Nombre de Usuario: " />
-												<p:inputText id="login" required="true" 
-													value="#{_usuario.login}" requiredMessage="Campo Requerido">
-												</p:inputText>
-
-
-												<h:outputLabel value="Contraseña" />
-												<p:password id="password" required="true"
-													value="#{_usuario.password}"
-													requiredMessage="Campo Requerido" />
-
-												<h:outputLabel value="Nombre y Apellido: " />
-												<p:inputText id="Apellidos-Nombres" required="true"
-													value="#{_usuario.apellidosNombres}"
-													requiredMessage="Campo Requerido">
-												</p:inputText>
-
-
-												<h:outputLabel value="Tipo de Usuario: " />
-												<h:panelGrid columns="1" style="margin-bottom:1px"
-													cellpadding="0">
-													<p:outputLabel for="console" />
-													<p:selectOneRadio id="console" var="_usuario"
-														value="#{_usuario.tipoUsuario}">
-														<f:selectItem itemLabel="Usuario" itemValue="U" />
-														<f:selectItem itemLabel="Admin" itemValue="A" />
-													</p:selectOneRadio>
-												</h:panelGrid>
-
-
-
-												<h:outputLabel value="Correo: " />
-												<p:inputText id="Correo" required="true"
-													value="#{_usuario.correo}"
-													requiredMessage="Campo Requerido">
-												</p:inputText>
-
-
-											</h:panelGrid>
-											<p:spacer width="10" height="50" />
-											<p:commandButton value="Modificar Usuario" id="modUsuario"
-												update="growl"
-												actionListener="#{usuarioMB.modUsuario(_usuario)}"
-												ajax="false" styleClass="ui-priority-primary" />
-
-
-
-
-											<p:growl id="growl" life="2000" />
-											<p:message for="login" />
-											<p:message for="password" />
-											<p:message for="Apellidos-Nombres" />
-											<p:message for="Correo" />
-										</p:panel>
-
-									</h:form>
-								</p:overlayPanel>
-
-
-
-
-
-
-
-
+								</p:commandButton>
 							</p:column>
+
 
 
 						</p:dataTable>
@@ -213,10 +145,67 @@
 					</p:panel>
 				</h:form>
 			</p:layoutUnit>
-
 		</p:layout>
 
-	</h:body>
+		<p:dialog header="MODIFICAR USUARIO" widgetVar="dlg2" modal="false"
+			height="250" width="700">
 
+			<h:form id="form">
+				<h:panelGrid columns="2">
+
+
+					<h:outputLabel value="Nombre de Usuario: " />
+					<p:inputText id="login" required="false" value="#{usuarioMB.login}">
+					</p:inputText>
+
+
+					<h:outputLabel value="Contraseña" />
+					<p:password id="password" required="true"
+						value="#{usuarioMB.password}" requiredMessage="Campo Requerido" />
+
+					<h:outputLabel value="Nombre y Apellido: " />
+					<p:inputText id="Apellidos-Nombres" required="true"
+						value="#{usuarioMB.apellidosNombres}"
+						requiredMessage="Campo Requerido">
+					</p:inputText>
+
+
+					<h:outputLabel value="Tipo de Usuario: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="console" />
+						<p:selectOneRadio id="console" var="usuario"
+							value="#{usuarioMB.tipoUsuario}">
+							<f:selectItem itemLabel="Usuario" itemValue="U" />
+							<f:selectItem itemLabel="Admin" itemValue="A" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+
+
+
+					<h:outputLabel value="Correo: " />
+					<p:inputText id="Correo" required="true"
+						value="#{usuarioMB.correo}" requiredMessage="Campo Requerido">
+					</p:inputText>
+
+					<p:commandButton value="Modificar Usuario" id="modUsuario"
+						update="growl" actionListener="#{usuarioMB.modUsuario()}"
+						ajax="false" styleClass="ui-priority-primary" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+	</h:body>
 </f:view>
+
+
+
 </html>
+
+
+
+
+
+
+

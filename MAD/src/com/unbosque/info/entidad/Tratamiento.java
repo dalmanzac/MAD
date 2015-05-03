@@ -64,4 +64,10 @@ public class Tratamiento implements Serializable {
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "Tratamiento [id=" + id + ", descripcion=" + descripcion
+				+ ", estado=" + estado + ", nombre=" + nombre + "]";
+	}
+
 }

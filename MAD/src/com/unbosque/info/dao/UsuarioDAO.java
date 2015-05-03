@@ -56,6 +56,7 @@ public class UsuarioDAO {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Usuario").list();
 		return list;
+		
 	}
 
 }

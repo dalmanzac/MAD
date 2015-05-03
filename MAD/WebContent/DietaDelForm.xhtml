@@ -72,14 +72,13 @@
 
 				<h:form id="formTabla">
 					<p:panel styleClass="session" header="Eliminar Dieta">
-						<p:dataTable id="dieta" var="_dieta"
-							value="#{dietaMB.dietasList}" style="width: 100%"
-							emptyMessage="No hay registros disponibles" paginator="true"
-							rows="10" paginatorPosition="top"
+						<p:dataTable id="dieta" var="_dieta" value="#{dietaMB.dietasList}"
+							style="width: 100%" emptyMessage="No hay registros disponibles"
+							paginator="true" rows="10" paginatorPosition="top"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15">
-							<p:column filterBy="#{_dieta.id}"
-								headerText="ID Dieta" filterMatchMode="contains">
+							<p:column filterBy="#{_dieta.id}" headerText="ID Dieta"
+								filterMatchMode="contains">
 								<h:outputText value="#{_dieta.id}" />
 							</p:column>
 							<p:column>
@@ -102,10 +101,11 @@
 							<p:column headerText="Eliminar">
 
 								<p:commandButton icon="ui-icon-close"
-									action="#{dietaMB.deleteDieta(_dieta)}">
+									action="#{dietaMB.deleteDieta(_dieta)}" update="dieta">
 									<p:confirm header="AVISO!"
 										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" />
 								</p:commandButton>
+
 								<p:confirmDialog global="true" showEffect="fade"
 									hideEffect="explode">
 									<p:commandButton value="Si" type="button"
@@ -113,6 +113,7 @@
 									<p:commandButton value="No" type="button"
 										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 								</p:confirmDialog>
+
 
 							</p:column>
 

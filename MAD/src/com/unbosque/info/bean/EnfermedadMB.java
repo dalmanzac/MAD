@@ -36,7 +36,8 @@ public class EnfermedadMB implements Serializable {
 	private String nombre;
 	private String estado;
 	private String descripcion;
-
+	private Enfermedad enfermedad;
+	
 	public void addEnfermedad() {
 		try {
 
@@ -62,18 +63,32 @@ public class EnfermedadMB implements Serializable {
 
 	}
 
-	public String modEnfermedad(Enfermedad enfermedad) {
-		try {
-			enfermedad.setDescripcion(getDescripcion());
+	public void modEnfermedad() {
 
-			getEnfermedadService().updateEnfermedad(enfermedad);
-		} catch (DataAccessException e) {
-			e.printStackTrace();
+		System.out.println(enfermedad.getNombre());
+			try {
+				if (nombre.equals("")) {
+					enfermedad.setNombre(enfermedad.getNombre());
+				} else {
+					enfermedad.setNombre(nombre);
+				}
+
+					enfermedad.setEstado("A");
+				
+				if (descripcion.equals("")) {
+					enfermedad.setDescripcion(enfermedad.getDescripcion());
+				} else {
+					enfermedad.setDescripcion(descripcion);
+				}
+
+				reset();
+				getEnfermedadService().updateEnfermedad(enfermedad);
+
+			} catch (DataAccessException e) {
+				e.printStackTrace();
+			}
+
 		}
-
-		return null;
-
-	}
 
 	public String deleteEnfermedad(Enfermedad enfermedad) {
 		try {
@@ -145,6 +160,11 @@ public class EnfermedadMB implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public void setEnfermedad(Enfermedad enfermedad) {
+		System.out.println(enfermedad.toString());
+		this.enfermedad = enfermedad;
 	}
 
 }

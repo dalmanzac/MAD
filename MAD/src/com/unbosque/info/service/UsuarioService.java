@@ -36,6 +36,7 @@ public class UsuarioService {
 		getUsuarioDAO().updateUsuario(usuario);
 	}
 
+	
 	public Usuario getUsuarioById(int id) {
 		return getUsuarioDAO().getUsuarioById(id);
 	}
@@ -45,14 +46,17 @@ public class UsuarioService {
 		return getUsuarioDAO().getUsuarioByUser(usuario);
 	}
 
+	@Transactional(readOnly = false)
 	public List<Usuario> getUsuarios() {
 		return getUsuarioDAO().getUsuarios();
 	}
 
+	@Transactional(readOnly = false)
 	public UsuarioDAO getUsuarioDAO() {
 		return usuarioDAO;
 	}
 
+	@Transactional(readOnly = false)
 	public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
 		this.usuarioDAO = usuarioDAO;
 	}

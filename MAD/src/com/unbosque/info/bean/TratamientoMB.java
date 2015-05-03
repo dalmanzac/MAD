@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.service.TratamientoService;
 
@@ -35,6 +36,7 @@ public class TratamientoMB implements Serializable {
 	private String nombre;
 	private String estado;
 	private String descripcion;
+	private Tratamiento tratamiento;
 
 	public void addTratamiento() {
 		try {
@@ -60,6 +62,34 @@ public class TratamientoMB implements Serializable {
 		}
 
 	}
+	
+	public void modTratamiento() {
+
+		System.out.println(tratamiento.getNombre());
+			try {
+				if (nombre.equals("")) {
+					tratamiento.setNombre(tratamiento.getNombre());
+				} else {
+					tratamiento.setNombre(nombre);
+				}
+
+					tratamiento.setEstado("A");
+				
+				if (descripcion.equals("")) {
+					tratamiento.setDescripcion(tratamiento.getDescripcion());
+				} else {
+					tratamiento.setDescripcion(descripcion);
+				}
+
+				reset();
+				getTratamientoService().updateTratamiento(tratamiento);
+
+			} catch (DataAccessException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 
 	// Aqui colocamos el de borrado
 	public String deleteTratamiento(Tratamiento tratamiento) {
@@ -145,6 +175,11 @@ public class TratamientoMB implements Serializable {
 
 	public void setRegistroSeleccionado(TratamientoMB registroSeleccionado) {
 		this.registroSeleccionado = registroSeleccionado;
+	}
+	
+	public void setTratamiento(Tratamiento tratamiento) {
+		System.out.println(tratamiento.toString());
+		this.tratamiento = tratamiento;
 	}
 
 }

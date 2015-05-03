@@ -1,4 +1,5 @@
 package com.unbosque.info.bean;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Dieta;
-
+import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.DietaService;
 
 @ManagedBean(name = "dietaMB")
@@ -34,6 +35,7 @@ public class DietaMB implements Serializable {
 	private String nombre;
 	private String estado;
 	private String descripcion;
+	private Dieta dieta;
 
 	public void addDieta() {
 		try {
@@ -47,28 +49,43 @@ public class DietaMB implements Serializable {
 			dieta.setEstado("A");
 			dieta.setDescripcion(descripcion);
 			dieta.setNombre(nombre);
-			
+
 			getDietaService().addDieta(dieta);
 			reset();
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
 					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);	
+			FacesContext.getCurrentInstance().addMessage(null, message);
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
 
 	}
-	public String modDieta(Dieta dieta) {
+
+	public void modDieta() {
+
+	System.out.println(dieta.getNombre());
 		try {
-			dieta.setDescripcion(getDescripcion());
+			if (nombre.equals("")) {
+				dieta.setNombre(dieta.getNombre());
+			} else {
+				dieta.setNombre(nombre);
+			}
+
+				dieta.setEstado("A");
 			
+			if (descripcion.equals("")) {
+				dieta.setDescripcion(dieta.getDescripcion());
+			} else {
+				dieta.setDescripcion(descripcion);
+			}
+
+			reset();
 			getDietaService().updateDieta(dieta);
+
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
-
-		return null;
 
 	}
 
@@ -89,7 +106,7 @@ public class DietaMB implements Serializable {
 		this.setDescripcion("");
 		this.setEstado("");
 		this.setNombre("");
-		
+
 	}
 
 	public List<Dieta> getDietasList() {
@@ -113,7 +130,7 @@ public class DietaMB implements Serializable {
 	public void setDietaList(List<Dieta> dietaList) {
 		this.dietaList = dietaList;
 	}
-	
+
 	public String getDescripcion() {
 		return this.descripcion;
 	}
@@ -137,14 +154,18 @@ public class DietaMB implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
+	public void setDieta(Dieta dieta) {
+		System.out.println(dieta.toString());
+		this.dieta = dieta;
+	}
+
 }
-
-
-

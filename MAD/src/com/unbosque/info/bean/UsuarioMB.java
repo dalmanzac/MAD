@@ -1,5 +1,6 @@
 package com.unbosque.info.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -11,11 +12,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.mail.EmailException;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.UsuarioService;
+import com.unbosque.info.util.EmailUtils;
+import com.unbosque.info.util.IndexController;
+import com.unbosque.info.entidad.Mensagem;
 
 @ManagedBean(name = "usuarioMB")
 @SessionScoped
@@ -43,15 +48,15 @@ public class UsuarioMB implements Serializable {
 	private String tipoUsuario;
 	private Usuario usuario;
 
-	public void addUsuario() {
+	public void addUsuario() throws EmailException {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			FacesMessage message = null;
 
 			java.util.Date now = new java.util.Date();
 			fechaCreacion = new java.sql.Timestamp(now.getTime());
 			fechaClave = new java.sql.Timestamp(now.getTime());
+
 			Usuario usuario = new Usuario();
 			// OJO , faltan validaciones
 			// if (getLadoUno()==getLadoDos() && getLadoUno()==getLadoTres()){
@@ -70,12 +75,15 @@ public class UsuarioMB implements Serializable {
 			usuario.setLogin(login);
 			usuario.setPassword(password);
 			usuario.setTipoUsuario(tipoUsuario);
-
+			setEmail(login, password, apellidosNombres, fechaCreacion, correo,
+					tipoUsuario);
 			getUsuarioService().addUsuario(usuario);
+
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Agregado Exitosamente", "Agregado Exitosamente"));
 			reset();
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -99,49 +107,49 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public void modUsuario() {
-		
+
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
 		try {
-			if(apellidosNombres.equals("")){
+			if (apellidosNombres.equals("")) {
 				usuario.setApellidosNombres(usuario.getApellidosNombres());
 			} else {
 				usuario.setApellidosNombres(apellidosNombres);
 			}
-			
-			if(login.equals("")){
-			usuario.setLogin(usuario.getLogin());
+
+			if (login.equals("")) {
+				usuario.setLogin(usuario.getLogin());
 			} else {
 				usuario.setLogin(login);
 			}
-			
-			if(correo.equals("")){
+
+			if (correo.equals("")) {
 				usuario.setCorreo(usuario.getCorreo());
-				} else {
-					usuario.setCorreo(correo);
-				}
-			
-			if(password.equals("")){
+			} else {
+				usuario.setCorreo(correo);
+			}
+
+			if (password.equals("")) {
 				usuario.setPassword(usuario.getPassword());
-				} else {
-					usuario.setPassword(password);
-				}
-			
-			if(tipoUsuario.equals("")){
+			} else {
+				usuario.setPassword(password);
+			}
+
+			if (tipoUsuario.equals("")) {
 				usuario.setTipoUsuario(usuario.getTipoUsuario());
-				} else {
-					usuario.setTipoUsuario(tipoUsuario);
-				}
-			
-				usuario.setEstado("A");
-			
-				reset();
+			} else {
+				usuario.setTipoUsuario(tipoUsuario);
+			}
+
+			usuario.setEstado("A");
+
+			reset();
 			getUsuarioService().updateUsuario(usuario);
-			
+
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void loginId() {
@@ -152,14 +160,36 @@ public class UsuarioMB implements Serializable {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
 			if (temp.getPassword().equals(password)) {
 				if (temp.getEstado().equals("A")) {
+					if (temp.getTipoUsuario().equals("A")) {
 
-					FacesContext.getCurrentInstance().getExternalContext()
-							.redirect("UsuarioNewForm.xhtml");
+						FacesContext.getCurrentInstance().getExternalContext()
+								.redirect("UsuarioNewForm.xhtml");
+					} else if (temp.getTipoUsuario().equals("U")) {
+
+						FacesContext.getCurrentInstance().getExternalContext()
+								.redirect("PacienteNewForm.xhtml");
+
+					}
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Usuario No Activo", "Usuario No Activo"));
 				}
+
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Revise Clave", "Revise Clave"));
 			}
 
 		} catch (Exception e) {
 
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, "No existe",
+							"No existe"));
 		}
 
 	}
@@ -167,14 +197,70 @@ public class UsuarioMB implements Serializable {
 	public void reset() {
 		this.setId(0);
 		this.setCorreo("");
-		this.setEstado("");
+		this.setEstado("A");
 		this.setApellidosNombres("");
 		this.setLogin("");
 		this.setPassword("");
 		this.setTipoUsuario("");
 
 	}
-	
+
+	public void resetButton() {
+		this.setId(0);
+		this.setCorreo("");
+		this.setEstado("A");
+		this.setApellidosNombres("");
+		this.setLogin("");
+		this.setPassword("");
+		this.setTipoUsuario("");
+
+		try {
+			FacesContext.getCurrentInstance().getExternalContext()
+					.redirect("UsuarioNewForm.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void setEmail(String usuario, String password,
+			String apellidosNombres, java.util.Date fechaCreacion,
+			String correo, String tipoUsuario) throws EmailException {
+		if (tipoUsuario.equals("U")) {
+			tipoUsuario = "Nutricionista";
+		} else if (tipoUsuario.equals("A")) {
+			tipoUsuario = "Administrador";
+		}
+		Mensagem mail = new Mensagem();
+		mail.setDestino(correo);
+		String text = apellidosNombres
+				+ "\n"
+				+ "\n"
+				+ "\n Bienvenido. Estos son sus datos de registro: "
+				+ "\n"
+				+ "\n"
+				+ tipoUsuario
+				+ "\n"
+				+ "\n"
+				+ "Usuario: "
+				+ usuario
+				+ "\n Contraseña: "
+				+ password
+				+ "\n  Fecha: "
+				+ fechaCreacion
+				+ "\n"
+				+ "\n Gracias! "
+				+ "\n"
+				+ "\n"
+				+ "Para ingresar a la Pagína por favor copie el siguiente enlace: "
+				+ "\n" + "\n" + "http://localhost:8080/MAD/login.xhtml ";
+		mail.setMensagem(text);
+		mail.setTitulo("Sistema de Gestión de Dietas");
+		EmailUtils enviar = new EmailUtils();
+		enviar.enviaEmail(mail);
+	}
+
 	public List<Usuario> getUsuariosList() {
 		usuarioList = new ArrayList<Usuario>();
 
@@ -182,7 +268,7 @@ public class UsuarioMB implements Serializable {
 
 		return usuarioList;
 	}
-	
+
 	public List<Usuario> getUsuarios() {
 		usuarioList = new ArrayList<Usuario>();
 
@@ -262,7 +348,7 @@ public class UsuarioMB implements Serializable {
 	public String getLogin() {
 		return login;
 	}
-	
+
 	public Usuario getUsuario() {
 		return usuario;
 	}

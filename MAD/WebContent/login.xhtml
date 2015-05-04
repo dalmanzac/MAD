@@ -16,28 +16,33 @@
 		<center>LOGIN DE USUARIOS</center>
 	</h1>
 	<h:form>
+	
 		<p:panel styleClass="session" header="Iniciar">
-			<h:panelGrid columns="3">
+			<h:panelGrid columns="2">
 				<h:outputLabel value="Usuario:" />
-				<p:spacer width="10" height="10" />
+				
 				<p:inputText  id="user" required="true" value="#{usuarioMB.login}"
-					requiredMessage="Campo Requerido">
+					requiredMessage="Ingrese Usuario Correctamente." >
 				</p:inputText>
+				
 
 				<h:outputLabel value="Password:" />
+				
+				<p:password  id="nonFeedback" required="true" value="#{usuarioMB.password}"
+					requiredMessage="Ingrese Contraseña Correctamente." />
+					
 				<p:spacer width="10" height="10" />
-				<p:password  id="nonFeedback" value="#{usuarioMB.password}"
-					requiredMessage="Campo Requerido" />
-				<p:message for="nonFeedback" />
 				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-				<p:commandButton value="Ingresar" id="ajax3" update="growl"
-					actionListener="#{usuarioMB.loginId()}" ajax="false"
-					styleClass="ui-priority-primary" />
-
-
-				<p:message for="user" />
 				<p:growl id="growl" life="2000" />
+				
+				<p:commandButton value="Ingresar" id="ajax3" update="growl"
+					actionListener="#{usuarioMB.loginId()}" styleClass="ui-priority-primary" />
+					
+					<p:message for="user" update="login" />
+					<p:message for="nonFeedback" />
+					
+				
+				
 			</h:panelGrid>
 
 		</p:panel>

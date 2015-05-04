@@ -20,6 +20,7 @@ import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.UsuarioService;
 import com.unbosque.info.util.EmailUtils;
 import com.unbosque.info.util.IndexController;
+import com.unbosque.info.util.Validacion;
 import com.unbosque.info.entidad.Mensagem;
 
 @ManagedBean(name = "usuarioMB")
@@ -56,38 +57,96 @@ public class UsuarioMB implements Serializable {
 			java.util.Date now = new java.util.Date();
 			fechaCreacion = new java.sql.Timestamp(now.getTime());
 			fechaClave = new java.sql.Timestamp(now.getTime());
+			if (!existeLogin(login)) {
+				if (Validacion.validarDatoAlfabetico(login)) {
+					if (Validacion.validarNombreApellido(apellidosNombres)) {
+						if (Validacion.validarEmail(correo)) {
+							if (Validacion.validarContraseña(password)) {
+								Usuario usuario = new Usuario();
 
-			Usuario usuario = new Usuario();
-			// OJO , faltan validaciones
-			// if (getLadoUno()==getLadoDos() && getLadoUno()==getLadoTres()){
-			// triangulo.setResultado("El triangulo es equilatero");
-			//
-			// }else{
-			// triangulo.setResultado("Verificar los otros casos");
-			// }
+								usuario.setId(id);
+								usuario.setCorreo(correo);
+								usuario.setEstado("A");
+								usuario.setFechaClave(fechaClave);
+								usuario.setApellidosNombres(apellidosNombres);
+								usuario.setFechaCreacion(fechaCreacion);
+								usuario.setLogin(login);
+								usuario.setPassword(password);
+								usuario.setTipoUsuario(tipoUsuario);
+								setEmail(login, password, apellidosNombres,
+										fechaCreacion, correo, tipoUsuario);
+								getUsuarioService().addUsuario(usuario);
 
-			usuario.setId(id);
-			usuario.setCorreo(correo);
-			usuario.setEstado("A");
-			usuario.setFechaClave(fechaClave);
-			usuario.setApellidosNombres(apellidosNombres);
-			usuario.setFechaCreacion(fechaCreacion);
-			usuario.setLogin(login);
-			usuario.setPassword(password);
-			usuario.setTipoUsuario(tipoUsuario);
-			setEmail(login, password, apellidosNombres, fechaCreacion, correo,
-					tipoUsuario);
-			getUsuarioService().addUsuario(usuario);
+								FacesContext.getCurrentInstance().addMessage(
+										null,
+										new FacesMessage(
+												FacesMessage.SEVERITY_INFO,
+												"Agregado Exitosamente",
+												"Agregado Exitosamente"));
+								reset();
 
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Agregado Exitosamente", "Agregado Exitosamente"));
-			reset();
+							} else {
+								FacesContext
+										.getCurrentInstance()
+										.addMessage(
+												null,
+												new FacesMessage(
+														FacesMessage.SEVERITY_WARN,
+														"Contraseña Incorrecta. (Mayuscula, Minuscula, Numero por lo Menos)",
+														"Contraseña Incorrecta. (Mayuscula, Minuscula, Numero por lo Menos)"));
+							}
+
+						} else {
+							FacesContext.getCurrentInstance().addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Correo Incorrecto",
+											"Correo Incorrecto."));
+						}
+					} else {
+						FacesContext
+								.getCurrentInstance()
+								.addMessage(
+										null,
+										new FacesMessage(
+												FacesMessage.SEVERITY_WARN,
+												"Ingrese Apellido y Nombre Correctamente.",
+												"Ingrese Apellido y Nombre Correctamente."));
+					}
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Login Incorrecto, Solo Letras",
+									"Login Incorrecto, Solo Letras"));
+				}
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Usuario ya existe!", "Usuario ya existe!"));
+			}
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	public boolean existeLogin(String login) {
+
+		try {
+			Usuario temp = getUsuarioService().getUsuarioByUser(login);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
 
 	}
 
@@ -114,7 +173,18 @@ public class UsuarioMB implements Serializable {
 			if (apellidosNombres.equals("")) {
 				usuario.setApellidosNombres(usuario.getApellidosNombres());
 			} else {
-				usuario.setApellidosNombres(apellidosNombres);
+				//if (Validacion.validarNombreApellido(apellidosNombres)) {
+					usuario.setApellidosNombres(apellidosNombres);
+			//	} else {
+//					FacesContext
+//							.getCurrentInstance()
+//							.addMessage(
+//									null,
+//									new FacesMessage(
+//											FacesMessage.SEVERITY_WARN,
+//											"Ingrese Apellido y Nombre Correctamente.",
+//											"Ingrese Apellido y Nombre Correctamente."));
+		//		}
 			}
 
 			if (login.equals("")) {

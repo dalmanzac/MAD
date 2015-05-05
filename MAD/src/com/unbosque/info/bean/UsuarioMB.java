@@ -18,6 +18,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.UsuarioService;
+import com.unbosque.info.util.CifrarClave;
 import com.unbosque.info.util.EmailUtils;
 import com.unbosque.info.util.IndexController;
 import com.unbosque.info.util.Validacion;
@@ -48,6 +49,8 @@ public class UsuarioMB implements Serializable {
 	private String password;
 	private String tipoUsuario;
 	private Usuario usuario;
+	private String cla;
+	private String user;
 
 	public void addUsuario() throws EmailException {
 		try {
@@ -71,9 +74,12 @@ public class UsuarioMB implements Serializable {
 								usuario.setApellidosNombres(apellidosNombres);
 								usuario.setFechaCreacion(fechaCreacion);
 								usuario.setLogin(login);
+								CifrarClave pass = new CifrarClave();
+								String sincifrar = password;
+								password = pass.cifradoClave(password);
 								usuario.setPassword(password);
 								usuario.setTipoUsuario(tipoUsuario);
-								setEmail(login, password, apellidosNombres,
+								setEmail(login, sincifrar, apellidosNombres,
 										fechaCreacion, correo, tipoUsuario);
 								getUsuarioService().addUsuario(usuario);
 
@@ -173,18 +179,18 @@ public class UsuarioMB implements Serializable {
 			if (apellidosNombres.equals("")) {
 				usuario.setApellidosNombres(usuario.getApellidosNombres());
 			} else {
-				//if (Validacion.validarNombreApellido(apellidosNombres)) {
-					usuario.setApellidosNombres(apellidosNombres);
-			//	} else {
-//					FacesContext
-//							.getCurrentInstance()
-//							.addMessage(
-//									null,
-//									new FacesMessage(
-//											FacesMessage.SEVERITY_WARN,
-//											"Ingrese Apellido y Nombre Correctamente.",
-//											"Ingrese Apellido y Nombre Correctamente."));
-		//		}
+				// if (Validacion.validarNombreApellido(apellidosNombres)) {
+				usuario.setApellidosNombres(apellidosNombres);
+				// } else {
+				// FacesContext
+				// .getCurrentInstance()
+				// .addMessage(
+				// null,
+				// new FacesMessage(
+				// FacesMessage.SEVERITY_WARN,
+				// "Ingrese Apellido y Nombre Correctamente.",
+				// "Ingrese Apellido y Nombre Correctamente."));
+				// }
 			}
 
 			if (login.equals("")) {
@@ -199,6 +205,8 @@ public class UsuarioMB implements Serializable {
 				usuario.setCorreo(correo);
 			}
 
+			CifrarClave pass = new CifrarClave();
+			password = pass.cifradoClave(password);
 			if (password.equals("")) {
 				usuario.setPassword(usuario.getPassword());
 			} else {
@@ -228,8 +236,13 @@ public class UsuarioMB implements Serializable {
 
 		try {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
-			if (temp.getPassword().equals(password)) {
-				if (temp.getEstado().equals("A")) {
+			
+
+			if (temp.getEstado().equals("A")) {
+				CifrarClave clave = new CifrarClave();
+				cla = clave.cifradoClave(password);
+
+				if (temp.getPassword().equals(cla)) {
 					if (temp.getTipoUsuario().equals("A")) {
 
 						FacesContext.getCurrentInstance().getExternalContext()
@@ -238,20 +251,21 @@ public class UsuarioMB implements Serializable {
 
 						FacesContext.getCurrentInstance().getExternalContext()
 								.redirect("PacienteNewForm.xhtml");
-
 					}
+
 				} else {
 					FacesContext.getCurrentInstance().addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Usuario No Activo", "Usuario No Activo"));
-				}
+									"Revise Clave", "Revise Clave"));
 
+				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage(FacesMessage.SEVERITY_WARN,
-								"Revise Clave", "Revise Clave"));
+								"Usuario No Activo", "Usuario No Activo"));
+
 			}
 
 		} catch (Exception e) {
@@ -446,6 +460,22 @@ public class UsuarioMB implements Serializable {
 
 	public void setTipoUsuario(String tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}
+
+	public String getCla() {
+		return cla;
+	}
+
+	public void setCla(String cla) {
+		this.cla = cla;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public List<Usuario> getUsuarioList() {

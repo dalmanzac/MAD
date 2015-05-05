@@ -175,28 +175,39 @@ public class UsuarioMB implements Serializable {
 
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
-		try {
+		
 			if (apellidosNombres.equals("")) {
 				usuario.setApellidosNombres(usuario.getApellidosNombres());
 			} else {
-				// if (Validacion.validarNombreApellido(apellidosNombres)) {
+				 if (Validacion.validarNombreApellido(apellidosNombres)) {
 				usuario.setApellidosNombres(apellidosNombres);
-				// } else {
-				// FacesContext
-				// .getCurrentInstance()
-				// .addMessage(
-				// null,
-				// new FacesMessage(
-				// FacesMessage.SEVERITY_WARN,
-				// "Ingrese Apellido y Nombre Correctamente.",
-				// "Ingrese Apellido y Nombre Correctamente."));
-				// }
+				 } else {
+				 FacesContext
+				 .getCurrentInstance()
+				 .addMessage(
+				 null,
+				 new FacesMessage(
+				 FacesMessage.SEVERITY_WARN,
+				 "Ingrese Apellido y Nombre Correctamente.",
+				 "Ingrese Apellido y Nombre Correctamente."));
+				 }
 			}
 
 			if (login.equals("")) {
 				usuario.setLogin(usuario.getLogin());
 			} else {
+				if (Validacion.validarDatoAlfabetico(login)) {
 				usuario.setLogin(login);
+				 } else {
+					 FacesContext
+					 .getCurrentInstance()
+					 .addMessage(
+					 null,
+					 new FacesMessage(
+					 FacesMessage.SEVERITY_WARN,
+					 "Ingrese Login Correctamente.",
+					 "Ingrese Login Correctamente."));
+					 }
 			}
 
 			if (correo.equals("")) {
@@ -210,7 +221,18 @@ public class UsuarioMB implements Serializable {
 			if (password.equals("")) {
 				usuario.setPassword(usuario.getPassword());
 			} else {
+				if (Validacion.validarContraseña(password)) {
 				usuario.setPassword(password);
+				 } else {
+					 FacesContext
+					 .getCurrentInstance()
+					 .addMessage(
+					 null,
+					 new FacesMessage(
+					 FacesMessage.SEVERITY_WARN,
+					 "Ingrese Contraseña Correctamente.",
+					 "Ingrese Contraseña Correctamente."));
+					 }
 			}
 
 			if (tipoUsuario.equals("")) {
@@ -221,14 +243,13 @@ public class UsuarioMB implements Serializable {
 
 			usuario.setEstado("A");
 
-			reset();
+			
 			getUsuarioService().updateUsuario(usuario);
+			reset();
 
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		}
+		} 
 
-	}
+	
 
 	public void loginId() {
 
@@ -247,10 +268,12 @@ public class UsuarioMB implements Serializable {
 
 						FacesContext.getCurrentInstance().getExternalContext()
 								.redirect("UsuarioNewForm.xhtml");
+						reset();
 					} else if (temp.getTipoUsuario().equals("U")) {
 
 						FacesContext.getCurrentInstance().getExternalContext()
 								.redirect("PacienteNewForm.xhtml");
+						reset();
 					}
 
 				} else {

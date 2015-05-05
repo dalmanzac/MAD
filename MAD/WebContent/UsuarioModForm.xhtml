@@ -82,8 +82,8 @@
 								filterMatchMode="contains">
 								<h:outputText value="#{usuariom.id}" />
 							</p:column>
-							<p:column filterBy="#{usuariom.login}" headerText="Nombre Usuario"
-								filterMatchMode="contains">
+							<p:column filterBy="#{usuariom.login}"
+								headerText="Nombre Usuario" filterMatchMode="contains">
 								<h:outputText value="#{usuariom.login}" />
 							</p:column>
 							<p:column>
@@ -147,34 +147,37 @@
 			</p:layoutUnit>
 		</p:layout>
 
-		<p:dialog header="MODIFICAR USUARIO" widgetVar="dlg2" modal="false"
+		<p:dialog header="MODIFICAR USUARIO" widgetVar="dlg2" modal="true"
 			height="250" width="700">
 
 			<h:form id="form">
+
 				<h:panelGrid columns="2">
 
-
 					<h:outputLabel value="Nombre de Usuario: " />
-					<p:inputText id="login" required="false" value="#{usuarioMB.login}">
+					<p:inputText id="login" required="false" value="#{usuarioMB.login}"
+						requiredMessage="Ingrese Nombre">
 					</p:inputText>
+
 
 
 					<h:outputLabel value="Contraseña" />
-					<p:password id="password" required="true"
+					<p:password id="password" required="false"
 						value="#{usuarioMB.password}" requiredMessage="Campo Requerido" />
 
 					<h:outputLabel value="Nombre y Apellido: " />
-					<p:inputText id="Apellidos-Nombres" required="true"
+					<p:inputText id="Apellidos-Nombres" required="false"
 						value="#{usuarioMB.apellidosNombres}"
-						requiredMessage="Campo Requerido">
+						requiredMessage="Ingrese Contraseña">
 					</p:inputText>
+
 
 
 					<h:outputLabel value="Tipo de Usuario: " />
 					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
 						<p:outputLabel for="console" />
 						<p:selectOneRadio id="console" var="usuario"
-							value="#{usuarioMB.tipoUsuario}">
+							value="#{usuarioMB.tipoUsuario}" required="false">
 							<f:selectItem itemLabel="Usuario" itemValue="U" />
 							<f:selectItem itemLabel="Admin" itemValue="A" />
 						</p:selectOneRadio>
@@ -183,13 +186,18 @@
 
 
 					<h:outputLabel value="Correo: " />
-					<p:inputText id="Correo" required="true"
-						value="#{usuarioMB.correo}" requiredMessage="Campo Requerido">
+					<p:inputText id="Correo" required="false"
+						value="#{usuarioMB.correo}" requiredMessage="Ingrese Email">
 					</p:inputText>
 
+
+					<p:growl id="growl" life="2000" />
+
+
 					<p:commandButton value="Modificar Usuario" id="modUsuario"
-						update="growl" actionListener="#{usuarioMB.modUsuario()}"
-						ajax="false" styleClass="ui-priority-primary" />
+						update="growl" ajax="false" actionListener="#{usuarioMB.modUsuario()}"
+						styleClass="ui-priority-primary" />
+
 
 				</h:panelGrid>
 

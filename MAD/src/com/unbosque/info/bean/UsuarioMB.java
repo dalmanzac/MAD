@@ -51,6 +51,7 @@ public class UsuarioMB implements Serializable {
 	private Usuario usuario;
 	private String cla;
 	private String user;
+	private int numeroEntrada = 0;
 
 	public void addUsuario() throws EmailException {
 		try {
@@ -172,6 +173,21 @@ public class UsuarioMB implements Serializable {
 							new FacesMessage(FacesMessage.SEVERITY_INFO,
 									"Eliminado Exitosamente",
 									"Eliminado Exitosamente"));
+
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
+
+	public String desactivarUsuario(Usuario usuario) {
+		System.out.println(usuario.getApellidosNombres());
+		try {
+
+			usuario.setEstado("I");
+			getUsuarioService().updateUsuario(usuario);
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -307,36 +323,56 @@ public class UsuarioMB implements Serializable {
 		try {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
 
-			if (temp.getEstado().equals("A")) {
-				CifrarClave clave = new CifrarClave();
-				cla = clave.cifradoClave(password);
+			if (numeroEntrada == 3) {
+				desactivarUsuario(temp);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Usuario No Activo, Cuenta Bloqueada. Usted lleva "
+										+ numeroEntrada + "/3 Intentos.",
+								"Usuario No Activo, Cuenta Bloqueada. Usted lleva "
+										+ numeroEntrada + "/3 Intentos."));
+			} else {
+				if (temp.getEstado().equals("A")) {
+					CifrarClave clave = new CifrarClave();
+					cla = clave.cifradoClave(password);
 
-				if (temp.getPassword().equals(cla)) {
-					if (temp.getTipoUsuario().equals("A")) {
+					if (temp.getPassword().equals(cla)) {
+						if (temp.getTipoUsuario().equals("A")) {
 
-						FacesContext.getCurrentInstance().getExternalContext()
-								.redirect("UsuarioNewForm.xhtml");
-						reset();
-					} else if (temp.getTipoUsuario().equals("U")) {
+							FacesContext.getCurrentInstance()
+									.getExternalContext()
+									.redirect("UsuarioNewForm.xhtml");
 
-						FacesContext.getCurrentInstance().getExternalContext()
-								.redirect("PacienteNewForm.xhtml");
-						reset();
+							reset();
+						} else if (temp.getTipoUsuario().equals("U")) {
+
+							FacesContext.getCurrentInstance()
+									.getExternalContext()
+									.redirect("PacienteNewForm.xhtml");
+							reset();
+						}
+
+					} else {
+						numeroEntrada++;
+						FacesContext.getCurrentInstance().addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_WARN,
+										"Revise Clave. Usted lleva "
+												+ numeroEntrada
+												+ "/3 Intentos.",
+										"Revise Clave. Usted lleva "
+												+ numeroEntrada
+												+ "/3 Intentos."));
+
 					}
-
 				} else {
 					FacesContext.getCurrentInstance().addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Revise Clave", "Revise Clave"));
+									"Usuario No Activo", "Usuario No Activo"));
 
 				}
-			} else {
-				FacesContext.getCurrentInstance().addMessage(
-						null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN,
-								"Usuario No Activo", "Usuario No Activo"));
-
 			}
 
 		} catch (Exception e) {
@@ -357,6 +393,7 @@ public class UsuarioMB implements Serializable {
 		this.setLogin("");
 		this.setPassword("");
 		this.setTipoUsuario("");
+		this.setNumeroEntrada(0);
 
 	}
 
@@ -559,6 +596,14 @@ public class UsuarioMB implements Serializable {
 
 	public void setRegistroSeleccionado(UsuarioMB registroSeleccionado) {
 		this.registroSeleccionado = registroSeleccionado;
+	}
+
+	public int getNumeroEntrada() {
+		return numeroEntrada;
+	}
+
+	public void setNumeroEntrada(int numeroEntrada) {
+		this.numeroEntrada = numeroEntrada;
 	}
 
 }

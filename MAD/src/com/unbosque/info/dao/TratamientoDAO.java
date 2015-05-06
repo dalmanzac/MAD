@@ -2,6 +2,7 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
 
 import org.hibernate.SessionFactory;
@@ -38,6 +39,13 @@ public class TratamientoDAO {
 	public Tratamiento getTratamientoById(int id) {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Tratamiento where id=?").setParameter(0, id)
+				.list();
+		return (Tratamiento) list.get(0);
+	}
+	
+	public Tratamiento getTratamientoByNombre(String nombre) {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Tratamiento where nombre=?").setParameter(0, nombre)
 				.list();
 		return (Tratamiento) list.get(0);
 	}

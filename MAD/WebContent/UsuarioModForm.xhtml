@@ -157,13 +157,16 @@
 					<h:outputLabel value="Nombre de Usuario: " />
 					<p:inputText id="login" required="false" value="#{usuarioMB.login}"
 						requiredMessage="Ingrese Nombre">
+						<f:validateLength minimum="8" maximum="20" />
 					</p:inputText>
 
 
 
 					<h:outputLabel value="Contraseña" />
 					<p:password id="password" required="false"
-						value="#{usuarioMB.password}" requiredMessage="Campo Requerido" />
+						value="#{usuarioMB.password}" requiredMessage="Campo Requerido" >
+						<f:validateLength minimum="8" maximum="20" />
+					</p:password>
 
 					<h:outputLabel value="Nombre y Apellido: " />
 					<p:inputText id="Apellidos-Nombres" required="false"

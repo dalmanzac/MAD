@@ -117,14 +117,14 @@
 			</p:layoutUnit>
 
 		</p:layout>
-		<p:dialog header="MODIFICAR ENFERMEDAD" widgetVar="dlg2" modal="false"
+		<p:dialog header="MODIFICAR ENFERMEDAD" widgetVar="dlg2" modal="true"
 			height="250" width="700">
 			<h:form id="form">
 				<h:panelGrid columns="2">
 
 					<h:outputLabel value="Nombre:" />
 					<p:inputText id="name2" required="false"
-						value="#{enfermedadMB.nombre}">
+						value="#{enfermedadMB.nombre}" requiredMessage="Ingrese Nombre">
 					</p:inputText>
 
 					<h:outputLabel value="Descripción:" />
@@ -134,6 +134,7 @@
 						value="#{enfermedadMB.descripcion}" />
 					<h:outputText id="display" />
 
+					<p:growl id="growl" life="2000" />
 					<p:commandButton value="Modificar" id="modEnfermedad"
 						update="growl" actionListener="#{enfermedadMB.modEnfermedad()}"
 						ajax="false" styleClass="ui-priority-primary" />

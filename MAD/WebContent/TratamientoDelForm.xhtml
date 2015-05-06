@@ -102,7 +102,7 @@
 							<p:column headerText="Eliminar">
 
 								<p:commandButton icon="ui-icon-close"
-									action="#{tratamientoMB.deleteTratamiento(_tratamiento)}">
+									action="#{tratamientoMB.deleteTratamiento(_tratamiento)}" update="tratamiento" >
 									<p:confirm header="AVISO!"
 										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" />
 								</p:commandButton>

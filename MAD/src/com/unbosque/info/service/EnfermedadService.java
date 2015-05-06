@@ -4,8 +4,10 @@ import java.util.List;
 
 
 
+
 import com.unbosque.info.dao.EnfermedadDAO;
 import com.unbosque.info.entidad.Enfermedad;
+import com.unbosque.info.entidad.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,11 @@ public class EnfermedadService {
 
 	public Enfermedad getEnfermdadById(int id) {
 		return getEnfermedadDAO().getEnfermedadById(id);
+	}
+	
+	@Transactional(readOnly = false)
+	public Enfermedad getEnfermedadByNombre(String nombre) {
+		return getEnfermedadDAO().getEnfermedadByNombre(nombre);
 	}
 
 	public List<Enfermedad> getEnfermedades() {

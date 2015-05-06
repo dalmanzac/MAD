@@ -17,6 +17,7 @@ import org.springframework.dao.DataAccessException;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.service.TratamientoService;
+import com.unbosque.info.util.Validacion;
 
 @ManagedBean(name = "tratamientoMB")
 @SessionScoped
@@ -42,8 +43,11 @@ public class TratamientoMB implements Serializable {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			FacesMessage message = null;
+			
+			if (!existeTratamiento(nombre)) {
+				if (Validacion.validarDatoAlfabetico(nombre)) {
 
+		
 			Tratamiento tratamiento = new Tratamiento();
 
 			tratamiento.setId(id);
@@ -52,10 +56,29 @@ public class TratamientoMB implements Serializable {
 			tratamiento.setNombre(nombre);
 
 			getTratamientoService().addTratamiento(tratamiento);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Agregado Exitosamente",
+							"Agregado Exitosamente"));
 			reset();
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+		
+
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Nombre Incorrecto (Sin Espacios).",
+									"Nombre Incorrecto (Sin Espacios)."));
+				}
+
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Tratamiento ya existe!",
+								"Tratamiento ya existe!"));
+			}
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -65,12 +88,34 @@ public class TratamientoMB implements Serializable {
 	
 	public void modTratamiento() {
 
-		System.out.println(tratamiento.getNombre());
-			try {
+		System.out.println(tratamiento.toString());
+			
 				if (nombre.equals("")) {
 					tratamiento.setNombre(tratamiento.getNombre());
 				} else {
+					if (!existeTratamiento(nombre)) {
+						if (Validacion.validarDatoAlfabetico(nombre)) {
 					tratamiento.setNombre(nombre);
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Modificado Exitosamente",
+									"Modificado Exitosamente"));
+						} else {
+							FacesContext.getCurrentInstance().addMessage(
+									null,
+									new FacesMessage(FacesMessage.SEVERITY_WARN,
+											"Nombre Incorrecto (Sin Espacios).",
+											"Nombre Incorrecto (Sin Espacios)."));
+						}
+
+					} else {
+						FacesContext.getCurrentInstance().addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_WARN,
+										"Tratamiento ya existe!",
+										"Tratamiento ya existe!"));
+					}
 				}
 
 					tratamiento.setEstado("A");
@@ -79,16 +124,19 @@ public class TratamientoMB implements Serializable {
 					tratamiento.setDescripcion(tratamiento.getDescripcion());
 				} else {
 					tratamiento.setDescripcion(descripcion);
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Modificado Exitosamente",
+									"Modificado Exitosamente"));
 				}
 
 				reset();
 				getTratamientoService().updateTratamiento(tratamiento);
 
-			} catch (DataAccessException e) {
-				e.printStackTrace();
-			}
+			} 
 
-		}
+		
 
 
 	// Aqui colocamos el de borrado
@@ -97,6 +145,11 @@ public class TratamientoMB implements Serializable {
 
 			tratamiento.setEstado("I");
 			getTratamientoService().updateTratamiento(tratamiento);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Inactivo Exitosamente",
+							"Inactivo Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -110,6 +163,22 @@ public class TratamientoMB implements Serializable {
 		this.setNombre("");
 		this.setEstado("");
 		this.setDescripcion("");
+
+	}
+	
+	public boolean existeTratamiento(String nombre) {
+
+		try {
+			Tratamiento temp = getTratamientoService().getTratamientoByNombre(nombre);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
 
 	}
 

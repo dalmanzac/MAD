@@ -134,6 +134,8 @@
 						autoResize="false" required="false"
 						value="#{tratamientoMB.descripcion}" />
 					<h:outputText id="display" />
+					
+					<p:growl id="growl" life="2000" />
 
 					<p:commandButton value="Modificar" id="modTratamiento"
 						update="growl" actionListener="#{tratamientoMB.modTratamiento()}"

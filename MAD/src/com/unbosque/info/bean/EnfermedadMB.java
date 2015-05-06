@@ -16,8 +16,10 @@ import org.springframework.dao.DataAccessException;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
+import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.EnfermedadService;
 import com.unbosque.info.service.TratamientoService;
+import com.unbosque.info.util.Validacion;
 
 @ManagedBean(name = "enfermedadMB")
 @SessionScoped
@@ -37,25 +39,45 @@ public class EnfermedadMB implements Serializable {
 	private String estado;
 	private String descripcion;
 	private Enfermedad enfermedad;
-	
+
 	public void addEnfermedad() {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			FacesMessage message = null;
 
-			Enfermedad enfermedad = new Enfermedad();
-			
-			enfermedad.setId(id);
-			enfermedad.setEstado("A");
-			enfermedad.setDescripcion(descripcion);
-			enfermedad.setNombre(nombre);
+			if (!existeEnfermedad(nombre)) {
+				if (Validacion.validarDatoAlfabetico(nombre)) {
 
-			getEnfermedadService().addEnfermedad(enfermedad);
-			reset();
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+					Enfermedad enfermedad = new Enfermedad();
+
+					enfermedad.setId(id);
+					enfermedad.setEstado("A");
+					enfermedad.setDescripcion(descripcion);
+					enfermedad.setNombre(nombre);
+
+					getEnfermedadService().addEnfermedad(enfermedad);
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Agregada Exitosamente",
+									"Agregada Exitosamente"));
+					reset();
+
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Nombre Incorrecto (Sin Espacios).",
+									"Nombre Incorrecto (Sin Espacios)."));
+				}
+
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Enfermedad ya existe!",
+								"Enfermedad ya existe!"));
+			}
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -65,35 +87,64 @@ public class EnfermedadMB implements Serializable {
 
 	public void modEnfermedad() {
 
-		System.out.println(enfermedad.getNombre());
-			try {
-				if (nombre.equals("")) {
-					enfermedad.setNombre(enfermedad.getNombre());
-				} else {
+		RequestContext context = RequestContext.getCurrentInstance();
+		System.out.println(enfermedad.toString());
+
+		if (nombre.equals("")) {
+			enfermedad.setNombre(enfermedad.getNombre());
+		} else {
+			if (!existeEnfermedad(nombre)) {
+				if (Validacion.validarDatoAlfabetico(nombre)) {
 					enfermedad.setNombre(nombre);
-				}
-
-					enfermedad.setEstado("A");
-				
-				if (descripcion.equals("")) {
-					enfermedad.setDescripcion(enfermedad.getDescripcion());
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Modificada Exitosamente",
+									"Modificada Exitosamente"));
 				} else {
-					enfermedad.setDescripcion(descripcion);
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Nombre Incorrecto (Sin Espacios).",
+									"Nombre Incorrecto (Sin Espacios)."));
 				}
 
-				reset();
-				getEnfermedadService().updateEnfermedad(enfermedad);
-
-			} catch (DataAccessException e) {
-				e.printStackTrace();
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Enfermedad ya existe!",
+								"Enfermedad ya existe!"));
 			}
-
 		}
+
+		enfermedad.setEstado("A");
+
+		if (descripcion.equals("")) {
+			enfermedad.setDescripcion(enfermedad.getDescripcion());
+		} else {
+			enfermedad.setDescripcion(descripcion);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificada Exitosamente",
+							"Modificada Exitosamente"));
+		}
+
+		reset();
+		getEnfermedadService().updateEnfermedad(enfermedad);
+
+	}
 
 	public String deleteEnfermedad(Enfermedad enfermedad) {
 		try {
 			enfermedad.setEstado("I");
 			getEnfermedadService().updateEnfermedad(enfermedad);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Inactiva Exitosamente",
+							"Inactiva Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +158,23 @@ public class EnfermedadMB implements Serializable {
 		this.setDescripcion("");
 		this.setEstado("");
 		this.setNombre("");
+
+	}
+
+	public boolean existeEnfermedad(String nombre) {
+
+		try {
+			Enfermedad temp = getEnfermedadService().getEnfermedadByNombre(
+					nombre);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
 
 	}
 
@@ -161,7 +229,7 @@ public class EnfermedadMB implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	public void setEnfermedad(Enfermedad enfermedad) {
 		System.out.println(enfermedad.toString());
 		this.enfermedad = enfermedad;

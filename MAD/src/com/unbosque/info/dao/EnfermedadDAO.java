@@ -1,7 +1,10 @@
 package com.unbosque.info.dao;
 
 import java.util.List;
+
 import com.unbosque.info.entidad.Enfermedad;
+import com.unbosque.info.entidad.Usuario;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,6 +21,13 @@ public class EnfermedadDAO {
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+	
+	public Enfermedad getEnfermedadByNombre(String nombre) {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Enfermedad where nombre=?").setParameter(0, nombre)
+				.list();
+		return (Enfermedad) list.get(0);
 	}
 
 	public void addEnfermedad(Enfermedad enfermedad) {

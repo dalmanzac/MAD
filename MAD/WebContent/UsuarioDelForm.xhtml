@@ -141,15 +141,16 @@
 								<p:commandButton icon="ui-icon-close"
 									action="#{usuarioMB.deleteUsuario(_usuario)}" update="usuario">
 									<p:confirm header="AVISO!"
-										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" />
-								</p:commandButton>
+										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" modal="true"/>
+								
 								<p:confirmDialog global="true" showEffect="fade"
 									hideEffect="explode">
 									<p:commandButton value="Si" type="button"
-										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update="UsuarioDelForm.xhtml"/>
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 									<p:commandButton value="No" type="button"
 										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 								</p:confirmDialog>
+								</p:commandButton>
 
 
 

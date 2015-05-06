@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unbosque.info.dao.DietaDAO;
 import com.unbosque.info.entidad.Dieta;
+import com.unbosque.info.entidad.Tratamiento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,11 @@ public class DietaService {
 
 	public Dieta getDietaById(int id) {
 		return getDietaDAO().getDietaById(id);
+	}
+	
+	@Transactional(readOnly = false)
+	public Dieta getDietaByNombre(String nombre) {
+		return getDietaDAO().getDietaByNombre(nombre);
 	}
 
 	public List<Dieta> getDietas() {

@@ -1,7 +1,10 @@
 package com.unbosque.info.dao;
 
 import java.util.List;
+
 import com.unbosque.info.entidad.Dieta;
+import com.unbosque.info.entidad.Tratamiento;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,6 +39,13 @@ public class DietaDAO {
 	public Dieta getDietaById(int id) {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Dieta where id=?").setParameter(0, id)
+				.list();
+		return (Dieta) list.get(0);
+	}
+	
+	public Dieta getDietaByNombre(String nombre) {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Dieta where nombre=?").setParameter(0, nombre)
 				.list();
 		return (Dieta) list.get(0);
 	}

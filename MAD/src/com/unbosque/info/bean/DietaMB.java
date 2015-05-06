@@ -14,8 +14,10 @@ import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Dieta;
+import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.DietaService;
+import com.unbosque.info.util.Validacion;
 
 @ManagedBean(name = "dietaMB")
 @SessionScoped
@@ -41,7 +43,9 @@ public class DietaMB implements Serializable {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			FacesMessage message = null;
+			
+			if (!existeDieta(nombre)) {
+				if (Validacion.validarDatoAlfabetico(nombre)) {
 
 			Dieta dieta = new Dieta();
 
@@ -51,10 +55,29 @@ public class DietaMB implements Serializable {
 			dieta.setNombre(nombre);
 
 			getDietaService().addDieta(dieta);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Agregada Exitosamente",
+							"Agregada Exitosamente"));
 			reset();
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Nombre Incorrecto (Sin Espacios).",
+									"Nombre Incorrecto (Sin Espacios)."));
+				}
+
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Dieta ya existe!",
+								"Dieta ya existe!"));
+			}
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -64,12 +87,34 @@ public class DietaMB implements Serializable {
 
 	public void modDieta() {
 
-	System.out.println(dieta.getNombre());
-		try {
+		System.out.println(dieta.toString());
+		
 			if (nombre.equals("")) {
 				dieta.setNombre(dieta.getNombre());
 			} else {
+				if (!existeDieta(nombre)) {
+					if (Validacion.validarDatoAlfabetico(nombre)) {
 				dieta.setNombre(nombre);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificada Exitosamente",
+								"Modificada Exitosamente"));
+					} else {
+						FacesContext.getCurrentInstance().addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_WARN,
+										"Nombre Incorrecto (Sin Espacios).",
+										"Nombre Incorrecto (Sin Espacios)."));
+					}
+
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Dieta ya existe!",
+									"Dieta ya existe!"));
+				}
 			}
 
 				dieta.setEstado("A");
@@ -78,21 +123,27 @@ public class DietaMB implements Serializable {
 				dieta.setDescripcion(dieta.getDescripcion());
 			} else {
 				dieta.setDescripcion(descripcion);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificada Exitosamente",
+								"Modificada Exitosamente"));
 			}
 
 			reset();
 			getDietaService().updateDieta(dieta);
 
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		}
-
-	}
+		} 
 
 	public String deleteDieta(Dieta dieta) {
 		try {
 			dieta.setEstado("I");
 			getDietaService().updateDieta(dieta);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Inactiva Exitosamente",
+							"Inactiva Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -106,6 +157,22 @@ public class DietaMB implements Serializable {
 		this.setDescripcion("");
 		this.setEstado("");
 		this.setNombre("");
+
+	}
+	
+	public boolean existeDieta(String nombre) {
+
+		try {
+			Dieta temp = getDietaService().getDietaByNombre(nombre);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
 
 	}
 

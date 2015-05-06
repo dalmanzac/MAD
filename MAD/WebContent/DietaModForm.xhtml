@@ -116,7 +116,7 @@
 
 		</p:layout>
 
-		<p:dialog header="MODIFICAR DIETA" widgetVar="dlg2" modal="false"
+		<p:dialog header="MODIFICAR DIETA" widgetVar="dlg2" modal="true"
 			height="250" width="700">
 			<h:form id="form">
 				<h:panelGrid columns="2">
@@ -133,6 +133,8 @@
 						maxlength="80" counterTemplate="{0} characters remaining."
 						autoResize="false" required="false" value="#{dietaMB.descripcion}" />
 					<h:outputText id="display" />
+					
+					<p:growl id="growl" life="2000" />
 
 					<p:commandButton value="Modificar" id="modDieta" update="growl"
 						actionListener="#{dietaMB.modDieta()}" ajax="false"

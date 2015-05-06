@@ -163,6 +163,12 @@ public class UsuarioMB implements Serializable {
 
 			usuario.setEstado("I");
 			getUsuarioService().updateUsuario(usuario);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Eliminado Exitosamente",
+							"Eliminado Exitosamente"));
+			
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -175,81 +181,108 @@ public class UsuarioMB implements Serializable {
 
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
-		
-			if (apellidosNombres.equals("")) {
-				usuario.setApellidosNombres(usuario.getApellidosNombres());
-			} else {
-				 if (Validacion.validarNombreApellido(apellidosNombres)) {
+
+		if (apellidosNombres.equals("")) {
+			usuario.setApellidosNombres(usuario.getApellidosNombres());
+		} else {
+			if (Validacion.validarNombreApellido(apellidosNombres)) {
 				usuario.setApellidosNombres(apellidosNombres);
-				 } else {
-				 FacesContext
-				 .getCurrentInstance()
-				 .addMessage(
-				 null,
-				 new FacesMessage(
-				 FacesMessage.SEVERITY_WARN,
-				 "Ingrese Apellido y Nombre Correctamente.",
-				 "Ingrese Apellido y Nombre Correctamente."));
-				 }
-			}
-
-			if (login.equals("")) {
-				usuario.setLogin(usuario.getLogin());
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
 			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Ingrese Apellido y Nombre Correctamente.",
+								"Ingrese Apellido y Nombre Correctamente."));
+			}
+		}
+
+		if (login.equals("")) {
+			usuario.setLogin(usuario.getLogin());
+		} else {
+			if (!existeLogin(login)) {
 				if (Validacion.validarDatoAlfabetico(login)) {
-				usuario.setLogin(login);
-				 } else {
-					 FacesContext
-					 .getCurrentInstance()
-					 .addMessage(
-					 null,
-					 new FacesMessage(
-					 FacesMessage.SEVERITY_WARN,
-					 "Ingrese Login Correctamente.",
-					 "Ingrese Login Correctamente."));
-					 }
-			}
-
-			if (correo.equals("")) {
-				usuario.setCorreo(usuario.getCorreo());
+					usuario.setLogin(login);
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Modificado Exitosamente",
+									"Modificado Exitosamente"));
+				} else {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Ingrese Login Correctamente.",
+									"Ingrese Login Correctamente."));
+				}
 			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Usuario ya existe!", "Usuario ya existe!"));
+			}
+		}
+
+		if (correo.equals("")) {
+			usuario.setCorreo(usuario.getCorreo());
+		} else {
+			if (Validacion.validarEmail(correo)) {
 				usuario.setCorreo(correo);
-			}
-
-			CifrarClave pass = new CifrarClave();
-			password = pass.cifradoClave(password);
-			if (password.equals("")) {
-				usuario.setPassword(usuario.getPassword());
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
 			} else {
-				if (Validacion.validarContraseña(password)) {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Correo Incorrecto", "Correo Incorrecto."));
+			}
+		}
+
+		if (password.equals("")) {
+			usuario.setPassword(usuario.getPassword());
+		} else {
+			if (Validacion.validarContraseña(password)) {
+				CifrarClave pass = new CifrarClave();
+				password = pass.cifradoClave(password);
 				usuario.setPassword(password);
-				 } else {
-					 FacesContext
-					 .getCurrentInstance()
-					 .addMessage(
-					 null,
-					 new FacesMessage(
-					 FacesMessage.SEVERITY_WARN,
-					 "Ingrese Contraseña Correctamente.",
-					 "Ingrese Contraseña Correctamente."));
-					 }
-			}
-
-			if (tipoUsuario.equals("")) {
-				usuario.setTipoUsuario(usuario.getTipoUsuario());
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
 			} else {
-				usuario.setTipoUsuario(tipoUsuario);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Ingrese Contraseña Correctamente.",
+								"Ingrese Contraseña Correctamente."));
 			}
+		}
 
-			usuario.setEstado("A");
+		if (tipoUsuario.equals("")) {
+			usuario.setTipoUsuario(usuario.getTipoUsuario());
+		} else {
+			usuario.setTipoUsuario(tipoUsuario);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
 
-			
-			getUsuarioService().updateUsuario(usuario);
-			reset();
+		usuario.setEstado("A");
 
-		} 
+		reset();
+		getUsuarioService().updateUsuario(usuario);
 
-	
+	}
 
 	public void loginId() {
 
@@ -257,7 +290,6 @@ public class UsuarioMB implements Serializable {
 
 		try {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
-			
 
 			if (temp.getEstado().equals("A")) {
 				CifrarClave clave = new CifrarClave();

@@ -119,7 +119,7 @@
 		</p:layout>
 
 		<p:dialog header="MODIFICAR TRATAMIENTO" widgetVar="dlg2"
-			modal="false" height="250" width="700">
+			modal="true" height="250" width="700">
 			<h:form id="form">
 				<h:panelGrid columns="2">
 
@@ -136,6 +136,15 @@
 					<h:outputText id="display" />
 					
 					<p:growl id="growl" life="2000" />
+					<h:outputLabel value="Estado: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="estado" />
+						<p:selectOneRadio id="estado" var="estado"
+							value="#{tratamientoMB.estado}" required="false">
+							<f:selectItem itemLabel="Activo" itemValue="A" />
+							<f:selectItem itemLabel="Inactivo" itemValue="I" />
+						</p:selectOneRadio>
+					</h:panelGrid>
 
 					<p:commandButton value="Modificar" id="modTratamiento"
 						update="growl" actionListener="#{tratamientoMB.modTratamiento()}"

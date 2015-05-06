@@ -133,8 +133,19 @@
 						autoResize="false" required="false"
 						value="#{enfermedadMB.descripcion}" />
 					<h:outputText id="display" />
-
+					
 					<p:growl id="growl" life="2000" />
+					<h:outputLabel value="Estado: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="estado" />
+						<p:selectOneRadio id="estado" var="estado"
+							value="#{enfermedadMB.estado}" required="false">
+							<f:selectItem itemLabel="Activo" itemValue="A" />
+							<f:selectItem itemLabel="Inactivo" itemValue="I" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+
+					
 					<p:commandButton value="Modificar" id="modEnfermedad"
 						update="growl" actionListener="#{enfermedadMB.modEnfermedad()}"
 						ajax="false" styleClass="ui-priority-primary" />

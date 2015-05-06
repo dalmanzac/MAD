@@ -43,33 +43,34 @@ public class TratamientoMB implements Serializable {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			
+
 			if (!existeTratamiento(nombre)) {
 				if (Validacion.validarDatoAlfabetico(nombre)) {
 
-		
-			Tratamiento tratamiento = new Tratamiento();
+					Tratamiento tratamiento = new Tratamiento();
 
-			tratamiento.setId(id);
-			tratamiento.setEstado("A");
-			tratamiento.setDescripcion(descripcion);
-			tratamiento.setNombre(nombre);
+					tratamiento.setId(id);
+					tratamiento.setEstado("A");
+					tratamiento.setDescripcion(descripcion);
+					tratamiento.setNombre(nombre);
 
-			getTratamientoService().addTratamiento(tratamiento);
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Agregado Exitosamente",
-							"Agregado Exitosamente"));
-			reset();
-		
-
-				} else {
+					getTratamientoService().addTratamiento(tratamiento);
 					FacesContext.getCurrentInstance().addMessage(
 							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Nombre Incorrecto (Sin Espacios).",
-									"Nombre Incorrecto (Sin Espacios)."));
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Agregado Exitosamente",
+									"Agregado Exitosamente"));
+					reset();
+
+				} else {
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 				}
 
 			} else {
@@ -85,59 +86,67 @@ public class TratamientoMB implements Serializable {
 		}
 
 	}
-	
+
 	public void modTratamiento() {
 
 		System.out.println(tratamiento.toString());
-			
-				if (nombre.equals("")) {
-					tratamiento.setNombre(tratamiento.getNombre());
-				} else {
-					if (!existeTratamiento(nombre)) {
-						if (Validacion.validarDatoAlfabetico(nombre)) {
+
+		if (nombre.equals("")) {
+			tratamiento.setNombre(tratamiento.getNombre());
+		} else {
+			if (!existeTratamiento(nombre)) {
+				if (Validacion.validarDatoAlfabetico(nombre)) {
 					tratamiento.setNombre(nombre);
 					FacesContext.getCurrentInstance().addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_INFO,
 									"Modificado Exitosamente",
 									"Modificado Exitosamente"));
-						} else {
-							FacesContext.getCurrentInstance().addMessage(
-									null,
-									new FacesMessage(FacesMessage.SEVERITY_WARN,
-											"Nombre Incorrecto (Sin Espacios).",
-											"Nombre Incorrecto (Sin Espacios)."));
-						}
-
-					} else {
-						FacesContext.getCurrentInstance().addMessage(
-								null,
-								new FacesMessage(FacesMessage.SEVERITY_WARN,
-										"Tratamiento ya existe!",
-										"Tratamiento ya existe!"));
-					}
-				}
-
-					tratamiento.setEstado("A");
-				
-				if (descripcion.equals("")) {
-					tratamiento.setDescripcion(tratamiento.getDescripcion());
 				} else {
-					tratamiento.setDescripcion(descripcion);
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO,
-									"Modificado Exitosamente",
-									"Modificado Exitosamente"));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 				}
 
-				reset();
-				getTratamientoService().updateTratamiento(tratamiento);
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Tratamiento ya existe!",
+								"Tratamiento ya existe!"));
+			}
+		}
+		if (estado.equals("")) {
+			tratamiento.setEstado(tratamiento.getEstado());
+		} else {
+			tratamiento.setEstado(estado);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
 
-			} 
+		if (descripcion.equals("")) {
+			tratamiento.setDescripcion(tratamiento.getDescripcion());
+		} else {
+			tratamiento.setDescripcion(descripcion);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
 
-		
+		reset();
+		getTratamientoService().updateTratamiento(tratamiento);
 
+	}
 
 	// Aqui colocamos el de borrado
 	public String deleteTratamiento(Tratamiento tratamiento) {
@@ -148,8 +157,7 @@ public class TratamientoMB implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Inactivo Exitosamente",
-							"Inactivo Exitosamente"));
+							"Inactivo Exitosamente", "Inactivo Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -165,11 +173,12 @@ public class TratamientoMB implements Serializable {
 		this.setDescripcion("");
 
 	}
-	
+
 	public boolean existeTratamiento(String nombre) {
 
 		try {
-			Tratamiento temp = getTratamientoService().getTratamientoByNombre(nombre);
+			Tratamiento temp = getTratamientoService().getTratamientoByNombre(
+					nombre);
 
 			if (temp != null) {
 				return true;
@@ -245,7 +254,7 @@ public class TratamientoMB implements Serializable {
 	public void setRegistroSeleccionado(TratamientoMB registroSeleccionado) {
 		this.registroSeleccionado = registroSeleccionado;
 	}
-	
+
 	public void setTratamiento(Tratamiento tratamiento) {
 		System.out.println(tratamiento.toString());
 		this.tratamiento = tratamiento;

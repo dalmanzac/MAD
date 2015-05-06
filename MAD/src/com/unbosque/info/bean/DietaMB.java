@@ -67,8 +67,8 @@ public class DietaMB implements Serializable {
 					FacesContext.getCurrentInstance().addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Nombre Incorrecto (Sin Espacios).",
-									"Nombre Incorrecto (Sin Espacios)."));
+									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 				}
 
 			} else {
@@ -104,8 +104,8 @@ public class DietaMB implements Serializable {
 						FacesContext.getCurrentInstance().addMessage(
 								null,
 								new FacesMessage(FacesMessage.SEVERITY_WARN,
-										"Nombre Incorrecto (Sin Espacios).",
-										"Nombre Incorrecto (Sin Espacios)."));
+										"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+										"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 					}
 
 				} else {
@@ -117,7 +117,16 @@ public class DietaMB implements Serializable {
 				}
 			}
 
-				dieta.setEstado("A");
+			if (estado.equals("")) {
+				dieta.setEstado(dieta.getEstado());
+			} else {
+				dieta.setEstado(estado);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			}
 			
 			if (descripcion.equals("")) {
 				dieta.setDescripcion(dieta.getDescripcion());

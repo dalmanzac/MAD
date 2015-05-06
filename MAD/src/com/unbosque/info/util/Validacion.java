@@ -28,7 +28,7 @@ public class Validacion {
 		
 	static public boolean validarDatoAlfabetico(String dato){
 		if(!dato.isEmpty()){
-			return dato.matches("[a-zA-Z]+");
+			return dato.matches("[A-Z][a-z]+");
 		}else{
 			return false;
 		}

@@ -121,11 +121,14 @@ public class UsuarioMB implements Serializable {
 												"Ingrese Apellido y Nombre Correctamente."));
 					}
 				} else {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Login Incorrecto, Solo Letras",
-									"Login Incorrecto, Solo Letras"));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Login Incorrecto, Solo Letras y Primera en Mayúscula.",
+											"Login Incorrecto, Solo Letras y Primera en Mayúscula."));
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(
@@ -163,12 +166,13 @@ public class UsuarioMB implements Serializable {
 
 			usuario.setEstado("I");
 			getUsuarioService().updateUsuario(usuario);
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Eliminado Exitosamente",
-							"Eliminado Exitosamente"));
-			
+			FacesContext.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Eliminado Exitosamente",
+									"Eliminado Exitosamente"));
+
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -213,11 +217,14 @@ public class UsuarioMB implements Serializable {
 									"Modificado Exitosamente",
 									"Modificado Exitosamente"));
 				} else {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Ingrese Login Correctamente.",
-									"Ingrese Login Correctamente."));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Login Incorrecto, Solo Letras y Primera en Mayúscula.",
+											"Login Incorrecto, Solo Letras y Primera en Mayúscula."));
 				}
 			} else {
 				FacesContext.getCurrentInstance().addMessage(
@@ -277,7 +284,16 @@ public class UsuarioMB implements Serializable {
 							"Modificado Exitosamente"));
 		}
 
-		usuario.setEstado("A");
+		if (estado.equals("")) {
+			usuario.setEstado(usuario.getEstado());
+		} else {
+			usuario.setEstado(estado);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
 
 		reset();
 		getUsuarioService().updateUsuario(usuario);
@@ -336,7 +352,7 @@ public class UsuarioMB implements Serializable {
 	public void reset() {
 		this.setId(0);
 		this.setCorreo("");
-		this.setEstado("A");
+		this.setEstado("");
 		this.setApellidosNombres("");
 		this.setLogin("");
 		this.setPassword("");

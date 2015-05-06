@@ -182,7 +182,7 @@
 						<p:selectOneRadio id="console" var="usuario"
 							value="#{usuarioMB.tipoUsuario}" required="false">
 							<f:selectItem itemLabel="Usuario" itemValue="U" />
-							<f:selectItem itemLabel="Admin" itemValue="A" />
+							<f:selectItem itemLabel="Administrador" itemValue="A" />
 						</p:selectOneRadio>
 					</h:panelGrid>
 
@@ -192,6 +192,16 @@
 					<p:inputText id="Correo" required="false"
 						value="#{usuarioMB.correo}" requiredMessage="Ingrese Email">
 					</p:inputText>
+					
+					<h:outputLabel value="Estado: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="estado" />
+						<p:selectOneRadio id="estado" var="estado"
+							value="#{usuarioMB.estado}" required="false">
+							<f:selectItem itemLabel="Activo" itemValue="A" />
+							<f:selectItem itemLabel="Inactivo" itemValue="I" />
+						</p:selectOneRadio>
+					</h:panelGrid>
 
 
 					<p:growl id="growl" life="2000" />

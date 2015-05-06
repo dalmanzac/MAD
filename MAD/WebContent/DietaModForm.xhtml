@@ -135,6 +135,15 @@
 					<h:outputText id="display" />
 					
 					<p:growl id="growl" life="2000" />
+					<h:outputLabel value="Estado: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="estado" />
+						<p:selectOneRadio id="estado" var="estado"
+							value="#{dietaMB.estado}" required="false">
+							<f:selectItem itemLabel="Activo" itemValue="A" />
+							<f:selectItem itemLabel="Inactivo" itemValue="I" />
+						</p:selectOneRadio>
+					</h:panelGrid>
 
 					<p:commandButton value="Modificar" id="modDieta" update="growl"
 						actionListener="#{dietaMB.modDieta()}" ajax="false"

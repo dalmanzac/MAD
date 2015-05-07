@@ -7,82 +7,206 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title>MODIFICAR PACIENTE</title>
-</h:head>
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>MODIFICAR PACIENTE</title>
+		</f:facet>
+	</h:head>
 
-<h:body>
-	<h:form>
-		<p:panel styleClass="session" header="Modificar Paciente">
-			<h:panelGrid columns="3">
-			
-			<h:outputLabel value="ID del Paciente:" />
-				<p:inputText id="user">
-				</p:inputText>
+	<h:body>
 
-				<p:commandButton value="Buscar" id="ajax" update="growl"
-					actionListener="#{buttonView.buttonAction}"
-					styleClass="ui-priority-primary" />
+		<p:layout fullPage="true">
 
-				<h:outputLabel value="Identificación del Paciente:" />
-				<p:inputText id="user2">
-				</p:inputText>
-
-				<p:commandButton value="Buscar" id="ajax2" update="growl"
-					actionListener="#{buttonView.buttonAction}"
-					styleClass="ui-priority-primary" />
-
-				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-				<p:spacer width="10" height="10" />
-			
-				<h:outputLabel value="ID: " />
-				<p:inputText id="id" required="true"
-					requiredMessage="Campo Requerido">
-				</p:inputText>
-				<p:message for="id" />
-				<h:outputLabel value="Identificación: " />
-				<p:inputText id="login" required="true"
-					requiredMessage="Campo Requerido">
-				</p:inputText>
-				<p:message for="login" />
-				
-				<h:outputLabel value="Nombre y Apellido: " />
-				<p:inputText id="Apellidos-Nombres" required="true"
-					requiredMessage="Campo Requerido">
-				</p:inputText>
-				<p:message for="Apellidos-Nombres" />
-
-				<h:outputLabel value="Telefono: " />
-				<p:inputText id="telefono" required="true"
-					requiredMessage="Campo Requerido">
-				</p:inputText>
-				<p:message for="Correo" />
-				<h:outputLabel value="Correo: " />
-				<p:inputText id="Correo" required="true"
-					requiredMessage="Campo Requerido">
-				</p:inputText>
-				<p:spacer width="10" height="10" />
-				
-				<h:outputLabel value="Inscrito al Servicio de Nutrición:  " />
-				 <p:selectBooleanButton id="value2" value="#{selectBooleanView.value2}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:100px">
-            <p:ajax update="msgs" listener="#{selectBooleanView.addMessage}" />
-        </p:selectBooleanButton>
-			</h:panelGrid>
-
-			<p:commandButton value="Modificar Paciente" id="ajax3" update="growl"
-				actionListener="#{buttonView.buttonAction}"
-				styleClass="ui-priority-primary" />
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>MODIFICAR PACIENTE</h1>
+				</center>
+			</p:layoutUnit>
 
 
 
-			<p:growl id="growl" life="2000" />
-			<p:growl id="msgs" />
-		</p:panel>
+			<p:layoutUnit position="west" size="232" header="NUTRICIONISTA"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="MIS DATOS">
 
-	</h:form>
-</h:body>
+						<p:menuitem value="Modificar Mis Datos"
+							url="NutricionistaModForm.xhtml" />
+
+					</p:submenu>
+
+					<p:submenu label="PACIENTES">
+						<p:menuitem value="Agregar" url="PacienteNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="PacienteModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="PacienteDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="PacienteShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form id="formTabla">
+					<p:panel styleClass="session" header="Modificar Pacientes">
+						<p:dataTable id="paciente" var="_paciente"
+							value="#{pacienteMB.pacientesList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column filterBy="#{_paciente.id}" headerText="ID Paciente"
+								filterMatchMode="contains">
+								<h:outputText value="#{_paciente.id}" />
+							</p:column>
+							<p:column filterBy="#{_paciente.nombresApellidos}"
+								headerText="Nombre Paciente" filterMatchMode="contains">
+
+								<h:outputText value="#{_paciente.nombresApellidos}" />
+							</p:column>
+							<p:column filterBy="#{_paciente.identificacion}"
+								headerText="Cédula" filterMatchMode="contains">
+								<h:outputText value="#{_paciente.identificacion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estado" />
+								</f:facet>
+								<h:outputText value="#{_paciente.estado}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Teléfono" />
+								</f:facet>
+								<h:outputText value="#{_paciente.telefono}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Correo" />
+								</f:facet>
+								<h:outputText value="#{_paciente.correo}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Inscrito Programa Nutricion" />
+								</f:facet>
+								<h:outputText value="#{_paciente.progNutricion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Sexo" />
+								</f:facet>
+								<h:outputText value="#{_paciente.sexo}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Dirección" />
+								</f:facet>
+								<h:outputText value="#{_paciente.direccion}" />
+							</p:column>
+
+							<p:column headerText="Modificar">
+								<p:commandButton onclick="PF('dlg2').show();"
+									actionListener="#{pacienteMB.setPaciente(_paciente)}"
+									icon="ui-icon-document" update="paciente">
+
+								</p:commandButton>
+
+							</p:column>
+
+						</p:dataTable>
+
+
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+
+		<p:dialog header="MODIFICAR PACIENTE" widgetVar="dlg2" modal="true"
+			height="250" width="700">
+
+			<h:form id="form">
+
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Cédula: " />
+					<p:inputText id="login" required="falsee"
+						requiredMessage="Campo Requerido"
+						value="#{pacienteMB.identificacion}">
+					</p:inputText>
+
+					<h:outputLabel value="Nombre y Apellido: " />
+					<p:inputText id="Apellidos-Nombres" required="false"
+						requiredMessage="Campo Requerido"
+						value="#{pacienteMB.nombresApellidos}">
+					</p:inputText>
+
+					<h:outputLabel value="Telefono: " />
+					<p:inputText id="telefono" required="false"
+						requiredMessage="Campo Requerido" value="#{pacienteMB.telefono}">
+					</p:inputText>
+
+					<h:outputLabel value="Correo: " />
+					<p:inputText id="Correo" required="false"
+						requiredMessage="Campo Requerido" value="#{pacienteMB.correo}">
+					</p:inputText>
+
+
+
+					<p:outputLabel for="console" value="Sexo" />
+
+					<p:selectOneRadio id="console" value="#{pacienteMB.sexo}"
+						required="false">
+						<f:selectItem itemLabel="Hombre" itemValue="Hombre" />
+						<f:selectItem itemLabel="Mujer" itemValue="Mujer" />
+
+					</p:selectOneRadio>
+
+
+					<h:outputLabel value="Dirección " />
+					<p:inputText id="direccion" required="false"
+						requiredMessage="Campo Requerido" value="#{pacienteMB.direccion}">
+					</p:inputText>
+
+					<h:outputLabel value="Inscrito al servicio de Nutricion: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="progNutricion" />
+						<p:selectOneRadio id="progNutricion" var="progNutricion"
+							value="#{pacienteMB.progNutricion}" required="false">
+							<f:selectItem itemLabel="Si" itemValue="Si" />
+							<f:selectItem itemLabel="No" itemValue="No" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+					
+					<h:outputLabel value="Estado: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="estado" />
+						<p:selectOneRadio id="estado" var="estado"
+							value="#{pacienteMB.estado}" required="false">
+							<f:selectItem itemLabel="Activo" itemValue="A" />
+							<f:selectItem itemLabel="Inactivo" itemValue="I" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+
+					<p:growl id="growl" life="2000" />
+
+
+					<p:commandButton value="Modificar Paciente" id="modPaciente"
+						update="growl" ajax="false"
+						actionListener="#{pacienteMB.modPaciente()}"
+						styleClass="ui-priority-primary" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</h:body>
+</f:view>
+
+
+
 </html>

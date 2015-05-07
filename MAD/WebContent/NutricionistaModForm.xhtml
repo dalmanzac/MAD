@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>MODIFICA TUS DATOS</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>MODIFICA TUS DATOS</h1>
+				</center>
+			</p:layoutUnit>
+
+
+
+			<p:layoutUnit position="west" size="232" header="NUTRICIONISTA"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="MIS DATOS">
+
+						<p:menuitem value="Modificar Mis Datos"
+							url="NutricionistaModForm.xhtml" />
+
+					</p:submenu>
+
+					<p:submenu label="PACIENTES">
+						<p:menuitem value="Agregar" url="PacienteNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="PacienteModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="PacienteDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="PacienteShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+
+				<h:form id="form">
+					<p:panel styleClass="session" header="Modifica tus Datos">
+						<h:panelGrid columns="2">
+
+
+							<h:outputLabel value="Contraseña" />
+							<p:password id="password" required="false"
+								value="#{usuarioMB.password}" requiredMessage="Campo Requerido">
+								<f:validateLength minimum="8" maximum="20" />
+							</p:password>
+
+							<h:outputLabel value="Nombre y Apellido: " />
+							<p:inputText id="Apellidos-Nombres" required="false"
+								value="#{usuarioMB.apellidosNombres}"
+								requiredMessage="Ingrese Contraseña">
+							</p:inputText>
+
+
+
+							<h:outputLabel value="Correo: " />
+							<p:inputText id="Correo" required="false"
+								value="#{usuarioMB.correo}" requiredMessage="Ingrese Email">
+							</p:inputText>
+
+							<p:growl id="growl" life="2000" />
+
+
+							<p:commandButton value="Modificar Mis Datos" id="modUsuario"
+								update="growl" ajax="false"
+								actionListener="#{usuarioMB.modUsuario()}"
+								styleClass="ui-priority-primary" />
+
+
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

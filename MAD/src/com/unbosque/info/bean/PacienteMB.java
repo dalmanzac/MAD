@@ -47,6 +47,8 @@ public class PacienteMB implements Serializable {
 	private String telefono;
 
 	private String direccion;
+	
+	private Paciente paciente;
 
 	public void addPaciente() {
 		try {
@@ -78,18 +80,63 @@ public class PacienteMB implements Serializable {
 
 	}
 
-	public String modPaciente(Paciente paciente) {
-		try {
-			paciente.setId(getId());
-
-			getPacienteService().updatePaciente(paciente);
-		} catch (DataAccessException e) {
-			e.printStackTrace();
+	public void modPaciente() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		System.out.println(paciente.toString());
+		
+		if(nombresApellidos.equals("")){
+			paciente.setNombresApellidos(paciente.getNombresApellidos());
+		} else {
+			paciente.setNombresApellidos(nombresApellidos);
+		}
+		
+		if(identificacion.equals("")){
+			paciente.setIdentificacion(paciente.getIdentificacion());
+		} else {
+			paciente.setIdentificacion(identificacion);
+		}
+		
+		if(estado.equals("")){
+			paciente.setEstado(paciente.getEstado());
+		} else {
+			paciente.setEstado(estado);
 		}
 
-		return null;
+		if(telefono.equals("")){
+			paciente.setTelefono(paciente.getTelefono());
+		} else {
+			paciente.setTelefono(telefono);
+		}
+		
+		if(correo.equals("")){
+			paciente.setCorreo(paciente.getCorreo());
+		} else {
+			paciente.setCorreo(correo);
+		}
+		
+		if(progNutricion.equals("")){
+			paciente.setProgNutricion(paciente.getProgNutricion());
+		} else {
+			paciente.setProgNutricion(progNutricion);
+		}
+		
+		if(sexo.equals("")){
+			paciente.setSexo(paciente.getSexo());
+		} else {
+			paciente.setSexo(sexo);
+		}
+		
+		if(direccion.equals("")){
+			paciente.setDireccion(paciente.getDireccion());
+		} else {
+			paciente.setDireccion(direccion);
+		}
+		reset();
+			getPacienteService().updatePaciente(paciente);
+		} 
+	
 
-	}
+	
 
 	public String deletePaciente(Paciente paciente) {
 		try {
@@ -106,7 +153,6 @@ public class PacienteMB implements Serializable {
 	public void reset() {
 		this.setId(0);
 		this.setDireccion("");
-		this.setIdentificacion(0);
 		this.setNombresApellidos("");
 		this.setProgNutricion("");
 		this.setTelefono("");
@@ -209,5 +255,16 @@ public class PacienteMB implements Serializable {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		System.out.println(paciente.toString());
+		this.paciente = paciente;
+	}
+	
+	
 
 }

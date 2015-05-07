@@ -7,81 +7,126 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title>NUEVO PACIENTE</title>
-</h:head>
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>NUEVO PACIENTE</title>
+		</f:facet>
+	</h:head>
 
-<h:body>
-	<h:form>
-		<p:panel styleClass="session" header="Nuevo Paciente">
-			<h:panelGrid columns="3">
+	<h:body>
 
-				<h:outputLabel value="Cédula: " />
-				<p:inputText id="login" required="true"
-					requiredMessage="Campo Requerido"
-					value="#{pacienteMB.identificacion}">
-				</p:inputText>
-				<p:message for="login" />
+		<p:layout fullPage="true">
 
-				<h:outputLabel value="Nombre y Apellido: " />
-				<p:inputText id="Apellidos-Nombres" required="true"
-					requiredMessage="Campo Requerido"
-					value="#{pacienteMB.nombresApellidos}">
-				</p:inputText>
-				<p:message for="Apellidos-Nombres" />
-
-				<h:outputLabel value="Telefono: " />
-				<p:inputText id="telefono" required="true"
-					requiredMessage="Campo Requerido" value="#{pacienteMB.telefono}">
-				</p:inputText>
-				<p:message for="Correo" />
-				<h:outputLabel value="Correo: " />
-				<p:inputText id="Correo" required="true"
-					requiredMessage="Campo Requerido" value="#{pacienteMB.correo}">
-				</p:inputText>
-				<p:spacer width="10" height="10" />
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>AGREGAR PACIENTE</h1>
+				</center>
+			</p:layoutUnit>
 
 
-				<p:outputLabel for="console" value="Sexo" />
 
-				<p:selectOneRadio id="console" value="#{pacienteMB.sexo}">
-					<f:selectItem itemLabel="Hombre" itemValue="Hombre" />
-					<f:selectItem itemLabel="Mujer" itemValue="Mujer" />
+			<p:layoutUnit position="west" size="232" header="NUTRICIONISTA"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="MIS DATOS">
 
-				</p:selectOneRadio>
+						<p:menuitem value="Modificar Mis Datos"
+							url="NutricionistaModForm.xhtml" />
 
-				<p:spacer width="10" height="10" />
+					</p:submenu>
 
-				<h:outputLabel value="Dirección " />
-				<p:inputText id="direccion" required="true"
-					requiredMessage="Campo Requerido" value="#{pacienteMB.direccion}">
-				</p:inputText>
-				<p:message for="direccion" />
+					<p:submenu label="PACIENTES">
+						<p:menuitem value="Agregar" url="PacienteNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="PacienteModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="PacienteDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="PacienteShowForm.xhtml" />
 
-				<h:outputLabel value="Inscrito al Servicio de Nutrición:  " />
-				<p:selectBooleanButton id="value2"
-					value="#{pacienteMB.progNutricion}" onLabel="Si" offLabel="No"
-					onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:100px">
-					<p:ajax update="msgs" listener="#{selectBooleanView.addMessage}" />
-				</p:selectBooleanButton>
-				<p:dialog id="dialog" header="Values" modal="true" resizable="false"
-					showEffect="fade" widgetVar="dlg">
-					<h:panelGrid columns="1" id="display">
-						<h:outputText value="Value 2: #{selectBooleanView.value2}" />
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form>
+					<p:panel styleClass="session" header="Nuevo Paciente">
+						<h:panelGrid columns="3">
+
+							<h:outputLabel value="Cédula: " />
+							<p:inputText id="login" required="true"
+								requiredMessage="Campo Requerido"
+								value="#{pacienteMB.identificacion}">
+							</p:inputText>
+							<p:message for="login" />
+
+							<h:outputLabel value="Nombre y Apellido: " />
+							<p:inputText id="Apellidos-Nombres" required="true"
+								requiredMessage="Campo Requerido"
+								value="#{pacienteMB.nombresApellidos}">
+							</p:inputText>
+							<p:message for="Apellidos-Nombres" />
+
+							<h:outputLabel value="Telefono: " />
+							<p:inputText id="telefono" required="true"
+								requiredMessage="Campo Requerido" value="#{pacienteMB.telefono}">
+							</p:inputText>
+							<p:message for="Correo" />
+							<h:outputLabel value="Correo: " />
+							<p:inputText id="Correo" required="true"
+								requiredMessage="Campo Requerido" value="#{pacienteMB.correo}">
+							</p:inputText>
+							<p:spacer width="10" height="10" />
+
+
+							<p:outputLabel for="console" value="Sexo" />
+
+							<p:selectOneRadio id="console" value="#{pacienteMB.sexo}">
+								<f:selectItem itemLabel="Hombre" itemValue="Hombre" />
+								<f:selectItem itemLabel="Mujer" itemValue="Mujer" />
+
+							</p:selectOneRadio>
+
+							<p:spacer width="10" height="10" />
+
+							<h:outputLabel value="Dirección " />
+							<p:inputText id="direccion" required="true"
+								requiredMessage="Campo Requerido"
+								value="#{pacienteMB.direccion}">
+							</p:inputText>
+							<p:message for="direccion" />
+
+							<h:outputLabel value="Inscrito al servicio de Nutricion: " />
+					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
+						<p:outputLabel for="progNutricion" />
+						<p:selectOneRadio id="progNutricion" var="progNutricion"
+							value="#{pacienteMB.progNutricion}" required="true">
+							<f:selectItem itemLabel="Si" itemValue="Si" />
+							<f:selectItem itemLabel="No" itemValue="No" />
+						</p:selectOneRadio>
 					</h:panelGrid>
-				</p:dialog>
-			</h:panelGrid>
+							
 
-			<p:commandButton value="Crear Paciente" id="ajax3" update="growl"
-				actionListener="#{pacienteMB.addPaciente}"
-				styleClass="ui-priority-primary" />
-
+						<p:commandButton value="Crear Paciente" id="ajax3" update="growl"
+							actionListener="#{pacienteMB.addPaciente}"
+							styleClass="ui-priority-primary" />
 
 
-			<p:growl id="growl" life="2000" />
-			<p:growl id="msgs" />
-		</p:panel>
 
-	</h:form>
-</h:body>
+						<p:growl id="growl" life="2000" />
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+
+
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
 </html>

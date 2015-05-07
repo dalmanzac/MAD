@@ -7,109 +7,120 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title><center>LISTA PACIENTES</center></title>
-</h:head>
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>LISTA DE PACIENTES</title>
+		</f:facet>
+	</h:head>
 
-<h:body>
-	<h:form id="formTabla">
-		<p:panel styleClass="session" header="Mostrar Pacientes">
-			<p:dataTable id="paciente" var="_paciente"
-				value="#{pacienteMB.pacientesList}" style="width: 100%"
-				emptyMessage="No hay registros disponibles" paginator="true"
-				rows="10" paginatorPosition="top"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="ID Paciente" />
-					</f:facet>
-					<h:outputText value="#{_paciente.id}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Nombre Paciente" />
-					</f:facet>
-					<h:outputText value="#{_paciente.nombresApellidos}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Cédula" />
-					</f:facet>
-					<h:outputText value="#{_paciente.identificacion}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Estado" />
-					</f:facet>
-					<h:outputText value="#{_paciente.estado}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Teléfono" />
-					</f:facet>
-					<h:outputText value="#{_paciente.telefono}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Correo" />
-					</f:facet>
-					<h:outputText value="#{_paciente.correo}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Inscrito Programa Nutricion" />
-					</f:facet>
-					<h:outputText value="#{_paciente.progNutricion}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Sexo" />
-					</f:facet>
-					<h:outputText value="#{_paciente.sexo}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Dirección" />
-					</f:facet>
-					<h:outputText value="#{_paciente.direccion}" />
-				</p:column>
+	<h:body>
 
-				<p:column headerText="Modificar">
+		<p:layout fullPage="true">
 
-					<h:commandLink value="Modificar"
-						action="#{pacienteMB.modPaciente(_paciente)}">
-
-					</h:commandLink>
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>LISTA DE PACIENTES</h1>
+				</center>
+			</p:layoutUnit>
 
 
 
-				</p:column>
+			<p:layoutUnit position="west" size="232" header="NUTRICIONISTA"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="MIS DATOS">
 
-			</p:dataTable>
-			<p:spacer width="10" height="10" />
-			<h:panelGrid columns="3">
+						<p:menuitem value="Modificar Mis Datos"
+							url="NutricionistaModForm.xhtml" />
 
-				<h:outputLabel value="ID del Paciente:" />
-				<p:inputText id="user">
-				</p:inputText>
+					</p:submenu>
 
-				<p:commandButton value="Buscar" id="ajax" update="growl"
-					actionListener="#{buttonView.buttonAction}"
-					styleClass="ui-priority-primary" />
+					<p:submenu label="PACIENTES">
+						<p:menuitem value="Agregar" url="PacienteNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="PacienteModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="PacienteDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="PacienteShowForm.xhtml" />
 
 
-				<h:outputLabel value="Identificación del Paciente:" />
-				<p:inputText id="user2">
-				</p:inputText>
+					</p:submenu>
 
-				<p:commandButton value="Buscar" id="ajax2" update="growl"
-					actionListener="#{buttonView.buttonAction}"
-					styleClass="ui-priority-primary" />
+				</p:menu>
+			</p:layoutUnit>
 
-				<p:growl id="growl" life="2000" />
-			</h:panelGrid>
-		</p:panel>
-	</h:form>
-</h:body>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form id="formTabla">
+					<p:panel styleClass="session" header="Mostrar Pacientes">
+						<p:dataTable id="paciente" var="_paciente"
+							value="#{pacienteMB.pacientesList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column filterBy="#{_paciente.id}" headerText="ID Paciente"
+								filterMatchMode="contains">
+								<h:outputText value="#{_paciente.id}" />
+							</p:column>
+							<p:column filterBy="#{_paciente.nombresApellidos}"
+								headerText="Nombre Paciente" filterMatchMode="contains">
+
+								<h:outputText value="#{_paciente.nombresApellidos}" />
+							</p:column>
+							<p:column filterBy="#{_paciente.identificacion}"
+								headerText="Cédula" filterMatchMode="contains">
+								<h:outputText value="#{_paciente.identificacion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estado" />
+								</f:facet>
+								<h:outputText value="#{_paciente.estado}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Teléfono" />
+								</f:facet>
+								<h:outputText value="#{_paciente.telefono}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Correo" />
+								</f:facet>
+								<h:outputText value="#{_paciente.correo}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Inscrito Programa Nutricion" />
+								</f:facet>
+								<h:outputText value="#{_paciente.progNutricion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Sexo" />
+								</f:facet>
+								<h:outputText value="#{_paciente.sexo}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Dirección" />
+								</f:facet>
+								<h:outputText value="#{_paciente.direccion}" />
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</f:view>
+
+
+
 </html>

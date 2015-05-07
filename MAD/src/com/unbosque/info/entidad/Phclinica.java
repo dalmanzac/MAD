@@ -1,39 +1,46 @@
 package com.unbosque.info.entidad;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
 
+import javax.persistence.*;
+
+import java.sql.Timestamp;
 
 /**
  * The persistent class for the phclinica database table.
  * 
  */
 @Entity
-@NamedQuery(name="Phclinica.findAll", query="SELECT p FROM Phclinica p")
+@Table(name = "phclinica")
+@NamedQuery(name = "Phclinica.findAll", query = "SELECT p FROM Phclinica p")
 public class Phclinica implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "estado", nullable = false)
 	private String estado;
 
-	@Column(name="fecha_hclinica")
+	@Column(name = "fecha_hclinica")
 	private Timestamp fechaHclinica;
 
+	@Column(name = "id", nullable = false)
 	private Integer id;
 
-	@Column(name="id_dieta")
+	@Column(name = "id_dieta")
 	private Integer idDieta;
 
-	@Column(name="id_enfermedad")
+	@Column(name = "id_enfermedad")
 	private Integer idEnfermedad;
 
-	@Column(name="id_paciente")
+	@Column(name = "id_paciente")
 	private Integer idPaciente;
 
-	@Column(name="id_tratamiento")
+	@Column(name = "id_tratamiento")
 	private Integer idTratamiento;
 
 	public Phclinica() {
+		super();
 	}
 
 	public String getEstado() {
@@ -90,6 +97,14 @@ public class Phclinica implements Serializable {
 
 	public void setIdTratamiento(Integer idTratamiento) {
 		this.idTratamiento = idTratamiento;
+	}
+
+	@Override
+	public String toString() {
+		return "Phclinica [estado=" + estado + ", fechaHclinica="
+				+ fechaHclinica + ", id=" + id + ", idDieta=" + idDieta
+				+ ", idEnfermedad=" + idEnfermedad + ", idPaciente="
+				+ idPaciente + ", idTratamiento=" + idTratamiento + "]";
 	}
 
 }

@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>ELIMINAR HISTORIA CLINICA</title>
+		</f:facet>
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="103" resizable="true"
+				closable="true" collapsible="true">
+				<center>
+					<h1>ELIMINAR HISTORIA CLINICA</h1>
+				</center>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" size="232" header="NUTRICIONISTA"
+				collapsible="true">
+				<p:menu>
+					<p:submenu label="MIS DATOS">
+
+						<p:menuitem value="Modificar Mis Datos"
+							url="NutricionistaModForm.xhtml" />
+
+					</p:submenu>
+
+					<p:submenu label="PACIENTES">
+						<p:menuitem value="Agregar" url="PacienteNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="PacienteModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="PacienteDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="PacienteShowForm.xhtml" />
+
+
+					</p:submenu>
+					
+					<p:submenu label="HISTORIA CLINICA">
+						<p:menuitem value="Agregar" url="HCNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="HCModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="HCDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="HCShowForm.xhtml" />
+
+
+					</p:submenu>
+
+				</p:menu>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="pf"></ui:insert>
+				<h:form id="formTabla">
+					<p:panel styleClass="session" header="Eliminar Historia Clinica">
+						<p:dataTable id="phclinica" var="_phclinica"
+							value="#{phclinicaMB.phclinicasList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column filterBy="#{_phclinica.id}" headerText="ID HC"
+								filterMatchMode="contains">
+								<h:outputText value="#{_phclinica.id}" />
+							</p:column>
+							<p:column filterBy="#{_phclinica.idPaciente}"
+								headerText="ID Paciente" filterMatchMode="contains">
+								<h:outputText value="#{_phclinica.idPaciente}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Fecha Creación" />
+								</f:facet>
+								<h:outputText value="#{_phclinica.fechaHclinica}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="ID Enfermedad" />
+								</f:facet>
+								<h:outputText value="#{_phclinica.idEnfermedad}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="ID Tratamiento" />
+								</f:facet>
+								<h:outputText value="#{_phclinica.idTratamiento}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="ID Dieta" />
+								</f:facet>
+								<h:outputText value="#{_phclinica.idDieta}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estado" />
+								</f:facet>
+								<h:outputText value="#{_phclinica.estado}" />
+							</p:column>
+
+							<p:column headerText="Eliminar">
+
+								<p:commandButton icon="ui-icon-close"
+									action="#{phclinicaMB.deletePhclinica(_phclinica)}"
+									update="phclinica">
+									<p:confirm header="AVISO!"
+										message="Desea eliminar, está Seguro?" icon="ui-icon-alert" />
+								</p:commandButton>
+
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="explode">
+									<p:commandButton value="Si" type="button"
+										styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								</p:confirmDialog>
+
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+	</h:body>
+
+</f:view>
+</html>

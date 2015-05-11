@@ -4,8 +4,11 @@ import java.util.List;
 
 import com.unbosque.info.dao.EnfermedadDAO;
 import com.unbosque.info.dao.PhclinicaDAO;
+import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
+import com.unbosque.info.entidad.Paciente;
 import com.unbosque.info.entidad.Phclinica;
+import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.entidad.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,26 @@ public class PhclinicaService {
 	@Transactional(readOnly = false)
 	public Phclinica getPhclinicaByNombre(String nombre) {
 		return getPhclinicaDAO().getPhclinicaByNombre(nombre);
+	}
+	
+	@Transactional(readOnly = false)
+	public List<Dieta> getDietaByNombre() {
+		return getPhclinicaDAO().getDietaByNombre();
+	}
+	
+	@Transactional(readOnly = false)
+	public List<Tratamiento> getTratamientoByNombre() {
+		return getPhclinicaDAO().getTratamientoByNombre();
+	}
+	
+	@Transactional(readOnly = false)
+	public List<Enfermedad> getEnfermedadByNombre() {
+		return getPhclinicaDAO().getEnfermedadByNombre();
+	}
+	
+	@Transactional(readOnly = false)
+	public List<Paciente> getPacienteByNombre() {
+		return getPhclinicaDAO().getPacienteByNombre();
 	}
 
 	public List<Phclinica> getPhclinicas() {

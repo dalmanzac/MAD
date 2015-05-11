@@ -2,8 +2,11 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
+import com.unbosque.info.entidad.Paciente;
 import com.unbosque.info.entidad.Phclinica;
+import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.entidad.Usuario;
 
 import org.hibernate.SessionFactory;
@@ -29,6 +32,34 @@ public class PhclinicaDAO {
 				.createQuery("from Phclinica where nombre=?")
 				.setParameter(0, nombre).list();
 		return (Phclinica) list.get(0);
+	}
+
+	public List<Dieta> getDietaByNombre() {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Dieta").list();
+
+		return list;
+	}
+	
+	public List<Tratamiento> getTratamientoByNombre() {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Tratamiento").list();
+
+		return list;
+	}
+	
+	public List<Enfermedad> getEnfermedadByNombre() {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Enfermedad").list();
+
+		return list;
+	}
+	
+	public List<Paciente> getPacienteByNombre() {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Paciente").list();
+
+		return list;
 	}
 
 	public void addPhclinica(Phclinica phclinica) {

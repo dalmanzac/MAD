@@ -134,34 +134,30 @@
 			<h:form id="form">
 				<h:panelGrid columns="2">
 
-					<h:outputLabel value="ID del Paciente: " />
-					<p:inputText id="id-paciente" required="true"
-						requiredMessage="Campo Requerido"
-						value="#{phclinicaMB.idPaciente}">
-					</p:inputText>
-
-					<h:outputLabel value="Fecha Generada: " />
-					<p:inputText id="fecha" required="true"
-						requiredMessage="Campo Requerido"
-						value="#{phclinicaMB.fechaHclinica}">
-					</p:inputText>
-
-					<h:outputLabel value="ID Enfermedad: " />
-					<p:inputText id="id-enfermedad" required="true"
-						requiredMessage="Campo Requerido"
-						value="#{phclinicaMB.idEnfermedad}">
-					</p:inputText>
+					
+						<h:outputLabel value="ID Enfermedad: " />
+							<p:selectOneMenu id="idEnfermedad"
+								value="#{phclinicaMB.idEnfermedad}" style="width:150px">
+								<f:selectItem itemLabel="Seleccione" itemValue="0"
+									required="true" requiredMessage="Campo Requerido" />
+								<f:selectItems value="#{phclinicaMB.getEnfermedadByNombre()}" />
+							</p:selectOneMenu>
 
 					<h:outputLabel value="ID Tratamiento: " />
-					<p:inputText id="id-tratamiento" required="true"
-						requiredMessage="Campo Requerido"
-						value="#{phclinicaMB.idTratamiento}">
-					</p:inputText>
-
+							<p:selectOneMenu id="idTratamiento"
+								value="#{phclinicaMB.idTratamiento}" style="width:150px">
+								<f:selectItem itemLabel="Seleccione" itemValue="0"
+									required="true" requiredMessage="Campo Requerido" />
+								<f:selectItems value="#{phclinicaMB.getTratamientoByNombre()}" />
+							</p:selectOneMenu>
+							
 					<h:outputLabel value="ID Dieta: " />
-					<p:inputText id="id-dieta" required="true"
-						requiredMessage="Campo Requerido" value="#{phclinicaMB.idDieta}">
-					</p:inputText>
+							<p:selectOneMenu id="idDieta" value="#{phclinicaMB.idDieta}"
+								style="width:150px">
+								<f:selectItem itemLabel="Seleccione" itemValue="0"
+									required="true" requiredMessage="Campo Requerido" />
+								<f:selectItems value="#{phclinicaMB.getDietaByNombre()}" />
+							</p:selectOneMenu>
 
 					<h:outputLabel value="Estado: " />
 					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">

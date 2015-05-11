@@ -9,10 +9,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.context.RequestContext;
+
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Paciente;
 import com.unbosque.info.entidad.Phclinica;
+import com.unbosque.info.entidad.Tratamiento;
+import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.PacienteService;
 import com.unbosque.info.service.PhclinicaService;
 
@@ -29,6 +33,14 @@ public class PhclinicaMB implements Serializable {
 
 	List<Phclinica> phclinicaList;
 
+	List listDietas;
+
+	List listTratamientos;
+
+	List listEnfermedades;
+
+	List listPacientes;
+
 	private Integer id;
 
 	private Integer idPaciente;
@@ -44,13 +56,68 @@ public class PhclinicaMB implements Serializable {
 	private String estado;
 
 	private Phclinica phclinica;
-	
+
 	public List<Phclinica> getPhclinicasList() {
 		phclinicaList = new ArrayList<Phclinica>();
 
 		phclinicaList.addAll(getPhclinicaService().getPhclinicas());
 
 		return phclinicaList;
+	}
+
+	public List getDietaByNombre() {
+
+		listDietas = new ArrayList();
+
+		List<Dieta> dietasDao = getPhclinicaService().getDietaByNombre();
+
+		for (int i = 0; i < dietasDao.size(); i++) {
+			listDietas.add(dietasDao.get(i).getNombre());
+		}
+
+		return listDietas;
+	}
+
+	public List getTratamientoByNombre() {
+
+		listTratamientos = new ArrayList();
+
+		List<Tratamiento> tratamientosDao = getPhclinicaService()
+				.getTratamientoByNombre();
+
+		for (int i = 0; i < tratamientosDao.size(); i++) {
+			listTratamientos.add(tratamientosDao.get(i).getNombre());
+		}
+
+		return listTratamientos;
+	}
+
+	public List getEnfermedadByNombre() {
+
+		listEnfermedades = new ArrayList();
+
+		List<Enfermedad> enfermedadesDao = getPhclinicaService()
+				.getEnfermedadByNombre();
+
+		for (int i = 0; i < enfermedadesDao.size(); i++) {
+			listEnfermedades.add(enfermedadesDao.get(i).getNombre());
+		}
+
+		return listEnfermedades;
+	}
+
+	public List getPacienteByNombre() {
+
+		listPacientes = new ArrayList();
+
+		List<Paciente> pacienteDao = getPhclinicaService()
+				.getPacienteByNombre();
+
+		for (int i = 0; i < pacienteDao.size(); i++) {
+			listPacientes.add(pacienteDao.get(i).getNombresApellidos());
+		}
+
+		return listPacientes;
 	}
 
 	public PhclinicaService getPhclinicaService() {
@@ -133,5 +200,37 @@ public class PhclinicaMB implements Serializable {
 		System.out.println(phclinica.toString());
 		this.phclinica = phclinica;
 	}
-	
+
+	public List getListDietas() {
+		return listDietas;
 	}
+
+	public void setListDietas(List listDietas) {
+		this.listDietas = listDietas;
+	}
+
+	public List getListTratamientos() {
+		return listTratamientos;
+	}
+
+	public void setListTratamientos(List listTratamientos) {
+		this.listTratamientos = listTratamientos;
+	}
+
+	public List getListEnfermedades() {
+		return listEnfermedades;
+	}
+
+	public void setListEnfermedades(List listEnfermedades) {
+		this.listEnfermedades = listEnfermedades;
+	}
+
+	public List getListPacientes() {
+		return listPacientes;
+	}
+
+	public void setListPacientes(List listPacientes) {
+		this.listPacientes = listPacientes;
+	}
+
+}

@@ -350,6 +350,7 @@ public class UsuarioMB implements Serializable {
 							FacesContext.getCurrentInstance()
 									.getExternalContext()
 									.redirect("PacienteNewForm.xhtml");
+							numeroEntrada = 0;
 							
 						}
 

@@ -35,7 +35,7 @@ public class PacienteDAO {
 
 	public Paciente getPacienteById(int id) {
 		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from Paciente where id=?").setParameter(0, id)
+				.createQuery("from Paciente where identificacion=?").setParameter(0, id)
 				.list();
 		return (Paciente) list.get(0);
 	}

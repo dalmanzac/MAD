@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
@@ -56,6 +58,50 @@ public class PhclinicaMB implements Serializable {
 	private String estado;
 
 	private Phclinica phclinica;
+
+	public void addHistoriaClinica() {
+		RequestContext context = RequestContext.getCurrentInstance();
+
+		java.util.Date now = new java.util.Date();
+		fechaHclinica = new java.sql.Timestamp(now.getTime());
+
+		if (idPaciente == 0) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Seleccione Paciente ", "Seleccione Paciente "));
+		} else {
+			Phclinica phclinica = new Phclinica();
+
+			phclinica.setId(id);
+			phclinica.setEstado("A");
+			phclinica.setFechaHclinica(fechaHclinica);
+			phclinica.setIdDieta(idDieta);
+			phclinica.setIdEnfermedad(idEnfermedad);
+			phclinica.setIdPaciente(idPaciente);
+			phclinica.setIdTratamiento(idTratamiento);
+
+			getPhclinicaService().addPhclinica(phclinica);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Agregado Exitosamente", "Agregado Exitosamente"));
+			reset();
+
+		}
+	}
+
+	public void reset() {
+
+		this.setEstado("");
+		this.setFechaHclinica(null);
+		this.setId(0);
+		this.setIdDieta(0);
+		this.setIdEnfermedad(0);
+		this.setIdPaciente(0);
+		this.setIdTratamiento(0);
+
+	}
 
 	public List<Phclinica> getPhclinicasList() {
 		phclinicaList = new ArrayList<Phclinica>();

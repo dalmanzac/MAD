@@ -77,11 +77,6 @@
 								<f:selectItems value="#{phclinicaMB.getPacienteByNombre()}" />
 							</p:selectOneMenu>
 
-							<h:outputLabel value="Fecha Generada: " />
-							<p:inputText id="fecha" required="true"
-								requiredMessage="Campo Requerido"
-								value="#{phclinicaMB.fechaHclinica}">
-							</p:inputText>
 
 							<h:outputLabel value="ID Enfermedad: " />
 							<p:selectOneMenu id="idEnfermedad"
@@ -106,17 +101,6 @@
 									required="true" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getDietaByNombre()}" />
 							</p:selectOneMenu>
-
-							<h:outputLabel value="Estado: " />
-							<h:panelGrid columns="1" style="margin-bottom:1px"
-								cellpadding="0">
-								<p:outputLabel for="estado" />
-								<p:selectOneRadio id="estado" var="estado"
-									value="#{phclinicaMB.estado}" required="true">
-									<f:selectItem itemLabel="Activo" itemValue="A" />
-									<f:selectItem itemLabel="Inactivo" itemValue="I" />
-								</p:selectOneRadio>
-							</h:panelGrid>
 
 
 							<p:commandButton value="Crear Historia Clinica" id="ajax3"

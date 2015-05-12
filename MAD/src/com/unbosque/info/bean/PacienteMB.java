@@ -15,7 +15,9 @@ import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Paciente;
+import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.PacienteService;
+import com.unbosque.info.util.Validacion;
 
 @ManagedBean(name = "pacienteMB")
 @SessionScoped
@@ -47,33 +49,70 @@ public class PacienteMB implements Serializable {
 	private String telefono;
 
 	private String direccion;
-	
+
 	private Paciente paciente;
 
 	public void addPaciente() {
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
-			FacesMessage message = null;
 
-			Paciente paciente = new Paciente();
+			if (!existeCedula(identificacion)) {
+				if (Validacion.validarNombreApellido(nombresApellidos)) {
+					if (Validacion.validarDatoNumerico(telefono)) {
+						if (Validacion.validarEmail(correo)) {
+							Paciente paciente = new Paciente();
 
-			paciente.setId(id);
-			paciente.setCorreo(correo);
-			paciente.setEstado("A");
-			paciente.setSexo(sexo);
-			paciente.setDireccion(direccion);
-			paciente.setProgNutricion(progNutricion);
-			paciente.setIdentificacion(identificacion);
-			paciente.setTelefono(telefono);
-			paciente.setNombresApellidos(nombresApellidos);
+							paciente.setId(id);
+							paciente.setCorreo(correo);
+							paciente.setEstado("A");
+							paciente.setSexo(sexo);
+							paciente.setDireccion(direccion);
+							paciente.setProgNutricion(progNutricion);
+							paciente.setIdentificacion(identificacion);
+							paciente.setTelefono(telefono);
+							paciente.setNombresApellidos(nombresApellidos);
 
-			getPacienteService().addPaciente(paciente);
-			reset();
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+							getPacienteService().addPaciente(paciente);
+							FacesContext.getCurrentInstance().addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_INFO,
+											"Agregado Exitosamente",
+											"Agregado Exitosamente"));
+							reset();
 
+						} else {
+							FacesContext.getCurrentInstance().addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Correo Incorrecto. ",
+											"Correo Incorrecto. "));
+						}
+					} else {
+						FacesContext.getCurrentInstance().addMessage(
+								null,
+								new FacesMessage(FacesMessage.SEVERITY_WARN,
+										"Telefono Incorrecto. (Solo Numeros)",
+										"Telefono Incorrecto. (Solo Numeros)"));
+					}
+				} else {
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Ingrese Apellido y Nombre Correctamente.",
+											"Ingrese Apellido y Nombre Correctamente."));
+				}
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Usuario ya existe!", "Usuario ya existe!"));
+			}
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -83,65 +122,137 @@ public class PacienteMB implements Serializable {
 	public void modPaciente() {
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(paciente.toString());
-		
-		if(nombresApellidos.equals("")){
+
+		if (nombresApellidos.equals("")) {
 			paciente.setNombresApellidos(paciente.getNombresApellidos());
 		} else {
-			paciente.setNombresApellidos(nombresApellidos);
+			if (Validacion.validarNombreApellido(nombresApellidos)) {
+				paciente.setNombresApellidos(nombresApellidos);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Nombre y Apellido Incorrecto",
+								"Nombre y Apellido Incorrecto."));
+			}
+
 		}
-		
-		if(identificacion.equals("")){
+
+		if (identificacion.equals("")) {
 			paciente.setIdentificacion(paciente.getIdentificacion());
 		} else {
-			paciente.setIdentificacion(identificacion);
+			if (!existeCedula(identificacion)) {
+				paciente.setIdentificacion(identificacion);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Cedula ya existe", "Cedula ya existe."));
+			}
+
 		}
-		
-		if(estado.equals("")){
+
+		if (estado.equals("")) {
 			paciente.setEstado(paciente.getEstado());
 		} else {
 			paciente.setEstado(estado);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
 		}
 
-		if(telefono.equals("")){
+		if (telefono.equals("")) {
 			paciente.setTelefono(paciente.getTelefono());
 		} else {
-			paciente.setTelefono(telefono);
+			if (Validacion.validarDatoNumerico(telefono)) {
+				paciente.setTelefono(telefono);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Telefono Incorrecto (Solo Numeros)",
+								"Telefono Incorrecto (Solo Numeros) "));
+			}
+
 		}
-		
-		if(correo.equals("")){
+
+		if (correo.equals("")) {
 			paciente.setCorreo(paciente.getCorreo());
 		} else {
-			paciente.setCorreo(correo);
+			if (Validacion.validarEmail(correo)) {
+				paciente.setCorreo(correo);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Correo Incorrecto", "Correo Incorrecto."));
+			}
 		}
-		
-		if(progNutricion.equals("")){
+
+		if (progNutricion.equals("")) {
 			paciente.setProgNutricion(paciente.getProgNutricion());
 		} else {
 			paciente.setProgNutricion(progNutricion);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
 		}
-		
-		if(sexo.equals("")){
+
+		if (sexo.equals("")) {
 			paciente.setSexo(paciente.getSexo());
 		} else {
 			paciente.setSexo(sexo);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
 		}
-		
-		if(direccion.equals("")){
+
+		if (direccion.equals("")) {
 			paciente.setDireccion(paciente.getDireccion());
 		} else {
 			paciente.setDireccion(direccion);
 		}
-		reset();
-			getPacienteService().updatePaciente(paciente);
-		} 
-	
 
-	
+		getPacienteService().updatePaciente(paciente);
+		reset();
+	}
 
 	public String deletePaciente(Paciente paciente) {
 		try {
 			paciente.setEstado("I");
 			getPacienteService().updatePaciente(paciente);
+			FacesContext.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Eliminado Exitosamente",
+									"Eliminado Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -159,6 +270,23 @@ public class PacienteMB implements Serializable {
 		this.setCorreo("");
 		this.setEstado("");
 		this.setSexo("");
+		this.setIdentificacion(0);
+
+	}
+
+	public boolean existeCedula(int cedula) {
+
+		try {
+			Paciente temp = getPacienteService().getPacienteById(cedula);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
 
 	}
 
@@ -264,7 +392,5 @@ public class PacienteMB implements Serializable {
 		System.out.println(paciente.toString());
 		this.paciente = paciente;
 	}
-	
-	
 
 }

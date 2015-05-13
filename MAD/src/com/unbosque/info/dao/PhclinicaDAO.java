@@ -87,5 +87,12 @@ public class PhclinicaDAO {
 				.createQuery("from Phclinica").list();
 		return list;
 	}
+	
+	public Paciente getPacienteByUser(String idPaciente) {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Paciente where nombres_apellidos=?")
+				.setParameter(0, idPaciente).list();
+		return (Paciente) list.get(0);
+	}
 
 }

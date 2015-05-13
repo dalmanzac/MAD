@@ -3,7 +3,9 @@ package com.unbosque.info.service;
 import java.util.List;
 
 import com.unbosque.info.dao.UsuarioDAO;
+import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,5 +61,10 @@ public class UsuarioService {
 	@Transactional(readOnly = false)
 	public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
 		this.usuarioDAO = usuarioDAO;
+	}
+	
+	@Transactional(readOnly = false)
+	public List<Parametro> getParametros() {
+		return getUsuarioDAO().getParametros();
 	}
 }

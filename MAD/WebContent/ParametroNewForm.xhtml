@@ -11,7 +11,7 @@
 	<h:head>
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
-			<title>NUEVO TRATAMIENTO</title>
+			<title>NUEVO PARAMETRO</title>
 		</f:facet>
 	</h:head>
 
@@ -22,11 +22,9 @@
 			<p:layoutUnit position="north" size="103" resizable="true"
 				closable="true" collapsible="true">
 				<center>
-					<h1>AGREGAR TRATAMIENTO</h1>
+					<h1>NUEVO PARAMETRO</h1>
 				</center>
 			</p:layoutUnit>
-
-
 
 			<p:layoutUnit position="west" size="232" header="ADMINISTRADOR"
 				collapsible="true">
@@ -90,40 +88,59 @@
 			<p:layoutUnit position="center">
 				<ui:insert name="pf"></ui:insert>
 				<h:form>
-		<p:panel styleClass="session" header="Nuevo Tratamiento">
-			<h:panelGrid columns="2">
-				<h:outputLabel value="Nombre del Tratamiento:" />
-				<p:inputText id="user" required="true"
-					requiredMessage="Campo Requerido" value="#{tratamientoMB.nombre}">
-				</p:inputText>
-				<p:message for="user" />
-				<p:spacer width="10" height="10" />
-				<h:outputLabel value="Descripción:" />
+					<p:panel styleClass="session" header="Nuevo Parametro">
+						<h:panelGrid columns="2">
+
+							<h:outputLabel value="Modulo: " />
+							<h:panelGrid columns="1" style="margin-bottom:1px"
+								cellpadding="0">
+								<p:outputLabel for="modulo" />
+								<p:selectOneRadio id="modulo" var="modulo"
+									value="#{parametroMB.modulo}" required="true"
+									requiredMessage="Usuario Requerido">
+
+									<f:selectItem itemLabel="Administrador"
+										itemValue="Administrador" />
+									<f:selectItem itemLabel="Usuario" itemValue="Usuario" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+
+							<h:outputLabel value="Parametro: " />
+							<p:inputText id="parametro" required="true"
+								requiredMessage="Parametro Requerido"
+								value="#{parametroMB.parametro}">
+							</p:inputText>
+
+							<h:outputLabel value="Valor: " />
+							<p:inputText id="valor" required="true"
+								requiredMessage="Valor Requerido" value="#{parametroMB.valor}">
+							</p:inputText>
+
+							<h:outputLabel value="Estado: " />
+							<h:panelGrid columns="1" style="margin-bottom:1px"
+								cellpadding="0">
+								<p:outputLabel for="estado" />
+								<p:selectOneRadio id="estado" var="estado"
+									value="#{phclinicaMB.estado}" required="true">
+									<f:selectItem itemLabel="Activo" itemValue="A" />
+									<f:selectItem itemLabel="Inactivo" itemValue="I" />
+								</p:selectOneRadio>
+							</h:panelGrid>
 
 
-				<p:inputTextarea rows="5" cols="30" counter="display" maxlength="80"
-					counterTemplate="{0} characters remaining." autoResize="false"
-					value="#{tratamientoMB.descripcion}" />
-				<h:outputText id="display" />
-				<p:spacer width="10" height="10" />
-
-				<p:growl id="growl" life="2000" />
-
-				<p:commandButton value="Crear Tratamiento" id="addTratamiento"
-					update="growl" actionListener="#{tratamientoMB.addTratamiento()}"
-					styleClass="ui-priority-primary" />
-				<p:commandButton id="reset" value="Borrar"
-					action="#{tratamientoMB.reset}" ajax="false" />
+							<p:commandButton value="Agregar" id="addParametro" update="growl"
+								actionListener="#{parametroMB.addParametro()}" ajax="false"
+								styleClass="ui-priority-primary" />
 
 
-			</h:panelGrid>
-		</p:panel>
 
-	</h:form>
+							<p:growl id="growl" life="2000" />
+							</h:panelGrid>
+					</p:panel>
+					
+				</h:form>
 			</p:layoutUnit>
-
 		</p:layout>
-
 	</h:body>
 
 </f:view>

@@ -3,7 +3,10 @@ package com.unbosque.info.bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -16,6 +19,7 @@ import org.apache.commons.mail.EmailException;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.UsuarioService;
 import com.unbosque.info.util.CifrarClave;
@@ -322,6 +326,7 @@ public class UsuarioMB implements Serializable {
 
 		try {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
+			String fechaFinal = temp.getFechaClave().toString();
 
 			if (numeroEntrada == 3) {
 				desactivarUsuario(temp);
@@ -339,21 +344,33 @@ public class UsuarioMB implements Serializable {
 
 					if (temp.getPassword().equals(cla)) {
 						if (temp.getTipoUsuario().equals("A")) {
-
 							FacesContext.getCurrentInstance()
 									.getExternalContext()
 									.redirect("UsuarioNewForm.xhtml");
 
 							reset();
 						} else if (temp.getTipoUsuario().equals("U")) {
+							if (!cambioFecha(fechaFinal)) {
+								numeroEntrada = 0;
+								FacesContext.getCurrentInstance()
+										.getExternalContext()
+										.redirect("PacienteNewForm.xhtml");
 
-							FacesContext.getCurrentInstance()
-									.getExternalContext()
-									.redirect("PacienteNewForm.xhtml");
-							numeroEntrada = 0;
-							
+							} else {
+								FacesContext
+										.getCurrentInstance()
+										.addMessage(
+												null,
+												new FacesMessage(
+														FacesMessage.SEVERITY_WARN,
+														"Su fecha ha vencido, debe Cambiarla! ",
+														"Su fecha ha vencido, debe Cambiarla! "));
+								FacesContext.getCurrentInstance()
+										.getExternalContext()
+										.redirect("NutricionistaModForm.xhtml");
+
+							}
 						}
-
 					} else {
 						numeroEntrada++;
 						FacesContext.getCurrentInstance().addMessage(
@@ -452,6 +469,46 @@ public class UsuarioMB implements Serializable {
 		mail.setTitulo("Sistema de Gestión de Dietas");
 		EmailUtils enviar = new EmailUtils();
 		enviar.enviaEmail(mail);
+	}
+
+	public boolean cambioFecha(String fechaUsuario) {
+		List<Parametro> parametro = new ArrayList<Parametro>();
+		parametro = getUsuarioService().getParametros();
+		Calendar uno = Calendar.getInstance();
+		Calendar dos = Calendar.getInstance();
+
+		Date fecha = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		String fechaSistema = format.format(fecha);
+
+		int diaSistema = Integer.parseInt(fechaSistema.substring(7));
+		int mesSistema = Integer.parseInt(fechaSistema.substring(3, 5));
+		int anoSistema = Integer.parseInt(fechaSistema.substring(6));
+
+		int dia = Integer.parseInt(fechaUsuario.substring(8, 10));
+		int mes = Integer.parseInt(fechaUsuario.substring(5, 7));
+		int ano = Integer.parseInt(fechaUsuario.substring(0, 4));
+
+		uno.set(ano, mes, dia);
+		dos.set(anoSistema, mesSistema, diaSistema);
+
+		long milis1 = uno.getTimeInMillis();
+		long milis2 = dos.getTimeInMillis();
+		long diferencia = milis2 - milis1;
+
+		long diferenciaFinal = diferencia / (24 * 60 * 60 * 1000);
+
+		int parametro2 = 0;
+
+		for (int i = 0; i < parametro.size(); i++) {
+			if (parametro.get(i).getParametro().contains("Cambiar Contraseña"))
+				parametro2 = Integer.parseInt(parametro.get(i).getValor());
+		}
+
+		if (diferenciaFinal >= parametro2)
+			return true;
+
+		return false;
 	}
 
 	public List<Usuario> getUsuariosList() {

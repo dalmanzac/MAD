@@ -11,7 +11,7 @@
 	<h:head>
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
-			<title>MODIFICAR TRATAMIENTO</title>
+			<title>PARAMETROS</title>
 		</f:facet>
 	</h:head>
 
@@ -22,7 +22,7 @@
 			<p:layoutUnit position="north" size="103" resizable="true"
 				closable="true" collapsible="true">
 				<center>
-					<h1>MODIFICAR TRATAMIENTO</h1>
+					<h1>PARAMETROS</h1>
 				</center>
 			</p:layoutUnit>
 
@@ -38,19 +38,27 @@
 
 					</p:submenu>
 					<p:submenu label="ENFERMEDADES">
-						<p:menuitem value="Agregar" url="EnfermedadNewForm.xhtml" />
-						<p:menuitem value="Modificar" url="EnfermedadModForm.xhtml" />
-						<p:menuitem value="Eliminar" url="EnfermedadDelForm.xhtml" />
-						<p:menuitem value="Mostrar" url="EnfermedadShowForm.xhtml" />
+						<p:menuitem value="Agregar"
+							url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="EnfermedadShowForm.xhtml" />
 
 
 					</p:submenu>
 
 					<p:submenu label="TRATAMIENTOS">
-						<p:menuitem value="Agregar" url="TratamientoNewForm.xhtml" />
-						<p:menuitem value="Modificar" url="TratamientoModForm.xhtml" />
-						<p:menuitem value="Eliminar" url="TratamientoDelForm.xhtml" />
-						<p:menuitem value="Mostrar" url="TratamientoShowForm.xhtml" />
+						<p:menuitem value="Agregar"
+							url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar"
+							url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar"
+							url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar"
+							url="TratamientoShowForm.xhtml" />
 
 
 					</p:submenu>
@@ -79,43 +87,64 @@
 
 			<p:layoutUnit position="center">
 				<ui:insert name="pf"></ui:insert>
-
 				<h:form id="formTabla">
-					<p:panel styleClass="session" header="Modificar Tratamiento">
-						<p:dataTable id="tratamiento" var="_tratamiento"
-							value="#{tratamientoMB.tratamientosList}" style="width: 100%"
+					<p:panel styleClass="session" header="Parametros">
+						<p:dataTable id="parametro" var="_parametro"
+							value="#{parametroMB.parametrosList}" style="width: 100%"
 							emptyMessage="No hay registros disponibles" paginator="true"
 							rows="10" paginatorPosition="top"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15">
-							<p:column filterBy="#{_tratamiento.id}"
-								headerText="ID Tratamiento" filterMatchMode="contains">
-								<h:outputText value="#{_tratamiento.id}" />
+							<p:column filterBy="#{_parametro.id}" headerText="ID Parametro"
+								filterMatchMode="contains">
+								<h:outputText value="#{_parametro.id}" />
+							</p:column>
+							<p:column filterBy="#{_parametro.modulo}" headerText="Modulo"
+								filterMatchMode="contains">
+								<h:outputText value="#{_parametro.modulo}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
-									<h:outputText value="Descripción" />
+									<h:outputText value="Parametro" />
 								</f:facet>
-								<h:outputText value="#{_tratamiento.descripcion}" />
+								<h:outputText value="#{_parametro.parametro}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Valor" />
+								</f:facet>
+								<h:outputText value="#{_parametro.valor}" />
 							</p:column>
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Estado" />
 								</f:facet>
-								<h:outputText value="#{_tratamiento.estado}" />
-							</p:column>
-							<p:column filterBy="#{_tratamiento.nombre}" headerText="Nombre"
-								filterMatchMode="contains">
-								<h:outputText value="#{_tratamiento.nombre}" />
+								<h:outputText value="#{_parametro.estado}" />
 							</p:column>
 
-							<p:column headerText="Modificar">
+							<p:column headerText="Accion:">
 
 
 								<p:commandButton onclick="PF('dlg2').show();"
-									actionListener="#{tratamientoMB.setTratamiento(_tratamiento)}"
-									icon="ui-icon-document" update="tratamiento">
+									actionListener="#{parametroMB.setParametro2(_parametro)}"
+									icon="ui-icon-document" update="parametro">
 
+								</p:commandButton>
+
+								<p:commandButton icon="ui-icon-close"
+									action="#{parametroMB.deleteParametro(_parametro)}"
+									update="parametro">
+									<p:confirm header="AVISO!"
+										message="Desea eliminar, está Seguro?" icon="ui-icon-alert"
+										modal="true" />
+
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="explode">
+										<p:commandButton value="Si" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
 								</p:commandButton>
 							</p:column>
 
@@ -128,38 +157,35 @@
 
 		</p:layout>
 
-		<p:dialog header="MODIFICAR TRATAMIENTO" widgetVar="dlg2"
-			modal="true" height="250" width="700">
+		<p:dialog header="MODIFICAR PARAMETRO" widgetVar="dlg2" modal="true"
+			height="250" width="700">
 			<h:form id="form">
 				<h:panelGrid columns="2">
 
-					<h:outputLabel value="Nombre:" />
-					<p:inputText id="name2" required="false"
-						value="#{tratamientoMB.nombre}">
+
+					<h:outputLabel value="Valor: " />
+					<p:inputText id="login" required="false"
+						value="#{parametroMB.valor}">
 					</p:inputText>
 
-					<h:outputLabel value="Descripción:" />
-					<p:inputTextarea rows="5" cols="30" counter="display"
-						maxlength="80" counterTemplate="{0} characters remaining."
-						autoResize="false" required="false"
-						value="#{tratamientoMB.descripcion}" />
-					<h:outputText id="display" />
-					
-					<p:growl id="growl" life="2000" />
 					<h:outputLabel value="Estado: " />
 					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
 						<p:outputLabel for="estado" />
 						<p:selectOneRadio id="estado" var="estado"
-							value="#{tratamientoMB.estado}" required="false">
+							value="#{parametroMB.estado}" required="false">
 							<f:selectItem itemLabel="Activo" itemValue="A" />
 							<f:selectItem itemLabel="Inactivo" itemValue="I" />
 						</p:selectOneRadio>
 					</h:panelGrid>
 
-					<p:commandButton value="Modificar" id="modTratamiento"
-						update="growl" actionListener="#{tratamientoMB.modTratamiento()}"
-						ajax="false" styleClass="ui-priority-primary" />
 
+					<p:commandButton value="Modificar" id="modParametro" update="growl"
+						actionListener="#{parametroMB.modParametro()}" ajax="false"
+						styleClass="ui-priority-primary" />
+
+
+
+					<p:growl id="growl" life="2000" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

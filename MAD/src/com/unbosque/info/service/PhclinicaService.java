@@ -70,6 +70,10 @@ public class PhclinicaService {
 	public List<Phclinica> getPhclinicas() {
 		return getPhclinicaDAO().getPhclinicas();
 	}
+	
+	public Paciente getPacienteByUser(String idPaciente) {
+		return getPhclinicaDAO().getPacienteByUser(idPaciente);
+	}
 
 	public PhclinicaDAO getPhclinicaDAO() {
 		return phclinicaDAO;

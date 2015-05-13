@@ -18,26 +18,26 @@ public class Phclinica implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	private Integer id;
+
 	@Column(name = "estado", nullable = false)
 	private String estado;
 
 	@Column(name = "fecha_hclinica")
 	private Timestamp fechaHclinica;
 
-	@Column(name = "id", nullable = false)
-	private Integer id;
-
 	@Column(name = "id_dieta")
-	private Integer idDieta;
+	private String idDieta;
 
 	@Column(name = "id_enfermedad")
-	private Integer idEnfermedad;
+	private String idEnfermedad;
 
 	@Column(name = "id_paciente")
-	private Integer idPaciente;
+	private String idPaciente;
 
 	@Column(name = "id_tratamiento")
-	private Integer idTratamiento;
+	private String idTratamiento;
 
 	public Phclinica() {
 		super();
@@ -67,35 +67,35 @@ public class Phclinica implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdDieta() {
+	public String getIdDieta() {
 		return this.idDieta;
 	}
 
-	public void setIdDieta(Integer idDieta) {
+	public void setIdDieta(String idDieta) {
 		this.idDieta = idDieta;
 	}
 
-	public Integer getIdEnfermedad() {
+	public String getIdEnfermedad() {
 		return this.idEnfermedad;
 	}
 
-	public void setIdEnfermedad(Integer idEnfermedad) {
+	public void setIdEnfermedad(String idEnfermedad) {
 		this.idEnfermedad = idEnfermedad;
 	}
 
-	public Integer getIdPaciente() {
+	public String getIdPaciente() {
 		return this.idPaciente;
 	}
 
-	public void setIdPaciente(Integer idPaciente) {
+	public void setIdPaciente(String idPaciente) {
 		this.idPaciente = idPaciente;
 	}
 
-	public Integer getIdTratamiento() {
+	public String getIdTratamiento() {
 		return this.idTratamiento;
 	}
 
-	public void setIdTratamiento(Integer idTratamiento) {
+	public void setIdTratamiento(String idTratamiento) {
 		this.idTratamiento = idTratamiento;
 	}
 

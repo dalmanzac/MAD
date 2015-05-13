@@ -12,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
+import org.springframework.dao.DataAccessException;
 
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
@@ -21,6 +22,8 @@ import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.PacienteService;
 import com.unbosque.info.service.PhclinicaService;
+import com.unbosque.info.util.CifrarClave;
+import com.unbosque.info.util.Validacion;
 
 @ManagedBean(name = "phclinicaMB")
 @SessionScoped
@@ -32,6 +35,8 @@ public class PhclinicaMB implements Serializable {
 
 	@ManagedProperty(value = "#{PhclinicaService}")
 	PhclinicaService phclinicaService;
+
+	PacienteService pacienteService;
 
 	List<Phclinica> phclinicaList;
 
@@ -45,31 +50,64 @@ public class PhclinicaMB implements Serializable {
 
 	private Integer id;
 
-	private Integer idPaciente;
+	private String idPaciente;
 
 	private Timestamp fechaHclinica;
 
-	private Integer idEnfermedad;
+	private String idEnfermedad;
 
-	private Integer idTratamiento;
+	private String idTratamiento;
 
-	private Integer idDieta;
+	private String idDieta;
 
 	private String estado;
 
 	private Phclinica phclinica;
 
-	public void addHistoriaClinica() {
+	public void addPhclinica() {
 		RequestContext context = RequestContext.getCurrentInstance();
+		Paciente temp = getPhclinicaService().getPacienteByUser(idPaciente);
 
 		java.util.Date now = new java.util.Date();
 		fechaHclinica = new java.sql.Timestamp(now.getTime());
 
-		if (idPaciente == 0) {
+		if (idTratamiento.equals("0")) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Seleccione Tratamiento ",
+							"Seleccione Tratamiento "));
+		} else if (idPaciente.equals("")) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
 							"Seleccione Paciente ", "Seleccione Paciente "));
+		} else if (idEnfermedad.equals("0")) {
+			FacesContext.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN,
+									"Seleccione Enfermedad ",
+									"Seleccione Enfermedad "));
+		} else if (idDieta.equals("0")) {
+
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Seleccione Dieta ", "Seleccione Dieta "));
+
+		} else if (temp.getEstado().equals("I")) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Paciente Inactivo ", "Paciente Inactivo "));
+		} else if (temp.getProgNutricion().equals("No   ")) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Paciente No Inscrito al Servicio de Nutrición. ",
+							"Paciente No Inscrito al Servicio de Nutrición. "));
+
 		} else {
 			Phclinica phclinica = new Phclinica();
 
@@ -86,9 +124,9 @@ public class PhclinicaMB implements Serializable {
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO,
 							"Agregado Exitosamente", "Agregado Exitosamente"));
-			reset();
 
 		}
+
 	}
 
 	public void reset() {
@@ -96,13 +134,87 @@ public class PhclinicaMB implements Serializable {
 		this.setEstado("");
 		this.setFechaHclinica(null);
 		this.setId(0);
-		this.setIdDieta(0);
-		this.setIdEnfermedad(0);
-		this.setIdPaciente(0);
-		this.setIdTratamiento(0);
+		this.setIdDieta("");
+		this.setIdEnfermedad("");
+		this.setIdPaciente("");
+		this.setIdTratamiento("");
 
 	}
 
+	public void modPhclinica() {
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		System.out.println(phclinica.toString());
+
+		if (idEnfermedad.equals("0")) {
+			phclinica.setIdEnfermedad(phclinica.getIdEnfermedad());
+		} else {
+			phclinica.setIdEnfermedad(idEnfermedad);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
+
+		if (idTratamiento.equals("0")) {
+			phclinica.setIdTratamiento(phclinica.getIdTratamiento());
+		} else {
+			phclinica.setIdTratamiento(idTratamiento);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
+
+		if (idDieta.equals("0")) {
+			phclinica.setIdDieta(phclinica.getIdDieta());
+		} else {
+			phclinica.setIdDieta(idDieta);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+		}
+
+		if (estado.equals("")) {
+			phclinica.setEstado(phclinica.getEstado());
+		} else {
+			phclinica.setEstado(estado);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Modificado Exitosamente",
+							"Modificado Exitosamente"));
+
+		}
+		getPhclinicaService().updatePhclinica(phclinica);
+		reset();
+	}
+
+	public String deletePhclinica(Phclinica phclinica) {
+		System.out.println(phclinica.getIdPaciente());
+		try {
+
+			phclinica.setEstado("I");
+			getPhclinicaService().updatePhclinica(phclinica);
+			FacesContext.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Eliminado Exitosamente",
+									"Eliminado Exitosamente"));
+
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
+	
 	public List<Phclinica> getPhclinicasList() {
 		phclinicaList = new ArrayList<Phclinica>();
 
@@ -148,7 +260,7 @@ public class PhclinicaMB implements Serializable {
 		for (int i = 0; i < enfermedadesDao.size(); i++) {
 			listEnfermedades.add(enfermedadesDao.get(i).getNombre());
 		}
-
+		
 		return listEnfermedades;
 	}
 
@@ -162,7 +274,7 @@ public class PhclinicaMB implements Serializable {
 		for (int i = 0; i < pacienteDao.size(); i++) {
 			listPacientes.add(pacienteDao.get(i).getNombresApellidos());
 		}
-
+		System.out.println(listPacientes.get(0));
 		return listPacientes;
 	}
 
@@ -190,11 +302,11 @@ public class PhclinicaMB implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdPaciente() {
+	public String getIdPaciente() {
 		return idPaciente;
 	}
 
-	public void setIdPaciente(Integer idPaciente) {
+	public void setIdPaciente(String idPaciente) {
 		this.idPaciente = idPaciente;
 	}
 
@@ -206,27 +318,27 @@ public class PhclinicaMB implements Serializable {
 		this.fechaHclinica = fechaHclinica;
 	}
 
-	public Integer getIdEnfermedad() {
+	public String getIdEnfermedad() {
 		return idEnfermedad;
 	}
 
-	public void setIdEnfermedad(Integer idEnfermedad) {
+	public void setIdEnfermedad(String idEnfermedad) {
 		this.idEnfermedad = idEnfermedad;
 	}
 
-	public Integer getIdTratamiento() {
+	public String getIdTratamiento() {
 		return idTratamiento;
 	}
 
-	public void setIdTratamiento(Integer idTratamiento) {
+	public void setIdTratamiento(String idTratamiento) {
 		this.idTratamiento = idTratamiento;
 	}
 
-	public Integer getIdDieta() {
+	public String getIdDieta() {
 		return idDieta;
 	}
 
-	public void setIdDieta(Integer idDieta) {
+	public void setIdDieta(String idDieta) {
 		this.idDieta = idDieta;
 	}
 
@@ -277,6 +389,14 @@ public class PhclinicaMB implements Serializable {
 
 	public void setListPacientes(List listPacientes) {
 		this.listPacientes = listPacientes;
+	}
+
+	public PacienteService getPacienteService() {
+		return pacienteService;
+	}
+
+	public void setPacienteService(PacienteService pacienteService) {
+		this.pacienteService = pacienteService;
 	}
 
 }

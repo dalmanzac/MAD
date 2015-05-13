@@ -66,14 +66,13 @@
 			<p:layoutUnit position="center">
 				<ui:insert name="pf"></ui:insert>
 				<h:form>
-					<p:panel styleClass="session" header="Nueva Historia Clinica">
+					<p:panel styleClass="session" header="Nueva Historia Clinica"
+						id="form">
 						<h:panelGrid columns="2">
 
 							<h:outputLabel value="ID del Paciente: " />
-							<p:selectOneMenu id="idPaciente" value="#{phclinica.idPaciente}"
-								style="width:150px">
-								<f:selectItem itemLabel="Seleccione" itemValue="0"
-									required="true" requiredMessage="Campo Requerido" />
+							<p:selectOneMenu id="idPaciente"
+								value="#{phclinicaMB.idPaciente}" style="width:150px">
 								<f:selectItems value="#{phclinicaMB.getPacienteByNombre()}" />
 							</p:selectOneMenu>
 
@@ -103,11 +102,13 @@
 							</p:selectOneMenu>
 
 
-							<p:commandButton value="Crear Historia Clinica" id="ajax3"
-								update="growl" actionListener="#{phclinicaMB.addPhclinica()}"
+							<p:commandButton value="Crear Historia Clinica" update="growl"
+								actionListener="#{phclinicaMB.addPhclinica()}"
 								styleClass="ui-priority-primary" />
 
-
+							<p:commandButton value="Borrar"
+								actionListener="#{phclinicaMB.reset()}"
+								styleClass="ui-priority-primary" update="form" />
 
 							<p:growl id="growl" life="2000" />
 						</h:panelGrid>

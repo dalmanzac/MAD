@@ -1,7 +1,10 @@
 package com.unbosque.info.dao;
 
 import java.util.List;
+
+import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,6 +58,13 @@ public class UsuarioDAO {
 	public List<Usuario> getUsuarios() {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Usuario").list();
+		return list;
+		
+	}
+	
+	public List<Parametro> getParametros() {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Parametro").list();
 		return list;
 		
 	}

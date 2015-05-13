@@ -1,29 +1,38 @@
 package com.unbosque.info.entidad;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.*;
 
 /**
  * The persistent class for the parametro database table.
  * 
  */
 @Entity
-@NamedQuery(name="Parametro.findAll", query="SELECT p FROM Parametro p")
+@Table(name = "parametro")
+@NamedQuery(name = "Parametro.findAll", query = "SELECT p FROM Parametro p")
 public class Parametro implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String estado;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
 	private Integer id;
 
+	@Column(name = "estado", nullable = false)
+	private String estado;
+
+	@Column(name = "modulo", nullable = false)
 	private String modulo;
 
+	@Column(name = "parametro", nullable = false)
 	private String parametro;
 
+	@Column(name = "valor", nullable = false)
 	private String valor;
 
 	public Parametro() {
+		super();
 	}
 
 	public String getEstado() {
@@ -64,6 +73,13 @@ public class Parametro implements Serializable {
 
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	@Override
+	public String toString() {
+		return "Parametro [id=" + id + ", estado=" + estado + ", modulo="
+				+ modulo + ", parametro=" + parametro + ", valor=" + valor
+				+ "]";
 	}
 
 }

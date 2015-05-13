@@ -139,7 +139,7 @@
 							<p:selectOneMenu id="idEnfermedad"
 								value="#{phclinicaMB.idEnfermedad}" style="width:150px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
-									required="true" requiredMessage="Campo Requerido" />
+									required="false" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getEnfermedadByNombre()}" />
 							</p:selectOneMenu>
 
@@ -147,7 +147,7 @@
 							<p:selectOneMenu id="idTratamiento"
 								value="#{phclinicaMB.idTratamiento}" style="width:150px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
-									required="true" requiredMessage="Campo Requerido" />
+									required="false" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getTratamientoByNombre()}" />
 							</p:selectOneMenu>
 							
@@ -155,7 +155,7 @@
 							<p:selectOneMenu id="idDieta" value="#{phclinicaMB.idDieta}"
 								style="width:150px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
-									required="true" requiredMessage="Campo Requerido" />
+									required="false" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getDietaByNombre()}" />
 							</p:selectOneMenu>
 
@@ -163,7 +163,7 @@
 					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
 						<p:outputLabel for="estado" />
 						<p:selectOneRadio id="estado" var="estado"
-							value="#{phclinicaMB.estado}" required="true">
+							value="#{phclinicaMB.estado}" required="false">
 							<f:selectItem itemLabel="Activo" itemValue="A" />
 							<f:selectItem itemLabel="Inactivo" itemValue="I" />
 						</p:selectOneRadio>

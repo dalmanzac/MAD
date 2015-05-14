@@ -3,6 +3,7 @@ package com.unbosque.info.service;
 import java.util.List;
 
 import com.unbosque.info.dao.DietaDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Tratamiento;
 
@@ -40,6 +41,11 @@ public class DietaService {
 	@Transactional(readOnly = false)
 	public Dieta getDietaByNombre(String nombre) {
 		return getDietaDAO().getDietaByNombre(nombre);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getDietaDAO().addAuditoria(auditoria);
 	}
 
 	public List<Dieta> getDietas() {

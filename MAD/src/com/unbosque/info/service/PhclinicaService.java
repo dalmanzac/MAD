@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unbosque.info.dao.EnfermedadDAO;
 import com.unbosque.info.dao.PhclinicaDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Paciente;
@@ -29,6 +30,11 @@ public class PhclinicaService {
 	}
 
 	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getPhclinicaDAO().addAuditoria(auditoria);
+	}
+
+	@Transactional(readOnly = false)
 	public void deletePhclinica(Phclinica phclinica) {
 		getPhclinicaDAO().deletePhclinica(phclinica);
 	}
@@ -41,27 +47,27 @@ public class PhclinicaService {
 	public Phclinica getPhclinicaById(int id) {
 		return getPhclinicaDAO().getPhclinicaById(id);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public Phclinica getPhclinicaByNombre(String nombre) {
 		return getPhclinicaDAO().getPhclinicaByNombre(nombre);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public List<Dieta> getDietaByNombre() {
 		return getPhclinicaDAO().getDietaByNombre();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public List<Tratamiento> getTratamientoByNombre() {
 		return getPhclinicaDAO().getTratamientoByNombre();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public List<Enfermedad> getEnfermedadByNombre() {
 		return getPhclinicaDAO().getEnfermedadByNombre();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public List<Paciente> getPacienteByNombre() {
 		return getPhclinicaDAO().getPacienteByNombre();
@@ -70,7 +76,7 @@ public class PhclinicaService {
 	public List<Phclinica> getPhclinicas() {
 		return getPhclinicaDAO().getPhclinicas();
 	}
-	
+
 	public Paciente getPacienteByUser(String idPaciente) {
 		return getPhclinicaDAO().getPacienteByUser(idPaciente);
 	}

@@ -2,6 +2,7 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Tratamiento;
 
@@ -25,6 +26,11 @@ public class DietaDAO {
 
 	public void addDieta(Dieta dieta) {
 		getSessionFactory().getCurrentSession().save(dieta);
+
+	}
+	
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
 
 	}
 

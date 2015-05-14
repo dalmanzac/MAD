@@ -16,6 +16,7 @@
 	<bean id="Paciente" class="com.unbosque.info.entidad.Paciente" />
 	<bean id="Phclinica" class="com.unbosque.info.entidad.Phclinica" />
 	<bean id="Parametro" class="com.unbosque.info.entidad.Parametro" />
+	<bean id="Auditoria" class="com.unbosque.info.entidad.Auditoria" />
 
 	<!-- User Service Declaration -->
 	<bean id="UsuarioService" class="com.unbosque.info.service.UsuarioService">
@@ -39,6 +40,9 @@
 	<bean id="ParametroService" class="com.unbosque.info.service.ParametroService">
 		<property name="ParametroDAO" ref="ParametroDAO" />
 	</bean>
+	<bean id="AuditoriaService" class="com.unbosque.info.service.AuditoriaService">
+		<property name="AuditoriaDAO" ref="AuditoriaDAO" />
+	</bean>
 
 
 	<!-- User DAO Declaration -->
@@ -61,6 +65,9 @@
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 	<bean id="ParametroDAO" class="com.unbosque.info.dao.ParametroDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="AuditoriaDAO" class="com.unbosque.info.dao.AuditoriaDAO">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
@@ -91,6 +98,7 @@
 				<value>com.unbosque.info.entidad.Paciente</value>
 				<value>com.unbosque.info.entidad.Phclinica</value>
 				<value>com.unbosque.info.entidad.Parametro</value>
+				<value>com.unbosque.info.entidad.Auditoria</value>
 
 			</list>
 		</property>

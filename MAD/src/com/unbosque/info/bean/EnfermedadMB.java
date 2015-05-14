@@ -1,6 +1,7 @@
 package com.unbosque.info.bean;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
@@ -39,6 +41,7 @@ public class EnfermedadMB implements Serializable {
 	private String estado;
 	private String descripcion;
 	private Enfermedad enfermedad;
+	private Auditoria reportes = new Auditoria();
 
 	public void addEnfermedad() {
 		try {
@@ -55,6 +58,19 @@ public class EnfermedadMB implements Serializable {
 					enfermedad.setDescripcion(descripcion);
 					enfermedad.setNombre(nombre);
 
+					java.util.Date now = new java.util.Date();
+					Timestamp fechaCreacion = new java.sql.Timestamp(
+							now.getTime());
+					reportes.setId(reportes.getId());
+					reportes.setDescripcion("Se Agrego Enfermedad");
+					reportes.setFechaAuditoria(fechaCreacion);
+					reportes.setOperacion("C");
+					reportes.setTablaAuditoria("Enfermedad");
+					reportes.setTablaId(enfermedad.getNombre());
+					reportes.setUsuarioId("Administrador");
+
+					getEnfermedadService().addAuditoria(reportes);
+
 					getEnfermedadService().addEnfermedad(enfermedad);
 					FacesContext.getCurrentInstance().addMessage(
 							null,
@@ -64,11 +80,14 @@ public class EnfermedadMB implements Serializable {
 					reset();
 
 				} else {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
-									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 				}
 
 			} else {
@@ -83,6 +102,26 @@ public class EnfermedadMB implements Serializable {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
+	}
+
+	public List<Enfermedad> getEnfermedadList() {
+		return enfermedadList;
+	}
+
+	public Enfermedad getEnfermedad() {
+		return enfermedad;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void modEnfermedad() {
@@ -102,11 +141,14 @@ public class EnfermedadMB implements Serializable {
 									"Modificada Exitosamente",
 									"Modificada Exitosamente"));
 				} else {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
-									"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula).",
+											"Nombre Incorrecto (Sin Espacios y Primer letra en Mayúscula)."));
 				}
 
 			} else {
@@ -127,7 +169,6 @@ public class EnfermedadMB implements Serializable {
 							"Modificado Exitosamente",
 							"Modificado Exitosamente"));
 		}
-		
 
 		if (descripcion.equals("")) {
 			enfermedad.setDescripcion(enfermedad.getDescripcion());
@@ -140,6 +181,18 @@ public class EnfermedadMB implements Serializable {
 							"Modificada Exitosamente"));
 		}
 
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico Enfermedad");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Enfermedad");
+		reportes.setTablaId(enfermedad.getNombre());
+		reportes.setUsuarioId("Administrador");
+
+		getEnfermedadService().addAuditoria(reportes);
+
 		reset();
 		getEnfermedadService().updateEnfermedad(enfermedad);
 
@@ -148,12 +201,23 @@ public class EnfermedadMB implements Serializable {
 	public String deleteEnfermedad(Enfermedad enfermedad) {
 		try {
 			enfermedad.setEstado("I");
+
+			java.util.Date now = new java.util.Date();
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino Enfermedad");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Enfermedad");
+			reportes.setTablaId(enfermedad.getNombre());
+			reportes.setUsuarioId("Administrador");
+
+			getEnfermedadService().addAuditoria(reportes);
 			getEnfermedadService().updateEnfermedad(enfermedad);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO,
-							"Inactiva Exitosamente",
-							"Inactiva Exitosamente"));
+							"Inactiva Exitosamente", "Inactiva Exitosamente"));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}

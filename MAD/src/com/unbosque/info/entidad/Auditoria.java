@@ -1,39 +1,47 @@
 package com.unbosque.info.entidad;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Time;
 
+import javax.persistence.*;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * The persistent class for the auditoria database table.
  * 
  */
 @Entity
-@NamedQuery(name="Auditoria.findAll", query="SELECT a FROM Auditoria a")
+@Table(name = "auditoria")
+@NamedQuery(name = "Auditoria.findAll", query = "SELECT a FROM Auditoria a")
 public class Auditoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
 	private Integer id;
 
+	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
-	@Column(name="fecha_auditoria")
-	private Time fechaAuditoria;
+	@Column(name = "fecha_auditoria")
+	private Timestamp fechaAuditoria;
 
+	@Column(name = "operacion", nullable = false)
 	private String operacion;
 
-	@Column(name="tabla_auditoria")
+	@Column(name = "tabla_auditoria")
 	private String tablaAuditoria;
 
-	@Column(name="tabla_id")
+	@Column(name = "tabla_id")
 	private String tablaId;
 
-	@Column(name="usuario_id")
+	@Column(name = "usuario_id")
 	private String usuarioId;
 
 	public Auditoria() {
+		super();
 	}
 
 	public Integer getId() {
@@ -52,11 +60,11 @@ public class Auditoria implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Time getFechaAuditoria() {
+	public Timestamp getFechaAuditoria() {
 		return this.fechaAuditoria;
 	}
 
-	public void setFechaAuditoria(Time fechaAuditoria) {
+	public void setFechaAuditoria(Timestamp fechaAuditoria) {
 		this.fechaAuditoria = fechaAuditoria;
 	}
 
@@ -90,6 +98,14 @@ public class Auditoria implements Serializable {
 
 	public void setUsuarioId(String usuarioId) {
 		this.usuarioId = usuarioId;
+	}
+
+	@Override
+	public String toString() {
+		return "Auditoria [id=" + id + ", descripcion=" + descripcion
+				+ ", fechaAuditoria=" + fechaAuditoria + ", operacion="
+				+ operacion + ", tablaAuditoria=" + tablaAuditoria
+				+ ", tablaId=" + tablaId + ", usuarioId=" + usuarioId + "]";
 	}
 
 }

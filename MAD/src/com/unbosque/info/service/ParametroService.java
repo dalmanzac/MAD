@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unbosque.info.dao.ParametroDAO;
 import com.unbosque.info.dao.TratamientoDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Tratamiento;
 
@@ -27,6 +28,11 @@ public class ParametroService {
 	@Transactional(readOnly = false)
 	public void deleteParametro(Parametro parametro) {
 		getParametroDAO().deleteParametro(parametro);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getParametroDAO().addAuditoria(auditoria);
 	}
 
 	@Transactional(readOnly = false)

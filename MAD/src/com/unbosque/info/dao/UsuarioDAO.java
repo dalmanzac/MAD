@@ -2,6 +2,7 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
 
@@ -25,6 +26,11 @@ public class UsuarioDAO {
 
 	public void addUsuario(Usuario usuario) {
 		getSessionFactory().getCurrentSession().save(usuario);
+
+	}
+	
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
 
 	}
 

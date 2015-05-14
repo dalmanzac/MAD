@@ -11,7 +11,7 @@
 	<h:head>
 		<f:facet name="first">
 			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
-			<title>MODIFICAR DIETA</title>
+			<title>LISTA DE REPORTES</title>
 		</f:facet>
 	</h:head>
 
@@ -22,7 +22,7 @@
 			<p:layoutUnit position="north" size="103" resizable="true"
 				closable="true" collapsible="true">
 				<center>
-					<h1>MODIFICAR DIETA</h1>
+					<h1>LISTA DE REPORTES</h1>
 				</center>
 			</p:layoutUnit>
 
@@ -63,109 +63,92 @@
 
 
 					</p:submenu>
-					
+
 					<p:submenu label="PARAMETROS">
 						<p:menuitem value="Agregar" url="ParametroNewForm.xhtml" />
-						<p:menuitem value="Modificar y Eliminar" url="ParametroShowForm.xhtml" />
-						
+						<p:menuitem value="Modificar y Eliminar"
+							url="ParametroShowForm.xhtml" />
+
 					</p:submenu>
 					
 					<p:submenu label="REPORTES">
 						<p:menuitem value="Ver Reportes" url="ReportesShowForm.xhtml" />
 					</p:submenu>
-					
+
 					<p:submenu label="SESION">
 						<p:menuitem value="Cerrar Sesión" url="login.xhtml" />
-						</p:submenu>
+					</p:submenu>
 
 				</p:menu>
 			</p:layoutUnit>
 
 			<p:layoutUnit position="center">
 				<ui:insert name="pf"></ui:insert>
-
 				<h:form id="formTabla">
-					<p:panel styleClass="session" header="Modificar Dietas">
-						<p:dataTable id="dieta" var="_dieta" value="#{dietaMB.dietasList}"
-							style="width: 100%" emptyMessage="No hay registros disponibles"
-							paginator="true" rows="10" paginatorPosition="top"
+					<p:panel styleClass="session" header="Mostrar Reportes">
+						<p:dataTable id="auditoria" var="_auditoria"
+							value="#{auditoriaMB.auditoriasList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="5,10,15">
-							<p:column filterBy="#{_dieta.id}" headerText="ID Dieta"
+
+							<p:column filterBy="#{_auditoria.id}" headerText="ID Reporte"
 								filterMatchMode="contains">
-								<h:outputText value="#{_dieta.id}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="Descripción" />
-								</f:facet>
-								<h:outputText value="#{_dieta.descripcion}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="Estado" />
-								</f:facet>
-								<h:outputText value="#{_dieta.estado}" />
-							</p:column>
-							<p:column filterBy="#{_dieta.nombre}" headerText="Nombre"
-								filterMatchMode="contains">
-								<h:outputText value="#{_dieta.nombre}" />
+								<h:outputText value="#{_auditoria.id}" />
 							</p:column>
 
-							<p:column headerText="Modificar">
-
-
-								<p:commandButton onclick="PF('dlg2').show();"
-									actionListener="#{dietaMB.setDieta(_dieta)}"
-									icon="ui-icon-document" update="dieta">
-
-								</p:commandButton>
+							<p:column filterBy="#{_auditoria.descripcion}"
+								headerText="Descripcion Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.descripcion}" />
 							</p:column>
+
+							<p:column filterBy="#{_auditoria.fechaAuditoria}"
+								headerText="Fecha Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.fechaAuditoria}" />
+							</p:column>
+
+							<p:column filterBy="#{_auditoria.operacion}"
+								headerText="Operacion Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.operacion}" />
+							</p:column>
+
+							<p:column filterBy="#{_auditoria.tablaAuditoria}"
+								headerText="Auditoria Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.tablaAuditoria}" />
+							</p:column>
+
+							<p:column filterBy="#{_auditoria.tablaId}"
+								headerText="ID Tabla Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.tablaId}" />
+							</p:column>
+
+							<p:column filterBy="#{_auditoria.usuarioId}"
+								headerText="ID Usuario Reporte" filterMatchMode="contains">
+								<h:outputText value="#{_auditoria.usuarioId}" />
+							</p:column>
+
 
 						</p:dataTable>
+						
+						<h3>EXPORTAR REPORTES</h3>
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/excel.png" />
+							<p:dataExporter type="xls" target="tbl" fileName="reportes"
+								pageOnly="true" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/pdf.png" />
+							<p:dataExporter type="pdf" target="tbl" fileName="reportes"
+								pageOnly="true" />
+						</h:commandLink>
 
 					</p:panel>
 				</h:form>
 			</p:layoutUnit>
 
 		</p:layout>
-
-		<p:dialog header="MODIFICAR DIETA" widgetVar="dlg2" modal="true"
-			height="250" width="700">
-			<h:form id="form">
-				<h:panelGrid columns="2">
-
-
-					<h:outputLabel value="Nombre:" />
-					<p:inputText id="name2" required="false" value="#{dietaMB.nombre}">
-					</p:inputText>
-
-					<h:outputLabel value="Descripción:" />
-
-
-					<p:inputTextarea rows="5" cols="30" counter="display"
-						maxlength="80" counterTemplate="{0} characters remaining."
-						autoResize="false" required="false" value="#{dietaMB.descripcion}" />
-					<h:outputText id="display" />
-					
-					<p:growl id="growl" life="2000" />
-					<h:outputLabel value="Estado: " />
-					<h:panelGrid columns="1" style="margin-bottom:1px" cellpadding="0">
-						<p:outputLabel for="estado" />
-						<p:selectOneRadio id="estado" var="estado"
-							value="#{dietaMB.estado}" required="false">
-							<f:selectItem itemLabel="Activo" itemValue="A" />
-							<f:selectItem itemLabel="Inactivo" itemValue="I" />
-						</p:selectOneRadio>
-					</h:panelGrid>
-
-					<p:commandButton value="Modificar" id="modDieta" update="growl"
-						actionListener="#{dietaMB.modDieta()}" ajax="false"
-						styleClass="ui-priority-primary" />
-
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
 
 	</h:body>
 

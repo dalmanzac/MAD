@@ -5,7 +5,9 @@ import java.util.List;
 
 
 
+
 import com.unbosque.info.dao.EnfermedadDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Usuario;
 
@@ -34,6 +36,11 @@ public class EnfermedadService {
 	@Transactional(readOnly = false)
 	public void updateEnfermedad(Enfermedad enfermedad) {
 		getEnfermedadDAO().updateEnfermedad(enfermedad);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getEnfermedadDAO().addAuditoria(auditoria);
 	}
 
 	public Enfermedad getEnfermdadById(int id) {

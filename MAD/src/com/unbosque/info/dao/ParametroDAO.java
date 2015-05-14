@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 
 @Repository
@@ -24,6 +25,11 @@ public class ParametroDAO {
 
 	public void addParametro(Parametro parametro) {
 		getSessionFactory().getCurrentSession().save(parametro);
+
+	}
+	
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
 
 	}
 

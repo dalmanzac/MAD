@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
 import com.unbosque.info.service.TratamientoService;
@@ -38,6 +39,7 @@ public class TratamientoMB implements Serializable {
 	private String estado;
 	private String descripcion;
 	private Tratamiento tratamiento;
+	private Auditoria reportes = new Auditoria();
 
 	public void addTratamiento() {
 		try {
@@ -53,6 +55,19 @@ public class TratamientoMB implements Serializable {
 					tratamiento.setEstado("A");
 					tratamiento.setDescripcion(descripcion);
 					tratamiento.setNombre(nombre);
+
+					java.util.Date now = new java.util.Date();
+					Timestamp fechaCreacion = new java.sql.Timestamp(
+							now.getTime());
+					reportes.setId(reportes.getId());
+					reportes.setDescripcion("Se Agrego Tratamiento");
+					reportes.setFechaAuditoria(fechaCreacion);
+					reportes.setOperacion("C");
+					reportes.setTablaAuditoria("Tratamiento");
+					reportes.setTablaId(tratamiento.getNombre());
+					reportes.setUsuarioId("Administrador");
+
+					getTratamientoService().addAuditoria(reportes);
 
 					getTratamientoService().addTratamiento(tratamiento);
 					FacesContext.getCurrentInstance().addMessage(
@@ -143,6 +158,18 @@ public class TratamientoMB implements Serializable {
 							"Modificado Exitosamente"));
 		}
 
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico Tratamiento");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Tratamiento");
+		reportes.setTablaId(tratamiento.getNombre());
+		reportes.setUsuarioId("Administrador");
+
+		getTratamientoService().addAuditoria(reportes);
+
 		reset();
 		getTratamientoService().updateTratamiento(tratamiento);
 
@@ -153,6 +180,18 @@ public class TratamientoMB implements Serializable {
 		try {
 
 			tratamiento.setEstado("I");
+
+			java.util.Date now = new java.util.Date();
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino Tratamiento");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Tratamiento");
+			reportes.setTablaId(tratamiento.getNombre());
+			reportes.setUsuarioId("Administrador");
+
+			getTratamientoService().addAuditoria(reportes);
 			getTratamientoService().updateTratamiento(tratamiento);
 			FacesContext.getCurrentInstance().addMessage(
 					null,
@@ -258,6 +297,18 @@ public class TratamientoMB implements Serializable {
 	public void setTratamiento(Tratamiento tratamiento) {
 		System.out.println(tratamiento.toString());
 		this.tratamiento = tratamiento;
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
+	}
+
+	public Tratamiento getTratamiento() {
+		return tratamiento;
 	}
 
 }

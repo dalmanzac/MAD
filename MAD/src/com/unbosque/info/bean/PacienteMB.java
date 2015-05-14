@@ -1,6 +1,7 @@
 package com.unbosque.info.bean;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Paciente;
 import com.unbosque.info.entidad.Usuario;
@@ -52,6 +54,8 @@ public class PacienteMB implements Serializable {
 
 	private Paciente paciente;
 
+	private Auditoria reportes = new Auditoria();
+
 	public void addPaciente() {
 		try {
 
@@ -72,6 +76,19 @@ public class PacienteMB implements Serializable {
 							paciente.setIdentificacion(identificacion);
 							paciente.setTelefono(telefono);
 							paciente.setNombresApellidos(nombresApellidos);
+
+							java.util.Date now = new java.util.Date();
+							Timestamp fechaCreacion = new java.sql.Timestamp(
+									now.getTime());
+							reportes.setId(reportes.getId());
+							reportes.setDescripcion("Se Agrego Paciente");
+							reportes.setFechaAuditoria(fechaCreacion);
+							reportes.setOperacion("C");
+							reportes.setTablaAuditoria("Paciente");
+							reportes.setTablaId(paciente.getNombresApellidos());
+							reportes.setUsuarioId("Administrador");
+
+							getPacienteService().addAuditoria(reportes);
 
 							getPacienteService().addPaciente(paciente);
 							FacesContext.getCurrentInstance().addMessage(
@@ -239,6 +256,17 @@ public class PacienteMB implements Serializable {
 			paciente.setDireccion(direccion);
 		}
 
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico Paciente");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Paciente");
+		reportes.setTablaId(paciente.getNombresApellidos());
+		reportes.setUsuarioId("Administrador");
+
+		getPacienteService().addAuditoria(reportes);
 		getPacienteService().updatePaciente(paciente);
 		reset();
 	}
@@ -246,6 +274,18 @@ public class PacienteMB implements Serializable {
 	public String deletePaciente(Paciente paciente) {
 		try {
 			paciente.setEstado("I");
+
+			java.util.Date now = new java.util.Date();
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino Paciente");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Paciente");
+			reportes.setTablaId(paciente.getNombresApellidos());
+			reportes.setUsuarioId("Administrador");
+
+			getPacienteService().addAuditoria(reportes);
 			getPacienteService().updatePaciente(paciente);
 			FacesContext.getCurrentInstance()
 					.addMessage(
@@ -391,6 +431,14 @@ public class PacienteMB implements Serializable {
 	public void setPaciente(Paciente paciente) {
 		System.out.println(paciente.toString());
 		this.paciente = paciente;
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
 	}
 
 }

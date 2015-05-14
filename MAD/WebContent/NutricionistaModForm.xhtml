@@ -70,7 +70,6 @@
 					<p:panel styleClass="session" header="Modifica tus Datos">
 						<h:panelGrid columns="2">
 
-
 							<h:outputLabel value="Contraseña" />
 							<p:password id="password" required="false"
 								value="#{usuarioMB.password}" requiredMessage="Campo Requerido">
@@ -95,7 +94,7 @@
 
 							<p:commandButton value="Modificar Mis Datos" id="modUsuario"
 								update="growl" ajax="false"
-								actionListener="#{usuarioMB.modUsuario()}"
+								actionListener="#{usuarioMB.modNutricionista()}"
 								styleClass="ui-priority-primary" />
 
 

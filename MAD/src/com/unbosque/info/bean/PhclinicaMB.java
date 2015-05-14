@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Paciente;
@@ -63,6 +64,8 @@ public class PhclinicaMB implements Serializable {
 	private String estado;
 
 	private Phclinica phclinica;
+
+	private Auditoria reportes = new Auditoria();
 
 	public void addPhclinica() {
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -118,6 +121,17 @@ public class PhclinicaMB implements Serializable {
 			phclinica.setIdEnfermedad(idEnfermedad);
 			phclinica.setIdPaciente(idPaciente);
 			phclinica.setIdTratamiento(idTratamiento);
+
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Agrego Historia Clinica");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("C");
+			reportes.setTablaAuditoria("Historia Clinica");
+			reportes.setTablaId(phclinica.getIdPaciente());
+			reportes.setUsuarioId("Administrador");
+
+			getPhclinicaService().addAuditoria(reportes);
 
 			getPhclinicaService().addPhclinica(phclinica);
 			FacesContext.getCurrentInstance().addMessage(
@@ -190,6 +204,18 @@ public class PhclinicaMB implements Serializable {
 							"Modificado Exitosamente"));
 
 		}
+
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico Historia Clinica");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Historia Clinica");
+		reportes.setTablaId(phclinica.getIdPaciente());
+		reportes.setUsuarioId("Administrador");
+
+		getPhclinicaService().addAuditoria(reportes);
 		getPhclinicaService().updatePhclinica(phclinica);
 		reset();
 	}
@@ -199,6 +225,18 @@ public class PhclinicaMB implements Serializable {
 		try {
 
 			phclinica.setEstado("I");
+
+			java.util.Date now = new java.util.Date();
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino Historia Clinica");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Historia Clinica");
+			reportes.setTablaId(phclinica.getIdPaciente());
+			reportes.setUsuarioId("Administrador");
+
+			getPhclinicaService().addAuditoria(reportes);
 			getPhclinicaService().updatePhclinica(phclinica);
 			FacesContext.getCurrentInstance()
 					.addMessage(
@@ -214,7 +252,7 @@ public class PhclinicaMB implements Serializable {
 		return null;
 
 	}
-	
+
 	public List<Phclinica> getPhclinicasList() {
 		phclinicaList = new ArrayList<Phclinica>();
 
@@ -260,7 +298,7 @@ public class PhclinicaMB implements Serializable {
 		for (int i = 0; i < enfermedadesDao.size(); i++) {
 			listEnfermedades.add(enfermedadesDao.get(i).getNombre());
 		}
-		
+
 		return listEnfermedades;
 	}
 
@@ -397,6 +435,14 @@ public class PhclinicaMB implements Serializable {
 
 	public void setPacienteService(PacienteService pacienteService) {
 		this.pacienteService = pacienteService;
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
 	}
 
 }

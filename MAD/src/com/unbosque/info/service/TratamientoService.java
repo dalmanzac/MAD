@@ -3,8 +3,10 @@ package com.unbosque.info.service;
 import java.util.List;
 
 import com.unbosque.info.dao.TratamientoDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Tratamiento;
+
 
 
 
@@ -37,6 +39,11 @@ public class TratamientoService {
 
 	public Tratamiento getTratamientoById(int id) {
 		return getTratamientoDAO().getTratamientoById(id);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getTratamientoDAO().addAuditoria(auditoria);
 	}
 	
 	@Transactional(readOnly = false)

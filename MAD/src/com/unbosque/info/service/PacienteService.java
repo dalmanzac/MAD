@@ -3,7 +3,9 @@ package com.unbosque.info.service;
 import java.util.List;
 
 import com.unbosque.info.dao.PacienteDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Paciente;
+import com.unbosque.info.entidad.Parametro;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,11 @@ public class PacienteService {
 	@Transactional(readOnly = false)
 	public void addPaciente(Paciente paciente) {
 		getPacienteDAO().addPaciente(paciente);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getPacienteDAO().addAuditoria(auditoria);
 	}
 
 	@Transactional(readOnly = false)

@@ -2,6 +2,7 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Dieta;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Paciente;
@@ -40,21 +41,26 @@ public class PhclinicaDAO {
 
 		return list;
 	}
-	
+
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
+
+	}
+
 	public List<Tratamiento> getTratamientoByNombre() {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Tratamiento").list();
 
 		return list;
 	}
-	
+
 	public List<Enfermedad> getEnfermedadByNombre() {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Enfermedad").list();
 
 		return list;
 	}
-	
+
 	public List<Paciente> getPacienteByNombre() {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Paciente").list();
@@ -87,7 +93,7 @@ public class PhclinicaDAO {
 				.createQuery("from Phclinica").list();
 		return list;
 	}
-	
+
 	public Paciente getPacienteByUser(String idPaciente) {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Paciente where nombres_apellidos=?")

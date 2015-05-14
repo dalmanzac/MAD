@@ -1,7 +1,10 @@
 package com.unbosque.info.dao;
 
 import java.util.List;
+
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Paciente;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,6 +25,11 @@ public class PacienteDAO {
 
 	public void addPaciente(Paciente paciente) {
 		getSessionFactory().getCurrentSession().save(paciente);
+
+	}
+	
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
 
 	}
 

@@ -1,5 +1,6 @@
 package com.unbosque.info.bean;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
 import com.unbosque.info.service.ParametroService;
@@ -38,6 +40,7 @@ public class ParametroMB {
 	private String valor;
 	private String estado;
 	private Parametro parametro2;
+	private Auditoria reportes = new Auditoria();
 
 	public void addParametro() {
 
@@ -49,6 +52,19 @@ public class ParametroMB {
 		parametro3.setParametro(parametro);
 		parametro3.setValor(valor);
 		parametro3.setEstado("A");
+
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Agrego Parametro");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("C");
+		reportes.setTablaAuditoria("Parametro");
+		reportes.setTablaId(parametro3.getParametro());
+		reportes.setUsuarioId("Administrador");
+
+		getParametroService().addAuditoria(reportes);
+
 		getParametroService().addParametro(parametro3);
 
 		FacesContext.getCurrentInstance().addMessage(
@@ -94,6 +110,18 @@ public class ParametroMB {
 
 		}
 
+		java.util.Date now = new java.util.Date();
+		Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico Parametro");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Parametro");
+		reportes.setTablaId(parametro2.getParametro());
+		reportes.setUsuarioId("Administrador");
+
+		getParametroService().addAuditoria(reportes);
+
 		getParametroService().updateParametro(parametro2);
 		reset();
 	}
@@ -110,6 +138,18 @@ public class ParametroMB {
 		try {
 
 			parametro.setEstado("I");
+
+			java.util.Date now = new java.util.Date();
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino Parametro");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Parametro");
+			reportes.setTablaId(parametro.getParametro());
+			reportes.setUsuarioId("Administrador");
+
+			getParametroService().addAuditoria(reportes);
 			getParametroService().updateParametro(parametro);
 			FacesContext.getCurrentInstance()
 					.addMessage(
@@ -204,6 +244,14 @@ public class ParametroMB {
 
 	public void setParametro2(Parametro parametro2) {
 		this.parametro2 = parametro2;
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.unbosque.info.dao;
 
 import java.util.List;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Enfermedad;
 import com.unbosque.info.entidad.Usuario;
 
@@ -32,6 +33,11 @@ public class EnfermedadDAO {
 
 	public void addEnfermedad(Enfermedad enfermedad) {
 		getSessionFactory().getCurrentSession().save(enfermedad);
+
+	}
+	
+	public void addAuditoria(Auditoria auditoria) {
+		getSessionFactory().getCurrentSession().save(auditoria);
 
 	}
 

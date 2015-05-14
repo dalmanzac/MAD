@@ -3,6 +3,7 @@ package com.unbosque.info.service;
 import java.util.List;
 
 import com.unbosque.info.dao.UsuarioDAO;
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
 
@@ -21,6 +22,11 @@ public class UsuarioService {
 	@Transactional(readOnly = false)
 	public void addUsuario(Usuario usuario) {
 		getUsuarioDAO().addUsuario(usuario);
+	}
+	
+	@Transactional(readOnly = false)
+	public void addAuditoria(Auditoria auditoria) {
+		getUsuarioDAO().addAuditoria(auditoria);
 	}
 
 	@Transactional(readOnly = false)

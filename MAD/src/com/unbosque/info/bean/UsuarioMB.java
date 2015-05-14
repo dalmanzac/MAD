@@ -19,8 +19,10 @@ import org.apache.commons.mail.EmailException;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
+import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Parametro;
 import com.unbosque.info.entidad.Usuario;
+import com.unbosque.info.service.AuditoriaService;
 import com.unbosque.info.service.UsuarioService;
 import com.unbosque.info.util.CifrarClave;
 import com.unbosque.info.util.EmailUtils;
@@ -53,9 +55,11 @@ public class UsuarioMB implements Serializable {
 	private String password;
 	private String tipoUsuario;
 	private Usuario usuario;
+	private Auditoria reportes = new Auditoria();
 	private String cla;
 	private String user;
 	private int numeroEntrada = 0;
+	private Usuario sesion;
 
 	public void addUsuario() throws EmailException {
 		try {
@@ -86,6 +90,16 @@ public class UsuarioMB implements Serializable {
 								usuario.setTipoUsuario(tipoUsuario);
 								setEmail(login, sincifrar, apellidosNombres,
 										fechaCreacion, correo, tipoUsuario);
+
+								reportes.setId(reportes.getId());
+								reportes.setDescripcion("Se agrego nuevo Usuario");
+								reportes.setFechaAuditoria(fechaCreacion);
+								reportes.setOperacion("C");
+								reportes.setTablaAuditoria("Usuario");
+								reportes.setTablaId(usuario.getLogin());
+								reportes.setUsuarioId(sesion.getLogin());
+
+								getUsuarioService().addAuditoria(reportes);
 								getUsuarioService().addUsuario(usuario);
 
 								FacesContext.getCurrentInstance().addMessage(
@@ -168,8 +182,19 @@ public class UsuarioMB implements Serializable {
 	public String deleteUsuario(Usuario usuario) {
 		System.out.println(usuario.getApellidosNombres());
 		try {
-
+			java.util.Date now = new java.util.Date();
+			fechaCreacion = new java.sql.Timestamp(now.getTime());
 			usuario.setEstado("I");
+
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Elimino un Usuario");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Usuario");
+			reportes.setTablaId(usuario.getLogin());
+			reportes.setUsuarioId(sesion.getLogin());
+
+			getUsuarioService().addAuditoria(reportes);
 			getUsuarioService().updateUsuario(usuario);
 			FacesContext.getCurrentInstance()
 					.addMessage(
@@ -189,8 +214,19 @@ public class UsuarioMB implements Serializable {
 	public String desactivarUsuario(Usuario usuario) {
 		System.out.println(usuario.getApellidosNombres());
 		try {
-
+			java.util.Date now = new java.util.Date();
+			fechaCreacion = new java.sql.Timestamp(now.getTime());
 			usuario.setEstado("I");
+
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Desactivo un Usuario");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("D");
+			reportes.setTablaAuditoria("Usuario");
+			reportes.setTablaId(usuario.getLogin());
+			reportes.setUsuarioId(sesion.getLogin());
+
+			getUsuarioService().addAuditoria(reportes);
 			getUsuarioService().updateUsuario(usuario);
 
 		} catch (DataAccessException e) {
@@ -201,10 +237,90 @@ public class UsuarioMB implements Serializable {
 
 	}
 
+	public void modNutricionista() {
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		Usuario modNutricionista = sesion;
+		java.util.Date now = new java.util.Date();
+		fechaCreacion = new java.sql.Timestamp(now.getTime());
+
+		if (password.equals("")) {
+			modNutricionista.setPassword(modNutricionista.getPassword());
+		} else {
+			if (Validacion.validarContraseña(password)) {
+				CifrarClave pass = new CifrarClave();
+				password = pass.cifradoClave(password);
+				modNutricionista.setPassword(password);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Ingrese Contraseña Correctamente.",
+								"Ingrese Contraseña Correctamente."));
+			}
+		}
+
+		if (apellidosNombres.equals("")) {
+			modNutricionista.setApellidosNombres(modNutricionista
+					.getApellidosNombres());
+		} else {
+			if (Validacion.validarNombreApellido(apellidosNombres)) {
+				modNutricionista.setApellidosNombres(apellidosNombres);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Ingrese Apellido y Nombre Correctamente.",
+								"Ingrese Apellido y Nombre Correctamente."));
+			}
+		}
+
+		if (correo.equals("")) {
+			modNutricionista.setCorreo(modNutricionista.getCorreo());
+		} else {
+			if (Validacion.validarEmail(correo)) {
+				modNutricionista.setCorreo(correo);
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Modificado Exitosamente",
+								"Modificado Exitosamente"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Correo Incorrecto", "Correo Incorrecto."));
+			}
+		}
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico un Nutricionista");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Usuario");
+		reportes.setTablaId(modNutricionista.getLogin());
+		reportes.setUsuarioId(sesion.getLogin());
+
+		getUsuarioService().addAuditoria(reportes);
+		getUsuarioService().updateUsuario(modNutricionista);
+
+	}
+
 	public void modUsuario() {
 
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
+		java.util.Date now = new java.util.Date();
+		fechaCreacion = new java.sql.Timestamp(now.getTime());
 
 		if (apellidosNombres.equals("")) {
 			usuario.setApellidosNombres(usuario.getApellidosNombres());
@@ -315,6 +431,16 @@ public class UsuarioMB implements Serializable {
 							"Modificado Exitosamente"));
 		}
 
+		reportes.setId(reportes.getId());
+		reportes.setDescripcion("Se Modifico un Usuario");
+		reportes.setFechaAuditoria(fechaCreacion);
+		reportes.setOperacion("U");
+		reportes.setTablaAuditoria("Usuario");
+		reportes.setTablaId(usuario.getLogin());
+		reportes.setUsuarioId(sesion.getLogin());
+
+		getUsuarioService().addAuditoria(reportes);
+
 		reset();
 		getUsuarioService().updateUsuario(usuario);
 
@@ -343,7 +469,21 @@ public class UsuarioMB implements Serializable {
 					cla = clave.cifradoClave(password);
 
 					if (temp.getPassword().equals(cla)) {
+						sesion = temp;
 						if (temp.getTipoUsuario().equals("A")) {
+							java.util.Date now = new java.util.Date();
+							fechaCreacion = new java.sql.Timestamp(
+									now.getTime());
+							reportes.setId(reportes.getId());
+							reportes.setDescripcion("Ingreso al Sistema un Usuario");
+							reportes.setFechaAuditoria(fechaCreacion);
+							reportes.setOperacion("I");
+							reportes.setTablaAuditoria("Usuario");
+							reportes.setTablaId(temp.getLogin());
+							reportes.setUsuarioId(sesion.getLogin());
+
+							getUsuarioService().addAuditoria(reportes);
+
 							FacesContext.getCurrentInstance()
 									.getExternalContext()
 									.redirect("UsuarioNewForm.xhtml");
@@ -352,15 +492,42 @@ public class UsuarioMB implements Serializable {
 						} else if (temp.getTipoUsuario().equals("U")) {
 							if (!cambioFecha(fechaFinal)) {
 								numeroEntrada = 0;
+
+								java.util.Date now = new java.util.Date();
+								fechaCreacion = new java.sql.Timestamp(
+										now.getTime());
+								reportes.setId(reportes.getId());
+								reportes.setDescripcion("Ingreso al sistema un Nutricionista");
+								reportes.setFechaAuditoria(fechaCreacion);
+								reportes.setOperacion("I");
+								reportes.setTablaAuditoria("Usuario");
+								reportes.setTablaId(temp.getLogin());
+								reportes.setUsuarioId(sesion.getLogin());
+
+								getUsuarioService().addAuditoria(reportes);
 								FacesContext.getCurrentInstance()
 										.getExternalContext()
 										.redirect("PacienteNewForm.xhtml");
+								reset();
 
 							} else {
+								java.util.Date now = new java.util.Date();
+								fechaCreacion = new java.sql.Timestamp(
+										now.getTime());
+								reportes.setId(reportes.getId());
+								reportes.setDescripcion("Se debe Cambiar la Contraseña");
+								reportes.setFechaAuditoria(fechaCreacion);
+								reportes.setOperacion("I");
+								reportes.setTablaAuditoria("Usuario");
+								reportes.setTablaId(temp.getLogin());
+								reportes.setUsuarioId(sesion.getLogin());
+
+								getUsuarioService().addAuditoria(reportes);
 								FacesContext
 										.getCurrentInstance()
 										.addMessage(
 												null,
+
 												new FacesMessage(
 														FacesMessage.SEVERITY_WARN,
 														"Su fecha ha vencido, debe Cambiarla! ",
@@ -510,7 +677,7 @@ public class UsuarioMB implements Serializable {
 
 		return false;
 	}
-
+	
 	public List<Usuario> getUsuariosList() {
 		usuarioList = new ArrayList<Usuario>();
 
@@ -662,6 +829,22 @@ public class UsuarioMB implements Serializable {
 
 	public void setNumeroEntrada(int numeroEntrada) {
 		this.numeroEntrada = numeroEntrada;
+	}
+
+	public Usuario getSesion() {
+		return sesion;
+	}
+
+	public void setSesion(Usuario sesion) {
+		this.sesion = sesion;
+	}
+
+	public Auditoria getReportes() {
+		return reportes;
+	}
+
+	public void setReportes(Auditoria reportes) {
+		this.reportes = reportes;
 	}
 
 }

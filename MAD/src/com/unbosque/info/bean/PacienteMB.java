@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -56,7 +58,15 @@ public class PacienteMB implements Serializable {
 
 	private Auditoria reportes = new Auditoria();
 
+	private static final Logger logger = Logger.getLogger(PacienteMB.class);
+
 	public void addPaciente() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
@@ -137,6 +147,12 @@ public class PacienteMB implements Serializable {
 	}
 
 	public void modPaciente() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(paciente.toString());
 
@@ -272,6 +288,12 @@ public class PacienteMB implements Serializable {
 	}
 
 	public String deletePaciente(Paciente paciente) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 			paciente.setEstado("I");
 
@@ -302,6 +324,12 @@ public class PacienteMB implements Serializable {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setDireccion("");
 		this.setNombresApellidos("");
@@ -315,6 +343,12 @@ public class PacienteMB implements Serializable {
 	}
 
 	public boolean existeCedula(int cedula) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		try {
 			Paciente temp = getPacienteService().getPacienteById(cedula);

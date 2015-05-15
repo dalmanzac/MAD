@@ -44,7 +44,7 @@
 
 
 					</p:submenu>
-					
+
 					<p:submenu label="HISTORIA CLINICA">
 						<p:menuitem value="Agregar" url="HCNewForm.xhtml" />
 						<p:menuitem value="Modificar" url="HCModForm.xhtml" />
@@ -53,10 +53,10 @@
 
 
 					</p:submenu>
-					
+
 					<p:submenu label="SESION">
 						<p:menuitem value="Cerrar Sesión" url="login.xhtml" />
-						</p:submenu>
+					</p:submenu>
 
 				</p:menu>
 			</p:layoutUnit>
@@ -111,6 +111,24 @@
 							</p:column>
 
 						</p:dataTable>
+
+					</p:panel>
+
+					<p:panel id="panel" header="Exportar Tabla a Excel o PDF"
+						style="width:300px;text-align:center; margin: 0 auto;margin-top:30px">
+
+						<h:commandLink>
+							<p:graphicImage value="/images/excel.png" width="34" />
+							<p:dataExporter type="xls" target="phclinica"
+								fileName="Historias Clinicas" />
+						</h:commandLink>
+
+						<h:commandLink>
+
+							<p:graphicImage value="/images/pdf.png" width="34" />
+							<p:dataExporter type="pdf" target="phclinica"
+								fileName="Historias Clinicas" />
+						</h:commandLink>
 
 					</p:panel>
 				</h:form>

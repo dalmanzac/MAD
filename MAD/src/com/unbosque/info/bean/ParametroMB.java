@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -41,9 +43,15 @@ public class ParametroMB {
 	private String estado;
 	private Parametro parametro2;
 	private Auditoria reportes = new Auditoria();
+	private static final Logger logger = Logger.getLogger(ParametroMB.class);
 
 	public void addParametro() {
-
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		Parametro parametro3 = new Parametro();
 
@@ -75,6 +83,12 @@ public class ParametroMB {
 	}
 
 	public void modParametro() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(parametro2.toString());
 
@@ -127,6 +141,12 @@ public class ParametroMB {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setEstado("");
 		this.setModulo("");
 		this.setParametro("");
@@ -134,6 +154,12 @@ public class ParametroMB {
 	}
 
 	public String deleteParametro(Parametro parametro) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		System.out.println(parametro.getParametro());
 		try {
 

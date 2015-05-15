@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -41,8 +43,16 @@ public class DietaMB implements Serializable {
 	private String descripcion;
 	private Dieta dieta;
 	private Auditoria reportes = new Auditoria();
+	private static final Logger logger = Logger.getLogger(DietaMB.class);
 
 	public void addDieta() {
+
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
@@ -103,7 +113,12 @@ public class DietaMB implements Serializable {
 	}
 
 	public void modDieta() {
-
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		System.out.println(dieta.toString());
 
 		if (nombre.equals("")) {
@@ -176,6 +191,12 @@ public class DietaMB implements Serializable {
 	}
 
 	public String deleteDieta(Dieta dieta) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 			dieta.setEstado("I");
 
@@ -204,6 +225,12 @@ public class DietaMB implements Serializable {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setDescripcion("");
 		this.setEstado("");
@@ -212,6 +239,12 @@ public class DietaMB implements Serializable {
 	}
 
 	public boolean existeDieta(String nombre) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		try {
 			Dieta temp = getDietaService().getDietaByNombre(nombre);

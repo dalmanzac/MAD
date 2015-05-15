@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -67,7 +69,15 @@ public class PhclinicaMB implements Serializable {
 
 	private Auditoria reportes = new Auditoria();
 
+	private static final Logger logger = Logger.getLogger(PhclinicaMB.class);
+
 	public void addPhclinica() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		Paciente temp = getPhclinicaService().getPacienteByUser(idPaciente);
 
@@ -80,7 +90,7 @@ public class PhclinicaMB implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
 							"Seleccione Tratamiento ",
 							"Seleccione Tratamiento "));
-		} else if (idPaciente.equals("")) {
+		} else if (idPaciente.equals("0")) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -92,26 +102,47 @@ public class PhclinicaMB implements Serializable {
 							new FacesMessage(FacesMessage.SEVERITY_WARN,
 									"Seleccione Enfermedad ",
 									"Seleccione Enfermedad "));
-		} else if (idDieta.equals("0")) {
-
-			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Seleccione Dieta ", "Seleccione Dieta "));
-
 		} else if (temp.getEstado().equals("I")) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
 							"Paciente Inactivo ", "Paciente Inactivo "));
 		} else if (temp.getProgNutricion().equals("No   ")) {
+
+			Phclinica phclinica = new Phclinica();
+
+			phclinica.setId(id);
+			phclinica.setEstado("A");
+			phclinica.setFechaHclinica(fechaHclinica);
+			phclinica.setIdDieta("0");
+			phclinica.setIdEnfermedad(idEnfermedad);
+			phclinica.setIdPaciente(idPaciente);
+			phclinica.setIdTratamiento(idTratamiento);
+
+			Timestamp fechaCreacion = new java.sql.Timestamp(now.getTime());
+			reportes.setId(reportes.getId());
+			reportes.setDescripcion("Se Agrego Historia Clinica");
+			reportes.setFechaAuditoria(fechaCreacion);
+			reportes.setOperacion("C");
+			reportes.setTablaAuditoria("Historia Clinica");
+			reportes.setTablaId(phclinica.getIdPaciente());
+			reportes.setUsuarioId("Administrador");
+
+			getPhclinicaService().addAuditoria(reportes);
+
+			getPhclinicaService().addPhclinica(phclinica);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Agregado Exitosamente", "Agregado Exitosamente"));
+
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
 							"Paciente No Inscrito al Servicio de Nutrición. ",
 							"Paciente No Inscrito al Servicio de Nutrición. "));
-
 		} else {
+
 			Phclinica phclinica = new Phclinica();
 
 			phclinica.setId(id);
@@ -143,8 +174,36 @@ public class PhclinicaMB implements Serializable {
 
 	}
 
-	public void reset() {
+	public boolean existePaciente(String nombre) {
 
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
+
+		try {
+			Paciente temp = getPacienteService().getPacienteByUser(nombre);
+
+			if (temp != null) {
+				return true;
+			}
+
+		} catch (Exception e) {
+
+		}
+		return false;
+
+	}
+
+	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setEstado("");
 		this.setFechaHclinica(null);
 		this.setId(0);
@@ -156,7 +215,12 @@ public class PhclinicaMB implements Serializable {
 	}
 
 	public void modPhclinica() {
-
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(phclinica.toString());
 
@@ -221,6 +285,12 @@ public class PhclinicaMB implements Serializable {
 	}
 
 	public String deletePhclinica(Phclinica phclinica) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		System.out.println(phclinica.getIdPaciente());
 		try {
 

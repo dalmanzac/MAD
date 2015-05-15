@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -40,8 +42,15 @@ public class TratamientoMB implements Serializable {
 	private String descripcion;
 	private Tratamiento tratamiento;
 	private Auditoria reportes = new Auditoria();
+	private static final Logger logger = Logger.getLogger(TratamientoMB.class);
 
 	public void addTratamiento() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
@@ -103,6 +112,12 @@ public class TratamientoMB implements Serializable {
 	}
 
 	public void modTratamiento() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		System.out.println(tratamiento.toString());
 
@@ -177,6 +192,12 @@ public class TratamientoMB implements Serializable {
 
 	// Aqui colocamos el de borrado
 	public String deleteTratamiento(Tratamiento tratamiento) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 
 			tratamiento.setEstado("I");
@@ -206,6 +227,12 @@ public class TratamientoMB implements Serializable {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setNombre("");
 		this.setEstado("");
@@ -214,6 +241,12 @@ public class TratamientoMB implements Serializable {
 	}
 
 	public boolean existeTratamiento(String nombre) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		try {
 			Tratamiento temp = getTratamientoService().getTratamientoByNombre(

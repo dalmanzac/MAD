@@ -16,6 +16,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.mail.EmailException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -60,8 +62,17 @@ public class UsuarioMB implements Serializable {
 	private String user;
 	private int numeroEntrada = 0;
 	private Usuario sesion;
+	private static final Logger logger = Logger.getLogger(UsuarioMB.class);
 
 	public void addUsuario() throws EmailException {
+
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
+
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
@@ -164,6 +175,13 @@ public class UsuarioMB implements Serializable {
 
 	public boolean existeLogin(String login) {
 
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
+
 		try {
 			Usuario temp = getUsuarioService().getUsuarioByUser(login);
 
@@ -180,6 +198,12 @@ public class UsuarioMB implements Serializable {
 
 	// Aqui colocamos el de borrado
 	public String deleteUsuario(Usuario usuario) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		System.out.println(usuario.getApellidosNombres());
 		try {
 			java.util.Date now = new java.util.Date();
@@ -212,6 +236,12 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public String desactivarUsuario(Usuario usuario) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		System.out.println(usuario.getApellidosNombres());
 		try {
 			java.util.Date now = new java.util.Date();
@@ -238,6 +268,12 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public void modNutricionista() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		RequestContext context = RequestContext.getCurrentInstance();
 		Usuario modNutricionista = sesion;
@@ -317,6 +353,12 @@ public class UsuarioMB implements Serializable {
 
 	public void modUsuario() {
 
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(usuario.toString());
 		java.util.Date now = new java.util.Date();
@@ -448,6 +490,12 @@ public class UsuarioMB implements Serializable {
 
 	public void loginId() {
 
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 
 		try {
@@ -571,6 +619,12 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setCorreo("");
 		this.setEstado("");
@@ -583,6 +637,12 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public void resetButton() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setCorreo("");
 		this.setEstado("A");
@@ -604,6 +664,12 @@ public class UsuarioMB implements Serializable {
 	public void setEmail(String usuario, String password,
 			String apellidosNombres, java.util.Date fechaCreacion,
 			String correo, String tipoUsuario) throws EmailException {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		if (tipoUsuario.equals("U")) {
 			tipoUsuario = "Nutricionista";
 		} else if (tipoUsuario.equals("A")) {
@@ -639,6 +705,13 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public boolean cambioFecha(String fechaUsuario) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
+
 		List<Parametro> parametro = new ArrayList<Parametro>();
 		parametro = getUsuarioService().getParametros();
 		Calendar uno = Calendar.getInstance();
@@ -677,7 +750,7 @@ public class UsuarioMB implements Serializable {
 
 		return false;
 	}
-	
+
 	public List<Usuario> getUsuariosList() {
 		usuarioList = new ArrayList<Usuario>();
 

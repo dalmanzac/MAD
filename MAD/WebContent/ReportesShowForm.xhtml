@@ -70,7 +70,7 @@
 							url="ParametroShowForm.xhtml" />
 
 					</p:submenu>
-					
+
 					<p:submenu label="REPORTES">
 						<p:menuitem value="Ver Reportes" url="ReportesShowForm.xhtml" />
 					</p:submenu>
@@ -128,23 +128,28 @@
 								<h:outputText value="#{_auditoria.usuarioId}" />
 							</p:column>
 
-
 						</p:dataTable>
-						
-						<h3>EXPORTAR REPORTES</h3>
+
+					</p:panel>
+
+					<p:panel id="panel" header="Exportar Tabla a Excel o PDF"
+						style="width:300px;text-align:center; margin: 0 auto;margin-top:30px">
+
 						<h:commandLink>
-							<p:graphicImage name="/demo/images/excel.png" />
-							<p:dataExporter type="xls" target="tbl" fileName="reportes"
-								pageOnly="true" />
+							<p:graphicImage value="/images/excel.png" width="34" />
+							<p:dataExporter type="xls" target="auditoria"
+								fileName="Reportes - Auditoria" />
 						</h:commandLink>
 
 						<h:commandLink>
-							<p:graphicImage name="/demo/images/pdf.png" />
-							<p:dataExporter type="pdf" target="tbl" fileName="reportes"
-								pageOnly="true" />
+
+							<p:graphicImage value="/images/pdf.png" width="34" />
+							<p:dataExporter type="pdf" target="auditoria"
+								fileName="Reportes - Auditoria" />
 						</h:commandLink>
 
 					</p:panel>
+
 				</h:form>
 			</p:layoutUnit>
 

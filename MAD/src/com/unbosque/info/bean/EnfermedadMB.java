@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.dao.DataAccessException;
 
@@ -42,8 +44,15 @@ public class EnfermedadMB implements Serializable {
 	private String descripcion;
 	private Enfermedad enfermedad;
 	private Auditoria reportes = new Auditoria();
+	private static final Logger logger = Logger.getLogger(EnfermedadMB.class);
 
 	public void addEnfermedad() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 
 			RequestContext context = RequestContext.getCurrentInstance();
@@ -125,7 +134,12 @@ public class EnfermedadMB implements Serializable {
 	}
 
 	public void modEnfermedad() {
-
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		RequestContext context = RequestContext.getCurrentInstance();
 		System.out.println(enfermedad.toString());
 
@@ -199,6 +213,13 @@ public class EnfermedadMB implements Serializable {
 	}
 
 	public String deleteEnfermedad(Enfermedad enfermedad) {
+
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		try {
 			enfermedad.setEstado("I");
 
@@ -227,6 +248,12 @@ public class EnfermedadMB implements Serializable {
 	}
 
 	public void reset() {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 		this.setId(0);
 		this.setDescripcion("");
 		this.setEstado("");
@@ -235,6 +262,12 @@ public class EnfermedadMB implements Serializable {
 	}
 
 	public boolean existeEnfermedad(String nombre) {
+		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.ERROR);
+		logger.setLevel(Level.FATAL);
+		logger.setLevel(Level.OFF);
+		logger.setLevel(Level.TRACE);
 
 		try {
 			Enfermedad temp = getEnfermedadService().getEnfermedadByNombre(

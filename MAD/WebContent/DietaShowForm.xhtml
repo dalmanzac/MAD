@@ -122,6 +122,23 @@
 						</p:dataTable>
 
 					</p:panel>
+					<p:panel id="panel" header="Exportar Tabla a Excel o PDF"
+						style="width:300px;text-align:center; margin: 0 auto;margin-top:30px">
+
+						<h:commandLink>
+							<p:graphicImage value="/images/excel.png" width="34" />
+							<p:dataExporter type="xls" target="dieta"
+								fileName="Dietas" />
+						</h:commandLink>
+
+						<h:commandLink>
+
+							<p:graphicImage value="/images/pdf.png" width="34" />
+							<p:dataExporter type="pdf" target="dieta"
+								fileName="Dietas" />
+						</h:commandLink>
+
+					</p:panel>
 				</h:form>
 			</p:layoutUnit>
 

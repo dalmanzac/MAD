@@ -63,20 +63,21 @@
 
 
 					</p:submenu>
-					
+
 					<p:submenu label="PARAMETROS">
 						<p:menuitem value="Agregar" url="ParametroNewForm.xhtml" />
-						<p:menuitem value="Modificar y Eliminar" url="ParametroShowForm.xhtml" />
-						
+						<p:menuitem value="Modificar y Eliminar"
+							url="ParametroShowForm.xhtml" />
+
 					</p:submenu>
-					
+
 					<p:submenu label="REPORTES">
 						<p:menuitem value="Ver Reportes" url="ReportesShowForm.xhtml" />
 					</p:submenu>
-					
+
 					<p:submenu label="SESION">
 						<p:menuitem value="Cerrar Sesión" url="login.xhtml" />
-						</p:submenu>
+					</p:submenu>
 
 				</p:menu>
 			</p:layoutUnit>
@@ -120,6 +121,24 @@
 
 
 						</p:dataTable>
+
+					</p:panel>
+
+					<p:panel id="panel" header="Exportar Tabla a Excel o PDF"
+						style="width:300px;text-align:center; margin: 0 auto;margin-top:30px">
+
+						<h:commandLink>
+							<p:graphicImage value="/images/excel.png" width="34" />
+							<p:dataExporter type="xls" target="tratamiento"
+								fileName="Tratamientos" />
+						</h:commandLink>
+
+						<h:commandLink>
+
+							<p:graphicImage value="/images/pdf.png" width="34" />
+							<p:dataExporter type="pdf" target="tratamiento"
+								fileName="Tratamientos" />
+						</h:commandLink>
 
 					</p:panel>
 				</h:form>

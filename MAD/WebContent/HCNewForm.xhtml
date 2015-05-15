@@ -72,14 +72,14 @@
 
 							<h:outputLabel value="ID del Paciente: " />
 							<p:selectOneMenu id="idPaciente"
-								value="#{phclinicaMB.idPaciente}" style="width:150px">
+								value="#{phclinicaMB.idPaciente}" style="width:200px">
 								<f:selectItems value="#{phclinicaMB.getPacienteByNombre()}" />
 							</p:selectOneMenu>
 
 
 							<h:outputLabel value="ID Enfermedad: " />
 							<p:selectOneMenu id="idEnfermedad"
-								value="#{phclinicaMB.idEnfermedad}" style="width:150px">
+								value="#{phclinicaMB.idEnfermedad}" style="width:200px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
 									required="true" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getEnfermedadByNombre()}" />
@@ -87,7 +87,7 @@
 
 							<h:outputLabel value="ID Tratamiento: " />
 							<p:selectOneMenu id="idTratamiento"
-								value="#{phclinicaMB.idTratamiento}" style="width:150px">
+								value="#{phclinicaMB.idTratamiento}" style="width:200px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
 									required="true" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getTratamientoByNombre()}" />
@@ -95,9 +95,9 @@
 
 							<h:outputLabel value="ID Dieta: " />
 							<p:selectOneMenu id="idDieta" value="#{phclinicaMB.idDieta}"
-								style="width:150px">
+								style="width:200px">
 								<f:selectItem itemLabel="Seleccione" itemValue="0"
-									required="true" requiredMessage="Campo Requerido" />
+									required="false" requiredMessage="Campo Requerido" />
 								<f:selectItems value="#{phclinicaMB.getDietaByNombre()}" />
 							</p:selectOneMenu>
 

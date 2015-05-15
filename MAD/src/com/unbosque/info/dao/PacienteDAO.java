@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Paciente;
+import com.unbosque.info.entidad.Usuario;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class PacienteDAO {
 		getSessionFactory().getCurrentSession().save(paciente);
 
 	}
-	
+
 	public void addAuditoria(Auditoria auditoria) {
 		getSessionFactory().getCurrentSession().save(auditoria);
 
@@ -52,6 +53,14 @@ public class PacienteDAO {
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from Paciente").list();
 		return list;
+	}
+
+	public Paciente getPacienteByUser(String nombre) {
+		List list = getSessionFactory().getCurrentSession()
+				.createQuery("from Paciente where nombre=?")
+				.setParameter(0, nombre).list();
+
+		return (Paciente) list.get(0);
 	}
 
 }

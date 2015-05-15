@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 import com.unbosque.info.entidad.Auditoria;
@@ -35,6 +36,7 @@ public class AuditoriaMB {
 	private String tablaId;
 	private String usuarioId;
 	private Auditoria reportes = new Auditoria();
+	private static final Logger logger = Logger.getLogger(AuditoriaMB.class);
 
 	public List<Auditoria> getAuditoriasList() {
 		auditoriaList = new ArrayList<Auditoria>();

@@ -6,6 +6,7 @@ import com.unbosque.info.dao.PacienteDAO;
 import com.unbosque.info.entidad.Auditoria;
 import com.unbosque.info.entidad.Paciente;
 import com.unbosque.info.entidad.Parametro;
+import com.unbosque.info.entidad.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class PacienteService {
 	@Transactional(readOnly = false)
 	public void addAuditoria(Auditoria auditoria) {
 		getPacienteDAO().addAuditoria(auditoria);
+	}
+	
+	@Transactional(readOnly = false)
+	public Paciente getPacienteByUser(String nombre) {
+		return getPacienteDAO().getPacienteByUser(nombre);
 	}
 
 	@Transactional(readOnly = false)

@@ -38,27 +38,19 @@
 
 					</p:submenu>
 					<p:submenu label="ENFERMEDADES">
-						<p:menuitem value="Agregar"
-							url="EnfermedadNewForm.xhtml" />
-						<p:menuitem value="Modificar"
-							url="EnfermedadModForm.xhtml" />
-						<p:menuitem value="Eliminar"
-							url="EnfermedadDelForm.xhtml" />
-						<p:menuitem value="Mostrar"
-							url="EnfermedadShowForm.xhtml" />
+						<p:menuitem value="Agregar" url="EnfermedadNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="EnfermedadModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="EnfermedadDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="EnfermedadShowForm.xhtml" />
 
 
 					</p:submenu>
 
 					<p:submenu label="TRATAMIENTOS">
-						<p:menuitem value="Agregar"
-							url="TratamientoNewForm.xhtml" />
-						<p:menuitem value="Modificar"
-							url="TratamientoModForm.xhtml" />
-						<p:menuitem value="Eliminar"
-							url="TratamientoDelForm.xhtml" />
-						<p:menuitem value="Mostrar"
-							url="TratamientoShowForm.xhtml" />
+						<p:menuitem value="Agregar" url="TratamientoNewForm.xhtml" />
+						<p:menuitem value="Modificar" url="TratamientoModForm.xhtml" />
+						<p:menuitem value="Eliminar" url="TratamientoDelForm.xhtml" />
+						<p:menuitem value="Mostrar" url="TratamientoShowForm.xhtml" />
 
 
 					</p:submenu>
@@ -71,20 +63,21 @@
 
 
 					</p:submenu>
-					
+
 					<p:submenu label="PARAMETROS">
 						<p:menuitem value="Agregar" url="ParametroNewForm.xhtml" />
-						<p:menuitem value="Modificar y Eliminar" url="ParametroShowForm.xhtml" />
-						
+						<p:menuitem value="Modificar y Eliminar"
+							url="ParametroShowForm.xhtml" />
+
 					</p:submenu>
-					
+
 					<p:submenu label="REPORTES">
 						<p:menuitem value="Ver Reportes" url="ReportesShowForm.xhtml" />
 					</p:submenu>
-					
+
 					<p:submenu label="SESION">
 						<p:menuitem value="Cerrar Sesión" url="login.xhtml" />
-						</p:submenu>
+					</p:submenu>
 
 				</p:menu>
 			</p:layoutUnit>
@@ -92,14 +85,14 @@
 			<p:layoutUnit position="center">
 				<ui:insert name="pf"></ui:insert>
 				<h:form id="formTabla">
-		<p:panel styleClass="session" header="Mostrar Usuarios">
-			<p:dataTable id="usuario" var="_usuario"
-				value="#{usuarioMB.usuariosList}" style="width: 100%"
-				emptyMessage="No hay registros disponibles" paginator="true"
-				rows="10" paginatorPosition="top"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15">
-				<p:column filterBy="#{_usuario.id}" headerText="ID Usuario"
+					<p:panel styleClass="session" header="Mostrar Usuarios">
+						<p:dataTable id="usuario" var="_usuario"
+							value="#{usuarioMB.usuariosList}" style="width: 100%"
+							emptyMessage="No hay registros disponibles" paginator="true"
+							rows="10" paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column filterBy="#{_usuario.id}" headerText="ID Usuario"
 								filterMatchMode="contains">
 								<h:outputText value="#{_usuario.id}" />
 							</p:column>
@@ -107,54 +100,70 @@
 								headerText="Nombre Usuario" filterMatchMode="contains">
 								<h:outputText value="#{_usuario.login}" />
 							</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Password" />
-					</f:facet>
-					<h:outputText value="#{_usuario.password}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Nombre y Apellido" />
-					</f:facet>
-					<h:outputText value="#{_usuario.apellidosNombres}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Fecha Creación" />
-					</f:facet>
-					<h:outputText value="#{_usuario.fechaCreacion}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Estado" />
-					</f:facet>
-					<h:outputText value="#{_usuario.estado}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Correo" />
-					</f:facet>
-					<h:outputText value="#{_usuario.correo}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Fecha Clave" />
-					</f:facet>
-					<h:outputText value="#{_usuario.fechaClave}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Tipo de Usuario" />
-					</f:facet>
-					<h:outputText value="#{_usuario.tipoUsuario}" />
-				</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Password" />
+								</f:facet>
+								<h:outputText value="#{_usuario.password}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Nombre y Apellido" />
+								</f:facet>
+								<h:outputText value="#{_usuario.apellidosNombres}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Fecha Creación" />
+								</f:facet>
+								<h:outputText value="#{_usuario.fechaCreacion}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Estado" />
+								</f:facet>
+								<h:outputText value="#{_usuario.estado}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Correo" />
+								</f:facet>
+								<h:outputText value="#{_usuario.correo}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Fecha Clave" />
+								</f:facet>
+								<h:outputText value="#{_usuario.fechaClave}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Tipo de Usuario" />
+								</f:facet>
+								<h:outputText value="#{_usuario.tipoUsuario}" />
+							</p:column>
 
 
-			</p:dataTable>
+						</p:dataTable>
 
-		</p:panel>
-	</h:form>
+					</p:panel>
+
+					<p:panel id="panel" header="Exportar Tabla a Excel o PDF"
+						style="width:300px;text-align:center; margin: 0 auto;margin-top:30px">
+
+						<h:commandLink>
+							<p:graphicImage value="/images/excel.png" width="34" />
+							<p:dataExporter type="xls" target="usuario" fileName="Usuarios" />
+						</h:commandLink>
+
+						<h:commandLink>
+
+							<p:graphicImage value="/images/pdf.png" width="34" />
+							<p:dataExporter type="pdf" target="usuario" fileName="Usuarios" />
+						</h:commandLink>
+
+					</p:panel>
+				</h:form>
 			</p:layoutUnit>
 
 		</p:layout>
